@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Tripix.Entities;
 
 namespace Tripix.Context
 {
-    public class ApplicationDbcontext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbcontext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbcontext ()
         {

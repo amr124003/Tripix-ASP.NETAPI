@@ -1,7 +1,7 @@
 [
   {
     "ContainingType": "Tripix.Controllers.AuthController",
-    "Method": "GetAdmins",
+    "Method": "Refreshtoken",
     "RelativePath": "api/Auth",
     "HttpMethod": "GET",
     "IsController": true,
@@ -36,6 +36,32 @@
       {
         "Name": "model",
         "Type": "Tripix.View_Models.AssignRoleModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.AuthController",
+    "Method": "GetAdmins",
+    "RelativePath": "api/Auth/GetAdmins",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.AuthController",
+    "Method": "GoogleLogin",
+    "RelativePath": "api/Auth/GoogleLogin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.View_Models.GoogleAuthDTO",
         "IsRequired": true
       }
     ],
@@ -90,6 +116,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Tripix.Controllers.ChatbotController",
+    "Method": "GetQuestions",
+    "RelativePath": "api/Chatbot/GetQuestions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Tripix.Controllers.OTPController",
     "Method": "SendOtp",
     "RelativePath": "api/OTP/send-otp",
@@ -100,48 +136,6 @@
       {
         "Name": "request",
         "Type": "Tripix.View_Models.OtpRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.PaymentController",
-    "Method": "AddCard",
-    "RelativePath": "api/Payment/add-card",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "card",
-        "Type": "Tripix.View_Models.CreditDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.PaymentController",
-    "Method": "GetCards",
-    "RelativePath": "api/Payment/get-cards",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.PaymentController",
-    "Method": "RemoveCard",
-    "RelativePath": "api/Payment/remove-card/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

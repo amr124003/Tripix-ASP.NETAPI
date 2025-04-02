@@ -8,7 +8,7 @@ namespace Tripix.SEEDING
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string[] roleNames = { "User", "Admin", "SuperAdmin" };
+            string[] roleNames = { "User", "Admin", "SuperAdmin", "Driver" };
 
             foreach (var roleName in roleNames)
             {

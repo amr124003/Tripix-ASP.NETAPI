@@ -1,11 +1,15 @@
 ﻿#nullable disable
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using Tripix.Context;
+using Tripix.Entities;
 using Tripix.View_Models;
 
 namespace Tripix.Controllers
@@ -14,16 +18,18 @@ namespace Tripix.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        private readonly SignInManager<IdentityUser> signinmanger;
+        private readonly SignInManager<ApplicationUser> signinmanger;
         private readonly RoleManager<IdentityRole> rolemanger;
+        private readonly ApplicationDbcontext context;
 
-        public AuthController ( UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signinmanger, RoleManager<IdentityRole> rolemanger )
+        public AuthController ( UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signinmanger, RoleManager<IdentityRole> rolemanger, ApplicationDbcontext context )
         {
             this.userManager = userManager;
             this.signinmanger = signinmanger;
             this.rolemanger = rolemanger;
+            this.context = context;
         }
         [HttpPost("Register")]
         public async Task<IActionResult> Register ( [FromBody] RegisterModel model )
@@ -33,7 +39,7 @@ namespace Tripix.Controllers
                 return BadRequest(model);
             }
 
-            var user = new IdentityUser { UserName = model.Username, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
@@ -43,7 +49,15 @@ namespace Tripix.Controllers
 
             await userManager.AddToRoleAsync(user, "User");
 
-            var token = GenerateJwtToken(user, false);
+            var token = GenerateJwtToken(user);
+
+            var Refrechtoken = GenerateRefreshToken();
+
+            user.REFTokens.Add(new RefreshTokens { CreatedDate = DateTime.UtcNow, ExpiredDate = DateTime.UtcNow.AddDays(15), RefreshToken = Refrechtoken });
+            await userManager.UpdateAsync(user);
+
+            SetRefreshTokenCookie(Refrechtoken);
+
 
             return Ok(new { token });
         }
@@ -60,18 +74,26 @@ namespace Tripix.Controllers
 
             if (user == null)
             {
-                return Unauthorized(new { message = "Invalid Credentials" });
+                return Unauthorized(new { message = "Email Not Found You Need To Register" });
             }
 
             var result = await signinmanger.CheckPasswordSignInAsync(user, model.Password, false);
             if (!result.Succeeded)
             {
-                return Unauthorized(new { message = "Invalid Credentials" });
+                return Unauthorized(new { message = "Invalid Email Or Password" });
             }
 
-            var token = GenerateJwtToken(user, model.RememberMe);
+            var role = userManager.GetRolesAsync(user).Result.FirstOrDefault();
 
-            return Ok(new { token });
+            var token = GenerateJwtToken(user);
+            var Refrechtoken = GenerateRefreshToken();
+
+            user.REFTokens.Add(new RefreshTokens { CreatedDate = DateTime.UtcNow, ExpiredDate = DateTime.UtcNow.AddDays(15), RefreshToken = Refrechtoken });
+            await userManager.UpdateAsync(user);
+
+            SetRefreshTokenCookie(Refrechtoken);
+
+            return Ok(new { Token = token, Role = role });
         }
 
         [Authorize(Roles = "SuperAdmin")]
@@ -108,7 +130,7 @@ namespace Tripix.Controllers
                 return BadRequest(model);
             }
 
-            var admin = new IdentityUser { Email = model.Email, UserName = model.Username };
+            var admin = new ApplicationUser { Email = model.Email, UserName = model.Username };
             var result = await userManager.CreateAsync(admin, model.Password);
 
             if (!result.Succeeded)
@@ -120,7 +142,7 @@ namespace Tripix.Controllers
             return Ok(new { message = "Admin Is Created" });
         }
 
-        [HttpGet]
+        [HttpGet("GetAdmins")]
         [Authorize(Roles = "Admin,SuperAdmin")]
         public async Task<IActionResult> GetAdmins ()
         {
@@ -128,7 +150,78 @@ namespace Tripix.Controllers
             return Ok(result);
         }
 
-        private string GenerateJwtToken ( IdentityUser user, bool RememberMe )
+        [HttpPost("GoogleLogin")]
+        public async Task<IActionResult> GoogleLogin ( [FromBody] GoogleAuthDTO model )
+        {
+            var clientId = Environment.GetEnvironmentVariable("GoogleClientId");
+
+            if (string.IsNullOrEmpty(clientId))
+            {
+                return StatusCode(500, new { message = "Google Client ID is not set" });
+            }
+
+            var settings = new GoogleJsonWebSignature.ValidationSettings();
+
+
+            GoogleJsonWebSignature.Payload payload;
+
+            try
+            {
+                payload = await GoogleJsonWebSignature.ValidateAsync(model.TokenID, settings);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Token Validation Error: {ex.Message}");
+                return Unauthorized(new { message = "Invalid Token" });
+            }
+
+            var user = await userManager.FindByEmailAsync(payload.Email);
+
+            if (user == null)
+            {
+                ApplicationUser newUser = new()
+                {
+                    Email = payload.Email,
+                    UserName = payload.Email
+                };
+
+                var result = await userManager.CreateAsync(newUser);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new { message = "Failed to create user" });
+                }
+
+                user = await userManager.FindByEmailAsync(payload.Email); // تأكيد استرجاع المستخدم
+            }
+
+            var token = GenerateJwtToken(user);
+
+            return Ok(new { token });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Refreshtoken ()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return Unauthorized(new { message = "Refresh Token Not Found" });
+            }
+            var user = userManager.Users.FirstOrDefault(u => u.REFTokens.Any(t => t.RefreshToken == refreshToken));
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Invalid Refresh Token" });
+            }
+            var token = GenerateJwtToken(user);
+            var Refrechtoken = GenerateRefreshToken();
+            user.REFTokens.Add(new RefreshTokens { CreatedDate = DateTime.UtcNow, ExpiredDate = DateTime.UtcNow.AddDays(15), RefreshToken = Refrechtoken });
+            await userManager.UpdateAsync(user);
+            SetRefreshTokenCookie(Refrechtoken);
+            return Ok(new { token });
+        }
+
+        private string GenerateJwtToken ( ApplicationUser user )
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSecret")));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -139,19 +232,39 @@ namespace Tripix.Controllers
             {
             new Claim(JwtRegisteredClaimNames.Sub, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) ,
+            new Claim(ClaimTypes.Name, user.UserName),
             }.ToList();
 
-            var exp = RememberMe ? DateTime.UtcNow.AddDays(15) : DateTime.UtcNow.AddHours(1);
+            var exp = DateTime.UtcNow.AddHours(1);
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = new JwtSecurityToken(
                 claims: claims,
                 expires: exp,
-                signingCredentials: creds);
+                signingCredentials: creds
+                );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private string GenerateRefreshToken ()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
+        // دالة لتخزين Refresh Token في كوكي
+        private void SetRefreshTokenCookie ( string refreshToken )
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,   // منع الوصول من JavaScript
+                Secure = true,     // إرسال الكوكي فقط عبر HTTPS
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(15)
+            };
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
     }
 }

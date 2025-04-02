@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System.Text.Json;
+using Tripix.View_Models;
 
 namespace Tripix.Controllers
 {
@@ -19,6 +20,14 @@ namespace Tripix.Controllers
             new QuestionAnswer { Question = "هل توفرون خدمة إصلاح السيارات؟", Answer = "نعم، نوفر خدمات إصلاح السيارات ضمن خدماتنا." },
             new QuestionAnswer { Question = "كيف أحصل على دعم فني؟", Answer = "يمكنك التواصل مع خدمة العملاء عبر البريد الإلكتروني أو الهاتف." }
         };
+
+
+        [HttpGet("GetQuestions")]
+        public IActionResult GetQuestions ()
+        {
+            var list = new List<string>() { "Amr", "Ali", "Ahmed" };
+            return Ok(list);
+        }
 
         [HttpPost("ask")]
         public async Task<IActionResult> AskChatbot ( [FromBody] ChatRequest request )
@@ -149,16 +158,5 @@ namespace Tripix.Controllers
                 return "عذرًا، حدث خطأ أثناء محاولة توليد الإجابة.";
             }
         }
-    }
-
-    public class ChatRequest
-    {
-        public string Message { get; set; }
-    }
-
-    public class QuestionAnswer
-    {
-        public string Question { get; set; }
-        public string Answer { get; set; }
     }
 }

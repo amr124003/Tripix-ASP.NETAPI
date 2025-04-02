@@ -9,6 +9,10 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\Pu
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Azure.Security.KeyVault.Certificates.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Azure.Security.KeyVault.Secrets.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\DotNetEnv.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Google.Apis.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Google.Apis.Auth.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Google.Apis.Core.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.AspNetCore.Authentication.Google.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -59,12 +63,14 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\Pu
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.ClientModel.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.CodeDom.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Configuration.ConfigurationManager.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Diagnostics.DiagnosticSource.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Drawing.Common.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Formats.Asn1.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.IO.Pipelines.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Management.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Memory.Data.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Runtime.Caching.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll

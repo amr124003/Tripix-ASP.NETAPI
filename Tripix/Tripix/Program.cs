@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using Tripix.Context;
+using Tripix.Entities;
 using Tripix.SEEDING;
 using Tripix.Services;
 
@@ -38,7 +40,7 @@ builder.Services.AddDbContext<ApplicationDbcontext>(options =>
 
 
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
@@ -50,26 +52,66 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 var JwtSecret = Environment.GetEnvironmentVariable("JWTSecret");
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
+
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSecret)),
-            ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = "SecureAPI",
+            ValidAudience = "Securezzz",
+            ClockSkew = TimeSpan.Zero
         };
+    }).AddGoogle(options =>
+    {
+        options.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
+        options.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
     });
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 
 
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -80,9 +122,27 @@ await SeedSuperAdmin.InitializeAsync(scope.ServiceProvider);
 
 app.UseCors("AllowAngularApp");
 app.UseHttpsRedirection();
-app.UseAuthorization();
+
+
+app.Use(async ( context, next ) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception: {ex.Message}");
+        throw;
+    }
+});
+
+app.UseRouting();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
+
+
 
 
 if (app.Environment.IsDevelopment())

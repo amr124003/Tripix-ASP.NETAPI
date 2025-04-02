@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Identity;
+using Tripix.Entities;
 
 namespace Tripix.SEEDING
 {
@@ -7,7 +8,7 @@ namespace Tripix.SEEDING
     {
         public static async Task InitializeAsync ( IServiceProvider serviceProvider )
         {
-            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string superAdminEmail = Environment.GetEnvironmentVariable("superAdminEmail");
@@ -27,7 +28,7 @@ namespace Tripix.SEEDING
 
             if (SuperAdmin == null)
             {
-                SuperAdmin = new IdentityUser
+                SuperAdmin = new ApplicationUser
                 {
                     UserName = "SuperAdminv911",
                     Email = superAdminEmail,

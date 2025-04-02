@@ -183,3 +183,8 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\Tr
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\Tripix.genruntimeconfig.cache
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\win-x86\ref\Tripix.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\win-x86\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\win-x86\Google.Apis.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\win-x86\Google.Apis.Auth.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\win-x86\Google.Apis.Core.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\win-x86\Microsoft.AspNetCore.Authentication.Google.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\win-x86\System.Management.dll
