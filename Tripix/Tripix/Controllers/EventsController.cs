@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Tripix.View_Models;
 
 namespace Tripix.Controllers
 {
@@ -6,27 +7,33 @@ namespace Tripix.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
+        [HttpGet("Events")]
         public IActionResult GetEvents ()
         {
             return Ok("Events");
         }
+        [HttpGet("Event")]
         public IActionResult GetEvent ()
         {
             return Ok("Event");
         }
-        public IActionResult AddEvent ()
+        [HttpPost("AddEvent")]
+        public IActionResult AddEvent ( AddEventDTO model )
         {
             return Ok("Event added");
         }
-        public IActionResult UpdateEvent ()
+        [HttpPut("UpdateEvent/{Id}")]
+        public IActionResult UpdateEvent ( int Id )
         {
             return Ok("Event updated");
         }
-        public IActionResult DeleteEvent ()
+        [HttpDelete("DeleteEvent")]
+        public IActionResult DeleteEvent ( int Id )
         {
             return Ok("Event deleted");
         }
-        public IActionResult BookEvent ()
+        [HttpPost("BookingTicket")]
+        public IActionResult BookingEventTicket ( BookingEventDTO model )
         {
             return Ok("Event booked");
         }

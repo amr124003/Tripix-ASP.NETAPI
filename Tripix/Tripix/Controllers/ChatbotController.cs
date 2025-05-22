@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System.Text.Json;
+using Tripix.Context;
+using Tripix.Entities;
 using Tripix.View_Models;
 
 namespace Tripix.Controllers
@@ -12,26 +14,21 @@ namespace Tripix.Controllers
     {
         private readonly string mistralApiKey = Environment.GetEnvironmentVariable("mistralApiKey");
         private readonly string cohereApiKey = Environment.GetEnvironmentVariable("cohereApiKey");
+        private readonly ApplicationDbcontext context;
 
-        private static readonly List<QuestionAnswer> QAList = new()
+        private List<Question> questions = new();
+
+        public ChatbotController ( ApplicationDbcontext context )
         {
-            new QuestionAnswer { Question = "ما هو Tripix؟", Answer = "Tripix هو منصة متكاملة لكل ما يخص السيارات." },
-            new QuestionAnswer { Question = "كيف يمكنني استئجار سيارة؟", Answer = "يمكنك استئجار سيارة عبر تطبيقنا من خلال قسم تأجير السيارات." },
-            new QuestionAnswer { Question = "هل توفرون خدمة إصلاح السيارات؟", Answer = "نعم، نوفر خدمات إصلاح السيارات ضمن خدماتنا." },
-            new QuestionAnswer { Question = "كيف أحصل على دعم فني؟", Answer = "يمكنك التواصل مع خدمة العملاء عبر البريد الإلكتروني أو الهاتف." }
-        };
+            this.context = context;
+            questions = context.Questions.ToList();
 
-
-        [HttpGet("GetQuestions")]
-        public IActionResult GetQuestions ()
-        {
-            var list = new List<string>() { "Amr", "Ali", "Ahmed" };
-            return Ok(list);
         }
 
         [HttpPost("ask")]
         public async Task<IActionResult> AskChatbot ( [FromBody] ChatRequest request )
         {
+
             if (string.IsNullOrWhiteSpace(request.Message))
             {
                 return BadRequest("السؤال لا يمكن أن يكون فارغًا.");
@@ -47,18 +44,53 @@ namespace Tripix.Controllers
             return Ok(new { reply = generatedResponse });
         }
 
+        [HttpPost]
+        public IActionResult AddQuestion ( string ques, string res )
+        {
+            var question = new Question
+            {
+                question = ques,
+                Response = res
+            };
+            context.Add(question);
+            context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllQuestions ()
+        {
+            return Ok(context.Questions.ToList());
+        }
+
         private async Task<QuestionAnswer> FindBestMatchingQuestion ( string userQuestion )
         {
+            // أولاً: تحقق من التطابق التام (حساسية المسافات والأحرف)
+            var exactMatch = questions.FirstOrDefault(q =>
+                q.question.Trim().Equals(userQuestion.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (exactMatch != null)
+            {
+                return new QuestionAnswer
+                {
+                    Question = exactMatch.question,
+                    Answer = exactMatch.Response
+                };
+            }
             var client = new RestClient("https://api.cohere.ai/v1/embed");
             var restRequest = new RestRequest();
             restRequest.Method = Method.Post;
             restRequest.AddHeader("Authorization", $"Bearer {cohereApiKey}");
             restRequest.AddHeader("Content-Type", "application/json");
 
+            // استخدم فقط الأسئلة من القاعدة المعرفية (بدون إضافة userQuestion)
+            var rquestions = questions.Select(q => q.question).ToArray();
+
             var requestBody = new
             {
-                texts = QAList.Select(q => q.Question).Append(userQuestion).ToArray(),
-                model = "embed-english-v2.0"
+                texts = rquestions.Append(userQuestion).ToArray(), // أضف userQuestion في النهاية
+                model = "embed-multilingual-v2.0"
             };
 
             restRequest.AddJsonBody(requestBody);
@@ -77,20 +109,30 @@ namespace Tripix.Controllers
                 return null;
             }
 
+            // آخر عنصر في embeddings هو userQuestion
             var userEmbedding = embeddings.Last().EnumerateArray().Select(e => e.GetDouble()).ToArray();
-            embeddings.RemoveAt(embeddings.Count - 1);
+
+            // باقي العناصر هي الأسئلة من القاعدة المعرفية
+            var questionEmbeddings = embeddings.Take(embeddings.Count - 1).ToList();
 
             double maxSimilarity = 0.0;
             QuestionAnswer bestMatch = null;
 
-            for (int i = 0; i < QAList.Count; i++)
+            for (int i = 0; i < questions.Count; i++)
             {
-                double similarity = CosineSimilarity(userEmbedding, embeddings[i].EnumerateArray().Select(e => e.GetDouble()).ToArray());
+                double similarity = CosineSimilarity(
+                    userEmbedding,
+                    questionEmbeddings[i].EnumerateArray().Select(e => e.GetDouble()).ToArray()
+                );
 
-                if (similarity > maxSimilarity && similarity > 0.85) // رفع الحد الأدنى للتشابه
+                if (similarity > maxSimilarity && similarity > 0.85)
                 {
                     maxSimilarity = similarity;
-                    bestMatch = QAList[i];
+                    bestMatch = new QuestionAnswer
+                    {
+                        Question = questions[i].question,
+                        Answer = questions[i].Response
+                    };
                 }
             }
 

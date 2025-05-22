@@ -62,7 +62,6 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.IdentityModel.Validators.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.OpenApi.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.SqlServer.Server.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.Win32.SystemEvents.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Mono.TextTemplating.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Newtonsoft.Json.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\RestSharp.dll
@@ -79,7 +78,6 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Com
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Composition.TypedParts.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Configuration.ConfigurationManager.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Diagnostics.DiagnosticSource.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Drawing.Common.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Formats.Asn1.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.IdentityModel.Tokens.Jwt.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.IO.Pipelines.dll
@@ -87,10 +85,8 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Mem
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Runtime.Caching.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Security.Cryptography.ProtectedData.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Security.Cryptography.Xml.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Security.Permissions.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Text.Encodings.Web.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Text.Json.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Windows.Extensions.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -163,9 +159,7 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\w
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\Tripix.csproj.AssemblyReference.cache
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\Tripix.GeneratedMSBuildEditorConfig.editorconfig
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\Tripix.AssemblyInfoInputs.cache
@@ -191,9 +185,6 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\Tripix.pdb
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\Tripix.genruntimeconfig.cache
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\ref\Tripix.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Release\net8.0\staticwebassets.upToDateCheck.txt
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Google.Apis.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Google.Apis.Auth.dll
@@ -201,3 +192,19 @@ F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Google.Api
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.AspNetCore.Authentication.Google.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Management.dll
 F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\selenium-manager\linux\selenium-manager
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\selenium-manager\macos\selenium-manager
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\selenium-manager\windows\selenium-manager.exe
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Tripix.staticwebassets.runtime.json
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\HtmlAgilityPack.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\WebDriver.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\client_secret_1043954645475-ttj40k68djo4p8k988k58nt0dq0andog.apps.googleusercontent.com.json
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\BouncyCastle.Cryptography.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Google.Apis.Gmail.v1.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\MimeKit.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\Stripe.net.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\System.Security.Cryptography.Pkcs.dll
+F:\Gaduation Project\Website\Backend\Tripix\Tripix\bin\Release\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

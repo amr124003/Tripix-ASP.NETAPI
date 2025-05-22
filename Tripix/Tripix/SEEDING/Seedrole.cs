@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Tripix.SEEDING
 {
@@ -8,17 +8,31 @@ namespace Tripix.SEEDING
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string[] roleNames = { "User", "Admin", "SuperAdmin", "Driver" };
+            var rolesWithStamps = new Dictionary<string, string>
+               {
+                   { "User", Guid.NewGuid().ToString() },
+                   { "Admin", Guid.NewGuid().ToString() },
+                   { "SuperAdmin", Guid.NewGuid().ToString() },
+                   { "Driver", Guid.NewGuid().ToString() },
+               };
 
-            foreach (var roleName in roleNames)
+            foreach (var kvp in rolesWithStamps)
             {
+                var roleName = kvp.Key;
+                var stamp = kvp.Value;
+
                 if (!await roleManager.RoleExistsAsync(roleName))
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                    var role = new IdentityRole
+                    {
+                        Name = roleName,
+                        NormalizedName = roleName.ToUpper(),
+                        ConcurrencyStamp = stamp
+                    };
+
+                    await roleManager.CreateAsync(role);
                 }
             }
         }
-
-
     }
 }

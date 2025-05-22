@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tripix.Controllers
 {
@@ -6,18 +6,22 @@ namespace Tripix.Controllers
     [ApiController]
     public class NotificationController : ControllerBase
     {
+        [HttpGet("Notifications")]
         public IActionResult GetNotifications ()
         {
             return Ok("Notifications");
         }
+        [HttpGet("Notification")]
         public IActionResult GetNotification ()
         {
             return Ok("Messages");
         }
+        [HttpGet("Alerts")]
         public IActionResult GetAlerts ()
         {
             return Ok("Alerts");
         }
+        [HttpGet("DisplayAD")]
         public IActionResult GetAD ()
         {
             return Ok("AD");

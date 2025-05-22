@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Tripix.Abstractions;
+using Tripix.Services.Interfaces;
+using Tripix.View_Models;
 
 namespace Tripix.Controllers
 {
@@ -6,29 +9,46 @@ namespace Tripix.Controllers
     [ApiController]
     public class BlogsController : ControllerBase
     {
-        public IActionResult GetBlogs ()
+        private readonly IUnitOfWork unitofwork;
+
+        public BlogsController ( IUnitOfWork unitofwork )
         {
-            return Ok("Blogs");
+            this.unitofwork = unitofwork;
         }
-        public IActionResult GetBlog ()
+        [HttpGet("Blogs")]
+        public async Task<IActionResult> GetBlogs ()
         {
-            return Ok("Blog");
+            var res = await unitofwork.BlogService.GetBlogListAsync();
+
+            return Ok(res);
         }
-        public IActionResult AddBlog ()
+        [HttpGet("Blog")]
+        public async Task<IActionResult> GetBlog ( int Id )
         {
-            return Ok("Blog added");
+            var res = await unitofwork.BlogService.GetBlogAsync(Id);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult UpdateBlog ()
+        [HttpPost("AddBlog")]
+        public async Task<IActionResult> AddBlog ( BlogDTO model )
         {
-            return Ok("Blog updated");
+            var res = await unitofwork.BlogService.AddBlogAsync(model);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
-        public IActionResult DeleteBlog ()
+        [HttpPut("UpdateBlog")]
+        public async Task<IActionResult> UpdateBlog ( int Id, UpdateBlogDto model )
         {
-            return Ok("Blog deleted");
+            var res = await unitofwork.BlogService.UpdateBlogAsync(model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult LikeBlog ()
+        [HttpDelete("DeleteBlog")]
+        public async Task<IActionResult> DeleteBlog ( int Id )
         {
-            return Ok("Blog liked");
+            var res = await unitofwork.BlogService.DeleteBlog(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
     }
 }

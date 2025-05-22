@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Tripix.View_Models;
+
 
 namespace Tripix.Controllers
 {
@@ -6,71 +8,63 @@ namespace Tripix.Controllers
     [ApiController]
     public class HelpooController : ControllerBase
     {
-        public IActionResult AddHelpoo ()
-        {
-            return Ok("Helpoo added");
-        }
-        public IActionResult UpdateHelpoo ()
-        {
-            return Ok("Helpoo updated");
-        }
-        public IActionResult DeleteHelpoo ()
-        {
-            return Ok("Helpoo deleted");
-        }
-        public IActionResult LikeHelpoo ()
-        {
-            return Ok("Helpoo liked");
-        }
+        [HttpGet("HelpooComments")]
         public IActionResult GetHelpooComments ()
         {
             return Ok("Helpoo comments");
         }
-        public IActionResult GetHelpooComment ()
-        {
-            return Ok("Helpoo comment");
-        }
-        public IActionResult AddHelpooComment ()
+        [HttpPost("AddHelpooComment")]
+        public IActionResult AddHelpooComment (AddCommentDTO model)
         {
             return Ok("Helpoo comment added");
         }
-        public IActionResult UpdateHelpooComment ()
+        [HttpPut("UpdateComment")]
+        public IActionResult UpdateHelpooComment (int Id)
         {
             return Ok("Helpoo comment updated");
         }
-        public IActionResult DeleteHelpooComment ()
+        [HttpDelete("DeleteComment")]
+        public IActionResult DeleteHelpooComment (int Id)
         {
             return Ok("Helpoo comment deleted");
         }
-        public IActionResult LikeHelpooComment ()
+        [HttpPost("LikeComment")]
+        public IActionResult LikeHelpooComment (int Id)
         {
             return Ok("Helpoo comment liked");
         }
-        public IActionResult BookTurn ()
+        [HttpPost("DisLikeComment")]
+        public IActionResult DislikeHelpooComment ( int Id )
+        {
+            return Ok("Helpoo comment Disliked");
+        }
+        [HttpPost("OrderHelpoo")]
+        public IActionResult OrderHelpoo (OrderHelpooDTO model)
         {
             return Ok("Turn booked");
         }
-        public IActionResult GetTurnDetails ()
+        [HttpGet("OrderDetails")]
+        public IActionResult GetOrderDetails (int Id)
         {
             return Ok("Turn");
         }
-        public IActionResult UpdateTurn ()
+        [HttpPut("UpdateOrder")]
+        public IActionResult UpdateTurn (int Id)
         {
             return Ok("Turn updated");
         }
-        public IActionResult DeleteTurn ()
+        [HttpDelete("CancelOrder")]
+        public IActionResult DeleteTurn (int Id)
         {
             return Ok("Turn deleted");
         }
-        public IActionResult GetTurns ()
+        [HttpGet("HelpooOrders")]
+        public IActionResult GetOrders ()
         {
             return Ok("Turns");
         }
-        public IActionResult GetTurn ()
-        {
-            return Ok("Turn");
-        }
-        public IActionResult Cancelturn ()
+        [HttpPost("CencelOrder")]
+        public IActionResult Cancelturn (int Id)
         {
             return Ok("Turn canceled");
         }

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tripix.View_Models
 {
@@ -10,7 +10,7 @@ namespace Tripix.View_Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Role Is Required")]
-        [AllowedValues("User", "Admin", "SuperAdmin", ErrorMessage = "This Role Can't Be Added")]
+        [AllowedValues("User", "Admin", "SuperAdmin","Driver" , ErrorMessage = "This Role Can't Be Added")]
         public string Role { get; set; }
     }
 }

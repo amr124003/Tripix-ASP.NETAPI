@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Tripix.Abstractions;
+using Tripix.Contracts.Car;
+using Tripix.Contracts.Common;
+using Tripix.Services.Interfaces;
 
 namespace Tripix.Controllers
 {
@@ -6,45 +13,69 @@ namespace Tripix.Controllers
     [ApiController]
     public class CarsController : ControllerBase
     {
-        public IActionResult GetSedanCars ()
+        private readonly ICarRepo carRepo;
+
+        public CarsController ( ICarRepo CarRepo )
         {
-            return Ok("Sedan cars");
+            carRepo = CarRepo;
         }
-        public IActionResult GetHatchbackCars ()
+        [HttpPost("GetCars")]
+        public async Task<IActionResult> GetCars ( RequestFilter model )
         {
-            return Ok("Hatchback cars");
+            var res = await carRepo.GetCars(model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult GetSUVCars ()
+        [HttpPost("AddCar")]
+        public async Task<IActionResult> AddNewCar ( CarDTO model )
         {
-            return Ok("SUV cars");
+            var res = await carRepo.AddCar(model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult GetCoupeCars ()
+        [HttpPut("UpdateNewCar")]
+        public async Task<IActionResult> UpdateCar ( int Id, CarDTO model )
         {
-            return Ok("Coupe cars");
+            var res = await carRepo.UpdateCar(Id, model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult AddCar ()
+        [HttpDelete("DeleteNewCar")]
+        public async Task<IActionResult> DeleteCar ( int Id )
         {
-            return Ok("Car added");
+            var res = await carRepo.DeleteCar(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
-        public IActionResult UpdateCar ()
+        [HttpPost("BookCar")]
+        [Authorize]
+        public async Task<IActionResult> BookingCar ( BookCarDto model )
         {
-            return Ok("Car updated");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var res = await carRepo.BookingCar(UserId, model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult DeleteCar ()
-        {
-            return Ok("Car deleted");
-        }
-        public IActionResult BookCar ()
-        {
-            return Ok("Car booked");
-        }
+        [HttpPost("SellCar")]
         public IActionResult Sellcar ()
         {
             return Ok("Car sold");
         }
-        public IActionResult LikeCar ()
+        [HttpPost("LikeCar")]
+        [Authorize]
+        public async Task<IActionResult> LikeCar ( LikeCarDTO model )
         {
-            return Ok("Car Loved");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var res = await carRepo.LikeCar(UserId, model);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
+        }
+        [HttpGet("GetPrands")]
+        public async Task<IActionResult> Getbrands()
+        {
+            var res = await carRepo.GetBrands();
+
+            return Ok(res);
         }
     }
 }

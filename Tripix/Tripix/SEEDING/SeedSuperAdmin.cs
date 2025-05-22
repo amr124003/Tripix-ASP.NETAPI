@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 using Microsoft.AspNetCore.Identity;
 using Tripix.Entities;
 
@@ -32,6 +32,7 @@ namespace Tripix.SEEDING
                 {
                     UserName = "SuperAdminv911",
                     Email = superAdminEmail,
+                    PhoneNumber = "01020652199",
                     EmailConfirmed = true
                 };
 
@@ -48,6 +49,9 @@ namespace Tripix.SEEDING
                 }
 
             }
+
+
+
         }
     }
 }

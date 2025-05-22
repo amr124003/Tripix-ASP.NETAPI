@@ -58,6 +58,14 @@
               "target": "Package",
               "version": "[1.69.0, )"
             },
+            "Google.Apis.Gmail.v1": {
+              "target": "Package",
+              "version": "[1.68.0.3427, )"
+            },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.12.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.Google": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -80,6 +88,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.AspNetCore.SignalR.Client": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -98,6 +110,10 @@
               "target": "Package",
               "version": "[3.2.0, )"
             },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.11.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
@@ -105,6 +121,18 @@
             "RestSharp": {
               "target": "Package",
               "version": "[112.1.0, )"
+            },
+            "Selenium.WebDriver": {
+              "target": "Package",
+              "version": "[4.30.0, )"
+            },
+            "Selenium.WebDriver.ChromeDriver": {
+              "target": "Package",
+              "version": "[136.0.7103.1700-beta, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[48.1.0-beta.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

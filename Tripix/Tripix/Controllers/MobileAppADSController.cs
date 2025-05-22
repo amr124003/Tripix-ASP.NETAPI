@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tripix.Controllers
 {
@@ -6,6 +6,7 @@ namespace Tripix.Controllers
     [ApiController]
     public class MobileAppADSController : ControllerBase
     {
+        [HttpGet("DownLoadApp")]
         public IActionResult DowloadMobileApp ()
         {
             return Ok("Mobile app downloaded");

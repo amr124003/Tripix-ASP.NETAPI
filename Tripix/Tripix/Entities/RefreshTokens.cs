@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tripix.Entities
 {
@@ -9,8 +9,9 @@ namespace Tripix.Entities
         public string RefreshToken { get; set; }
         public DateTime ExpiredDate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime RevokeTime { get; set; }
-        public bool IsActive => RevokeTime == null && DateTime.UtcNow <= ExpiredDate;
+        public DateTime? RevokeTime { get; set; }
+        public bool IsExpired => DateTime.UtcNow >= ExpiredDate;
+        public bool IsActive => RevokeTime is null && !IsExpired;
 
     }
 }

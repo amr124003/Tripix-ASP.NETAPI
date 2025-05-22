@@ -1,4 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Stripe.Events;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Tripix.Abstractions;
+using Tripix.Contracts.CarRepair;
+using Tripix.Services.Interfaces;
+using Tripix.Services.Repositories;
+using Tripix.View_Models;
 
 namespace Tripix.Controllers
 {
@@ -6,29 +15,43 @@ namespace Tripix.Controllers
     [ApiController]
     public class CarRepairController : ControllerBase
     {
-        public IActionResult GetRepairs ()
+        private readonly IUnitOfWork unitofwork;
+
+        public CarRepairController (IUnitOfWork unitofwork)
         {
-            return Ok("Repairs");
+            this.unitofwork = unitofwork;
         }
-        public IActionResult GetRepair ()
+        [HttpPost("BookRepairTurn")]
+        [Authorize]
+        public async Task<IActionResult> BookRepair ( BookingTurnDTO model )
         {
-            return Ok("Repair");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitofwork.RepairService.BookingTurn(UserId, model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        public IActionResult AddRepair ()
+
+        [HttpPut("UpdateRepairTurn")]
+        public async Task<IActionResult> UpdateTurn ( UpdateTurnDTO model )
         {
-            return Ok("Repair added");
+            var res = await unitofwork.RepairService.UpdateTurn(model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem(); 
         }
-        public IActionResult UpdateRepair ()
+        [HttpDelete("DeleteRepairTurn")]
+        public async Task<IActionResult> DeleteTurn ( int Id )
         {
-            return Ok("Repair updated");
+            var res = await unitofwork.RepairService.DeleteTurn(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();   
         }
-        public IActionResult DeleteRepair ()
+        [HttpGet("Get-Repairs")]
+        public async Task<IActionResult> GetRepairs()
         {
-            return Ok("Repair deleted");
-        }
-        public IActionResult BookRepair ()
-        {
-            return Ok("Repair booked");
+            var res = await unitofwork.RepairService.GetRepairBookings();
+
+            return Ok(res);
         }
     }
 }

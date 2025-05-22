@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tripix.View_Models
 {
@@ -14,6 +14,9 @@ namespace Tripix.View_Models
         [EmailAddress(ErrorMessage = "Invalid Email")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
 
         [Required(ErrorMessage = "Password Is Required")]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]

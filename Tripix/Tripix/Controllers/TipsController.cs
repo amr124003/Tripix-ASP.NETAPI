@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Tripix.View_Models;
 
 namespace Tripix.Controllers
 {
@@ -6,27 +7,33 @@ namespace Tripix.Controllers
     [ApiController]
     public class TipsController : ControllerBase
     {
+        [HttpGet("Tips")]
         public IActionResult GetTips ()
         {
             return Ok("Tips");
         }
+        [HttpGet("Tip")]
         public IActionResult GetTip ()
         {
             return Ok("Tip");
         }
-        public IActionResult AddTip ()
+        [HttpPost("AddTip")]
+        public IActionResult AddTip (AddTipDTO model)
         {
             return Ok("Tip added");
         }
-        public IActionResult UpdateTip ()
+        [HttpPut("UpdateTip")]
+        public IActionResult UpdateTip (int Id)
         {
             return Ok("Tip updated");
         }
-        public IActionResult DeleteTip ()
+        [HttpDelete("DeleteTip")]
+        public IActionResult DeleteTip (int Id)
         {
             return Ok("Tip deleted");
         }
-        public IActionResult LikeTip ()
+        [HttpPost("LikeTip")]
+        public IActionResult LikeTip (int id)
         {
             return Ok("Tip liked");
         }
