@@ -14,7 +14,6 @@ using Tripix.Contracts.Authentication;
 using Tripix.Entities;
 using Tripix.Hubs;
 using Tripix.SEEDING;
-using Tripix.Services;
 using Tripix.Services.Interfaces;
 using Tripix.Services.Repositories;
 
@@ -35,17 +34,10 @@ var mapConfig = TypeAdapterConfig.GlobalSettings;
 mapConfig.Scan(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<IMapper>(new Mapper(mapConfig));
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITripRepo, TripRepo>();
-builder.Services.AddScoped<IDriverRepo, DriverRepo>();
-builder.Services.AddScoped<IJwtProvider, JwtPorvider>();
-builder.Services.AddScoped<IUserRepo, UserRepo>();
-builder.Services.AddScoped<IAdminRepo, AdminRepo>();
-builder.Services.AddScoped<IBlog, BlogRepo>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ICarRepo, CarRepo>();
-builder.Services.AddScoped<IRent, RentRepo>();
-builder.Services.AddScoped<IRepair, RepairService>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
 
 builder.Services.AddSingleton<PaymobService>(new PaymobService(
     builder.Configuration["Paymob:ApiKey"],
@@ -179,6 +171,11 @@ app.MapHub<RideHub>("/trip");
 app.UseCors("AllowAngularApp");
 app.UseHttpsRedirection();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.Use(async ( context, next ) =>
 {
@@ -204,11 +201,6 @@ app.MapControllers();
 
 
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseEndpoints(endpoints =>
 {

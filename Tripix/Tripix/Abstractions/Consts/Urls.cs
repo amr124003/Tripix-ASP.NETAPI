@@ -15,5 +15,7 @@ namespace Tripix.Abstractions.Consts
         public static readonly string CriminalRecord = $"{BaseUrl}CriminalRecord/";
         public static readonly string DriverCarImages = $"{BaseUrl}DriverCar/";
         public static readonly string DriverImages = $"{BaseUrl}DriverImage/";
+        public static readonly string MotorbikeImageURL = $"{BaseUrl}Motorbikes/";
+        public static readonly string ElectricCarImageURL = $"{BaseUrl}ElectricCars/";
     }
 }

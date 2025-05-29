@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using Tripix.Abstractions;
 using Tripix.Abstractions.Consts;
@@ -11,6 +15,7 @@ using Tripix.Contracts.Driver;
 using Tripix.Contracts.Trip;
 using Tripix.Entities;
 using Tripix.Errors;
+using Tripix.Extentions;
 using Tripix.Hubs;
 using Tripix.View_Models;
 
@@ -22,13 +27,15 @@ namespace Tripix.Services.Repositories
         private readonly UserManager<ApplicationUser> usermanger;
         private readonly IJwtProvider jwtProvider;
         private readonly IHubContext<UserHub> hubcontext;
+        private readonly IDistributedCache cache;
 
-        public DriverRepo ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, IJwtProvider jwtProvider, IHubContext<UserHub> hubcontext )
+        public DriverRepo ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, IJwtProvider jwtProvider, IHubContext<UserHub> hubcontext, IDistributedCache cache )
         {
             this.context = context;
             this.usermanger = usermanger;
             this.jwtProvider = jwtProvider;
             this.hubcontext = hubcontext;
+            this.cache = cache;
         }
 
         public async Task<bool> SetTripAsAvailable ( Trip newtrip, Driver driver )
@@ -83,9 +90,6 @@ namespace Tripix.Services.Repositories
                 .Where(x => x.Location != null && Getdistance(x.Location.Latitude, x.Location.Longitude, model.Latitude, model.Longitude) <= MaxDistance)
                 .ToList();
 
-
-
-
             return nearsetDrivers;
         }
 
@@ -128,7 +132,6 @@ namespace Tripix.Services.Repositories
         public async Task<bool> UpdateDriverLocationAsync ( string Id, DriverLocation model )
         {
             if (model == null) { return false; }
-
 
             var driver = await usermanger.FindByIdAsync(Id);
 
@@ -337,6 +340,65 @@ namespace Tripix.Services.Repositories
                 return Result.Failure(DriverErrors.DriverAddedError);
             }
 
+            var fromEmail = Environment.GetEnvironmentVariable("superAdminEmail");
+            var fromPassword = Environment.GetEnvironmentVariable("SMTPPassword");
+
+            if (!model.Email.IsValidEmail())
+            {
+                return Result.Failure(UserErrors.InvalidOTP);
+            }
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(fromEmail, fromPassword),
+                EnableSsl = true,
+            };
+
+            string subject = "🔐 Your Tripix OTP Code";
+
+            var otp = GenerateOtp();
+
+
+
+
+            string templatepath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Driver_Email_OTP.html");
+            string template = System.IO.File.ReadAllText(templatepath);
+            string body = template.Replace("{{otp}}", otp);
+
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(fromEmail, "Tripix Support"),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true,
+            };
+
+            mailMessage.ReplyToList.Add(new MailAddress(fromEmail));
+            mailMessage.Headers.Add("X-Priority", "1");
+            mailMessage.Headers.Add("X-MSMail-Priority", "High");
+            mailMessage.Headers.Add("Importance", "High");
+            mailMessage.To.Add(model.Email);
+            await smtpClient.SendMailAsync(mailMessage);
+
+            var otpObject = new OTPObject
+            {
+                OTP = otp
+            };
+            var CacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(DateTime.Now.AddDays(1).Subtract(DateTime.Now).TotalSeconds),
+                SlidingExpiration = null
+            };
+
+            var jsonData = JsonConvert.SerializeObject(otpObject);
+            await cache.SetStringAsync($"OTP{newdriver.Name}", jsonData, CacheOptions);
+
+
+
+
+
             await usermanger.AddToRoleAsync(newdriver, "Driver");
             var refreshToken = GenerateRefreshToken();
 
@@ -361,6 +423,8 @@ namespace Tripix.Services.Repositories
             return Result.Success();
         }
 
+
+
         private RefreshTokens GenerateRefreshToken ()
         {
             return new RefreshTokens
@@ -371,5 +435,13 @@ namespace Tripix.Services.Repositories
             };
 
         }
+        private string GenerateOtp ( int length = 4 )
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
     }
 }

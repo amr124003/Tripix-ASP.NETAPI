@@ -17,6 +17,10 @@ namespace Tripix.Extentions
             var propertyValue = "";
             var Operation = "equal";
 
+            if(filters == null) { return  Query; }
+
+            
+
             foreach (var filter in filters)
             {
                 propertyName = filter.Key;

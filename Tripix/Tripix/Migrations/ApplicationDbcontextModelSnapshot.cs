@@ -346,6 +346,9 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("VehicleType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
@@ -356,371 +359,656 @@ namespace Tripix.Migrations
                             Id = 1,
                             Expand = false,
                             Name = "Toyota",
-                            NameAR = "تويوتا"
+                            NameAR = "تويوتا",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 2,
                             Expand = false,
                             Name = "Hyundai",
-                            NameAR = "هيونداي"
+                            NameAR = "هيونداي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 3,
                             Expand = false,
                             Name = "Nissan",
-                            NameAR = "نيسان"
+                            NameAR = "نيسان",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 4,
                             Expand = false,
                             Name = "Kia",
-                            NameAR = "كيا"
+                            NameAR = "كيا",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 5,
                             Expand = false,
                             Name = "Chevrolet",
-                            NameAR = "شيفروليه"
+                            NameAR = "شيفروليه",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 6,
                             Expand = false,
                             Name = "Mercedes",
-                            NameAR = "مرسيدس"
+                            NameAR = "مرسيدس",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 7,
                             Expand = false,
                             Name = "BMW",
-                            NameAR = "بي إم دبليو"
+                            NameAR = "بي إم دبليو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 8,
                             Expand = false,
                             Name = "Honda",
-                            NameAR = "هوندا"
+                            NameAR = "هوندا",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 9,
                             Expand = false,
                             Name = "Ford",
-                            NameAR = "فورد"
+                            NameAR = "فورد",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 10,
                             Expand = false,
                             Name = "Jeep",
-                            NameAR = "جيب"
+                            NameAR = "جيب",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 11,
                             Expand = false,
                             Name = "Audi",
-                            NameAR = "أودي"
+                            NameAR = "أودي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 12,
                             Expand = false,
                             Name = "Mazda",
-                            NameAR = "مازدا"
+                            NameAR = "مازدا",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 13,
                             Expand = false,
                             Name = "Land Rover",
-                            NameAR = "لاند روفر"
+                            NameAR = "لاند روفر",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 14,
                             Expand = false,
                             Name = "Porsche",
-                            NameAR = "بورش"
+                            NameAR = "بورش",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 15,
                             Expand = false,
                             Name = "Lexus",
-                            NameAR = "لكزس"
+                            NameAR = "لكزس",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 16,
                             Expand = false,
                             Name = "Jaguar",
-                            NameAR = "جاكوار"
+                            NameAR = "جاكوار",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 17,
                             Expand = false,
                             Name = "Volvo",
-                            NameAR = "فولفو"
+                            NameAR = "فولفو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 18,
                             Expand = false,
                             Name = "Mitsubishi",
-                            NameAR = "ميتسوبيشي"
+                            NameAR = "ميتسوبيشي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 19,
                             Expand = false,
                             Name = "Subaru",
-                            NameAR = "سوبارو"
+                            NameAR = "سوبارو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 20,
                             Expand = false,
                             Name = "Peugeot",
-                            NameAR = "بيجو"
+                            NameAR = "بيجو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 21,
                             Expand = false,
                             Name = "Renault",
-                            NameAR = "رينو"
+                            NameAR = "رينو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 22,
                             Expand = false,
                             Name = "Fiat",
-                            NameAR = "فيات"
+                            NameAR = "فيات",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 23,
                             Expand = false,
                             Name = "Opel",
-                            NameAR = "أوبل"
+                            NameAR = "أوبل",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 24,
                             Expand = false,
                             Name = "Suzuki",
-                            NameAR = "سوزوكي"
+                            NameAR = "سوزوكي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 25,
                             Expand = false,
                             Name = "Seat",
-                            NameAR = "سيات"
+                            NameAR = "سيات",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 26,
                             Expand = false,
                             Name = "MG",
-                            NameAR = "إم جي"
+                            NameAR = "إم جي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 27,
                             Expand = false,
                             Name = "Geely",
-                            NameAR = "جيلي"
+                            NameAR = "جيلي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 28,
                             Expand = false,
                             Name = "BYD",
-                            NameAR = "بي واي دي"
+                            NameAR = "بي واي دي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 29,
                             Expand = false,
                             Name = "JAC",
-                            NameAR = "جاك"
+                            NameAR = "جاك",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 30,
                             Expand = false,
                             Name = "Chery",
-                            NameAR = "شيري"
+                            NameAR = "شيري",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 31,
                             Expand = false,
                             Name = "Jetour",
-                            NameAR = "جيتور"
+                            NameAR = "جيتور",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 32,
                             Expand = false,
                             Name = "Speranza",
-                            NameAR = "سبيرانزا"
+                            NameAR = "سبيرانزا",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 33,
                             Expand = false,
                             Name = "BAIC",
-                            NameAR = "بايك"
+                            NameAR = "بايك",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 34,
                             Expand = false,
                             Name = "Daewoo",
-                            NameAR = "دايو"
+                            NameAR = "دايو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 35,
                             Expand = false,
                             Name = "Dongfeng",
-                            NameAR = "دونغ فينغ"
+                            NameAR = "دونغ فينغ",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 36,
                             Expand = false,
                             Name = "DFSK",
-                            NameAR = "دي إف إس كيه"
+                            NameAR = "دي إف إس كيه",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 37,
                             Expand = false,
                             Name = "FAW",
-                            NameAR = "فاو"
+                            NameAR = "فاو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 38,
                             Expand = false,
                             Name = "Foton",
-                            NameAR = "فوتون"
+                            NameAR = "فوتون",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 39,
                             Expand = false,
                             Name = "Lifan",
-                            NameAR = "ليفان"
+                            NameAR = "ليفان",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 40,
                             Expand = false,
                             Name = "Proton",
-                            NameAR = "بروتون"
+                            NameAR = "بروتون",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 41,
                             Expand = false,
                             Name = "Shalaby",
-                            NameAR = "شلبي"
+                            NameAR = "شلبي",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 42,
                             Expand = false,
                             Name = "Dayun",
-                            NameAR = "دايون"
+                            NameAR = "دايون",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 43,
                             Expand = false,
                             Name = "Volkswagen",
-                            NameAR = "فولكس واجن"
+                            NameAR = "فولكس واجن",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 44,
                             Expand = false,
                             Name = "Skoda",
-                            NameAR = "سكودا"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Expand = false,
-                            Name = "Tesla",
-                            NameAR = "تسلا"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Expand = false,
-                            Name = "Rivian",
-                            NameAR = "ريفيان"
+                            NameAR = "سكودا",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 47,
                             Expand = false,
                             Name = "Lucid Motors",
-                            NameAR = "لوسيد موتورز"
+                            NameAR = "لوسيد موتورز",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 48,
                             Expand = false,
                             Name = "NIO",
-                            NameAR = "نيو"
+                            NameAR = "نيو",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 49,
                             Expand = false,
                             Name = "XPeng",
-                            NameAR = "إكس بنج"
+                            NameAR = "إكس بنج",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 50,
                             Expand = false,
                             Name = "Fisker",
-                            NameAR = "فيسكر"
+                            NameAR = "فيسكر",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 51,
                             Expand = false,
                             Name = "Polestar",
-                            NameAR = "بولستار"
+                            NameAR = "بولستار",
+                            VehicleType = 0
                         },
                         new
                         {
                             Id = 52,
                             Expand = false,
                             Name = "Faraday Future",
-                            NameAR = "فاراداي فيوتشر"
+                            NameAR = "فاراداي فيوتشر",
+                            VehicleType = 0
                         },
                         new
                         {
-                            Id = 53,
+                            Id = 54,
+                            Expand = false,
+                            Name = "Harley-Davidson",
+                            NameAR = "هارلي ديفيدسون",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Expand = false,
+                            Name = "Yamaha",
+                            NameAR = "ياماها",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Expand = false,
+                            Name = "Honda",
+                            NameAR = "هوندا",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Expand = false,
+                            Name = "Kawasaki",
+                            NameAR = "كاواساكي",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Expand = false,
+                            Name = "Suzuki",
+                            NameAR = "سوزوكي",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Expand = false,
+                            Name = "BMW Motorrad",
+                            NameAR = "بي إم دبليو موتو",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Expand = false,
+                            Name = "Ducati",
+                            NameAR = "دوكاتي",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Expand = false,
+                            Name = "KTM",
+                            NameAR = "كي تي إم",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Expand = false,
+                            Name = "Bajaj",
+                            NameAR = "باجاج",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Expand = false,
+                            Name = "Hero",
+                            NameAR = "هيرو",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 64,
+                            Expand = false,
+                            Name = "TVS",
+                            NameAR = "تي في إس",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 65,
+                            Expand = false,
+                            Name = "Royal Enfield",
+                            NameAR = "رويال إنفيلد",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 66,
+                            Expand = false,
+                            Name = "Aprilia",
+                            NameAR = "أبريليا",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 67,
+                            Expand = false,
+                            Name = "Benelli",
+                            NameAR = "بينيللي",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 68,
+                            Expand = false,
+                            Name = "CFMoto",
+                            NameAR = "سي إف موتو",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 69,
+                            Expand = false,
+                            Name = "Vespa",
+                            NameAR = "فيسبا",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 70,
+                            Expand = false,
+                            Name = "SYM",
+                            NameAR = "إس واي إم",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 71,
+                            Expand = false,
+                            Name = "Lifan",
+                            NameAR = "ليفان",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 72,
+                            Expand = false,
+                            Name = "Zontes",
+                            NameAR = "زونتس",
+                            VehicleType = 1
+                        },
+                        new
+                        {
+                            Id = 73,
+                            Expand = false,
+                            Name = "Nissan Leaf",
+                            NameAR = "نيسان ليف",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 74,
+                            Expand = false,
+                            Name = "Chevrolet Bolt",
+                            NameAR = "شيفروليه بولت",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 75,
+                            Expand = false,
+                            Name = "BMW i",
+                            NameAR = "بي إم دبليو آي",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 76,
+                            Expand = false,
+                            Name = "Audi e-tron",
+                            NameAR = "أودي إي ترون",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 77,
+                            Expand = false,
+                            Name = "Jaguar I-Pace",
+                            NameAR = "جاكوار آي-بيس",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 78,
+                            Expand = false,
+                            Name = "Rivian",
+                            NameAR = "ريفيان",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 79,
+                            Expand = false,
+                            Name = "Lucid Motors",
+                            NameAR = "لوسيد موتورز",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 80,
+                            Expand = false,
+                            Name = "NIO",
+                            NameAR = "نيو",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 81,
+                            Expand = false,
+                            Name = "XPeng",
+                            NameAR = "إكس بنج",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 82,
+                            Expand = false,
+                            Name = "Polestar",
+                            NameAR = "بولستار",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 83,
+                            Expand = false,
+                            Name = "Faraday Future",
+                            NameAR = "فاراداي فيوتشر",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 84,
+                            Expand = false,
+                            Name = "Tesla",
+                            NameAR = "تسلا",
+                            VehicleType = 2
+                        },
+                        new
+                        {
+                            Id = 85,
                             Expand = false,
                             Name = "VinFast",
-                            NameAR = "فينفاست"
+                            NameAR = "فينفاست",
+                            VehicleType = 2
                         });
                 });
 
@@ -2674,6 +2962,699 @@ namespace Tripix.Migrations
                             BrandId = 50,
                             Name = "Qin Plus EV",
                             NameAR = "تشين بلس إي في"
+                        },
+                        new
+                        {
+                            Id = 276,
+                            BrandId = 54,
+                            Name = "Street 750",
+                            NameAR = "ستريت 750"
+                        },
+                        new
+                        {
+                            Id = 277,
+                            BrandId = 54,
+                            Name = "Iron 883",
+                            NameAR = "آيرون 883"
+                        },
+                        new
+                        {
+                            Id = 278,
+                            BrandId = 54,
+                            Name = "Fat Bob",
+                            NameAR = "فات بوب"
+                        },
+                        new
+                        {
+                            Id = 279,
+                            BrandId = 54,
+                            Name = "Sportster S",
+                            NameAR = "سبورتستر S"
+                        },
+                        new
+                        {
+                            Id = 280,
+                            BrandId = 55,
+                            Name = "YZF-R1",
+                            NameAR = "واي زد إف R1"
+                        },
+                        new
+                        {
+                            Id = 281,
+                            BrandId = 55,
+                            Name = "MT-07",
+                            NameAR = "إم تي 07"
+                        },
+                        new
+                        {
+                            Id = 282,
+                            BrandId = 55,
+                            Name = "NMAX",
+                            NameAR = "إن ماكس"
+                        },
+                        new
+                        {
+                            Id = 283,
+                            BrandId = 55,
+                            Name = "FZ25",
+                            NameAR = "إف زد 25"
+                        },
+                        new
+                        {
+                            Id = 284,
+                            BrandId = 56,
+                            Name = "CBR500R",
+                            NameAR = "سي بي آر 500 آر"
+                        },
+                        new
+                        {
+                            Id = 285,
+                            BrandId = 56,
+                            Name = "CB650R",
+                            NameAR = "سي بي 650 آر"
+                        },
+                        new
+                        {
+                            Id = 286,
+                            BrandId = 56,
+                            Name = "Rebel 500",
+                            NameAR = "ريبل 500"
+                        },
+                        new
+                        {
+                            Id = 287,
+                            BrandId = 56,
+                            Name = "Africa Twin",
+                            NameAR = "أفريكا توين"
+                        },
+                        new
+                        {
+                            Id = 288,
+                            BrandId = 57,
+                            Name = "R1250GS",
+                            NameAR = "آر 1250 جي إس"
+                        },
+                        new
+                        {
+                            Id = 289,
+                            BrandId = 57,
+                            Name = "G310R",
+                            NameAR = "جي 310 آر"
+                        },
+                        new
+                        {
+                            Id = 290,
+                            BrandId = 57,
+                            Name = "F900R",
+                            NameAR = "إف 900 آر"
+                        },
+                        new
+                        {
+                            Id = 291,
+                            BrandId = 58,
+                            Name = "Duke 390",
+                            NameAR = "ديوك 390"
+                        },
+                        new
+                        {
+                            Id = 292,
+                            BrandId = 58,
+                            Name = "RC 200",
+                            NameAR = "آر سي 200"
+                        },
+                        new
+                        {
+                            Id = 293,
+                            BrandId = 58,
+                            Name = "1290 Super Duke R",
+                            NameAR = "1290 سوبر ديوك آر"
+                        },
+                        new
+                        {
+                            Id = 294,
+                            BrandId = 59,
+                            Name = "Panigale V4",
+                            NameAR = "بانيجالي V4"
+                        },
+                        new
+                        {
+                            Id = 295,
+                            BrandId = 59,
+                            Name = "Monster 937",
+                            NameAR = "مونستر 937"
+                        },
+                        new
+                        {
+                            Id = 296,
+                            BrandId = 59,
+                            Name = "Multistrada V4",
+                            NameAR = "مولتسترادا V4"
+                        },
+                        new
+                        {
+                            Id = 297,
+                            BrandId = 60,
+                            Name = "Pulsar 220F",
+                            NameAR = "بولسار 220 إف"
+                        },
+                        new
+                        {
+                            Id = 298,
+                            BrandId = 60,
+                            Name = "Dominar 400",
+                            NameAR = "دومينار 400"
+                        },
+                        new
+                        {
+                            Id = 299,
+                            BrandId = 60,
+                            Name = "Platina",
+                            NameAR = "بلاتينا"
+                        },
+                        new
+                        {
+                            Id = 300,
+                            BrandId = 61,
+                            Name = "Apache RTR 160",
+                            NameAR = "أباتشي RTR 160"
+                        },
+                        new
+                        {
+                            Id = 301,
+                            BrandId = 61,
+                            Name = "NTorq 125",
+                            NameAR = "إن تورك 125"
+                        },
+                        new
+                        {
+                            Id = 302,
+                            BrandId = 61,
+                            Name = "Raider 125",
+                            NameAR = "رايدر 125"
+                        },
+                        new
+                        {
+                            Id = 344,
+                            BrandId = 62,
+                            Name = "Pulsar 150",
+                            NameAR = "بولسار 150"
+                        },
+                        new
+                        {
+                            Id = 345,
+                            BrandId = 62,
+                            Name = "Boxer X125",
+                            NameAR = "بوكسر X125"
+                        },
+                        new
+                        {
+                            Id = 346,
+                            BrandId = 62,
+                            Name = "Discover 125",
+                            NameAR = "ديسكفر 125"
+                        },
+                        new
+                        {
+                            Id = 347,
+                            BrandId = 62,
+                            Name = "Avenger Street 160",
+                            NameAR = "أفنجر ستريت 160"
+                        },
+                        new
+                        {
+                            Id = 348,
+                            BrandId = 63,
+                            Name = "Splendor Plus",
+                            NameAR = "سبليندر بلس"
+                        },
+                        new
+                        {
+                            Id = 349,
+                            BrandId = 63,
+                            Name = "HF Deluxe",
+                            NameAR = "إتش إف ديلوكس"
+                        },
+                        new
+                        {
+                            Id = 350,
+                            BrandId = 63,
+                            Name = "Glamour",
+                            NameAR = "غلامور"
+                        },
+                        new
+                        {
+                            Id = 351,
+                            BrandId = 63,
+                            Name = "Xtreme 160R",
+                            NameAR = "إكستريم 160R"
+                        },
+                        new
+                        {
+                            Id = 352,
+                            BrandId = 64,
+                            Name = "Apache RTR 160",
+                            NameAR = "أباتشي RTR 160"
+                        },
+                        new
+                        {
+                            Id = 353,
+                            BrandId = 64,
+                            Name = "Star City Plus",
+                            NameAR = "ستار سيتي بلس"
+                        },
+                        new
+                        {
+                            Id = 354,
+                            BrandId = 64,
+                            Name = "Sport",
+                            NameAR = "سبورت"
+                        },
+                        new
+                        {
+                            Id = 355,
+                            BrandId = 64,
+                            Name = "NTorq 125",
+                            NameAR = "إن تورك 125"
+                        },
+                        new
+                        {
+                            Id = 356,
+                            BrandId = 65,
+                            Name = "Classic 350",
+                            NameAR = "كلاسيك 350"
+                        },
+                        new
+                        {
+                            Id = 357,
+                            BrandId = 65,
+                            Name = "Bullet 350",
+                            NameAR = "بُلت 350"
+                        },
+                        new
+                        {
+                            Id = 358,
+                            BrandId = 65,
+                            Name = "Meteor 350",
+                            NameAR = "ميتيور 350"
+                        },
+                        new
+                        {
+                            Id = 359,
+                            BrandId = 65,
+                            Name = "Himalayan",
+                            NameAR = "هيماﻻيان"
+                        },
+                        new
+                        {
+                            Id = 360,
+                            BrandId = 66,
+                            Name = "SR 160",
+                            NameAR = "إس آر 160"
+                        },
+                        new
+                        {
+                            Id = 361,
+                            BrandId = 66,
+                            Name = "RS 660",
+                            NameAR = "آر إس 660"
+                        },
+                        new
+                        {
+                            Id = 362,
+                            BrandId = 66,
+                            Name = "Tuono 660",
+                            NameAR = "تونو 660"
+                        },
+                        new
+                        {
+                            Id = 363,
+                            BrandId = 67,
+                            Name = "TNT 135",
+                            NameAR = "تي إن تي 135"
+                        },
+                        new
+                        {
+                            Id = 364,
+                            BrandId = 67,
+                            Name = "502C",
+                            NameAR = "502 سي"
+                        },
+                        new
+                        {
+                            Id = 365,
+                            BrandId = 67,
+                            Name = "Imperiale 400",
+                            NameAR = "إمبريالي 400"
+                        },
+                        new
+                        {
+                            Id = 366,
+                            BrandId = 68,
+                            Name = "300NK",
+                            NameAR = "300 إن كيه"
+                        },
+                        new
+                        {
+                            Id = 367,
+                            BrandId = 68,
+                            Name = "650NK",
+                            NameAR = "650 إن كيه"
+                        },
+                        new
+                        {
+                            Id = 368,
+                            BrandId = 68,
+                            Name = "250SR",
+                            NameAR = "250 إس آر"
+                        },
+                        new
+                        {
+                            Id = 369,
+                            BrandId = 69,
+                            Name = "Primavera 150",
+                            NameAR = "بريمافيرا 150"
+                        },
+                        new
+                        {
+                            Id = 370,
+                            BrandId = 69,
+                            Name = "Sprint 150",
+                            NameAR = "سبرينت 150"
+                        },
+                        new
+                        {
+                            Id = 371,
+                            BrandId = 69,
+                            Name = "GTS Super 300",
+                            NameAR = "جي تي إس سوبر 300"
+                        },
+                        new
+                        {
+                            Id = 372,
+                            BrandId = 70,
+                            Name = "Jet 14",
+                            NameAR = "جيت 14"
+                        },
+                        new
+                        {
+                            Id = 373,
+                            BrandId = 70,
+                            Name = "Symphony ST",
+                            NameAR = "سيمفوني إس تي"
+                        },
+                        new
+                        {
+                            Id = 374,
+                            BrandId = 70,
+                            Name = "Cruisym 300",
+                            NameAR = "كروزيم 300"
+                        },
+                        new
+                        {
+                            Id = 303,
+                            BrandId = 71,
+                            Name = "KPR 150",
+                            NameAR = "كي بي آر 150"
+                        },
+                        new
+                        {
+                            Id = 304,
+                            BrandId = 71,
+                            Name = "KPR 200",
+                            NameAR = "كي بي آر 200"
+                        },
+                        new
+                        {
+                            Id = 305,
+                            BrandId = 71,
+                            Name = "KP Mini 110",
+                            NameAR = "كي بي ميني 110"
+                        },
+                        new
+                        {
+                            Id = 306,
+                            BrandId = 71,
+                            Name = "LF150-10",
+                            NameAR = "إل إف 150-10"
+                        },
+                        new
+                        {
+                            Id = 307,
+                            BrandId = 71,
+                            Name = "LF200-23",
+                            NameAR = "إل إف 200-23"
+                        },
+                        new
+                        {
+                            Id = 308,
+                            BrandId = 72,
+                            Name = "Zontes 310R",
+                            NameAR = "زونتس 310 آر"
+                        },
+                        new
+                        {
+                            Id = 309,
+                            BrandId = 72,
+                            Name = "Zontes 310X",
+                            NameAR = "زونتس 310 إكس"
+                        },
+                        new
+                        {
+                            Id = 310,
+                            BrandId = 72,
+                            Name = "Zontes 250",
+                            NameAR = "زونتس 250"
+                        },
+                        new
+                        {
+                            Id = 311,
+                            BrandId = 72,
+                            Name = "Zontes 125-U",
+                            NameAR = "زونتس 125-يو"
+                        },
+                        new
+                        {
+                            Id = 312,
+                            BrandId = 73,
+                            Name = "Leaf S",
+                            NameAR = "ليف إس"
+                        },
+                        new
+                        {
+                            Id = 313,
+                            BrandId = 73,
+                            Name = "Leaf SV",
+                            NameAR = "ليف إس في"
+                        },
+                        new
+                        {
+                            Id = 314,
+                            BrandId = 73,
+                            Name = "Altima",
+                            NameAR = "ألتيما"
+                        },
+                        new
+                        {
+                            Id = 315,
+                            BrandId = 73,
+                            Name = "Rogue",
+                            NameAR = "روغ"
+                        },
+                        new
+                        {
+                            Id = 316,
+                            BrandId = 74,
+                            Name = "Bolt EV",
+                            NameAR = "بولت إي في"
+                        },
+                        new
+                        {
+                            Id = 317,
+                            BrandId = 74,
+                            Name = "Bolt EUV",
+                            NameAR = "بولت إيوي"
+                        },
+                        new
+                        {
+                            Id = 318,
+                            BrandId = 74,
+                            Name = "Malibu",
+                            NameAR = "ماليبو"
+                        },
+                        new
+                        {
+                            Id = 319,
+                            BrandId = 74,
+                            Name = "Tahoe",
+                            NameAR = "تاهو"
+                        },
+                        new
+                        {
+                            Id = 320,
+                            BrandId = 75,
+                            Name = "i3",
+                            NameAR = "آي 3"
+                        },
+                        new
+                        {
+                            Id = 321,
+                            BrandId = 75,
+                            Name = "iX",
+                            NameAR = "آي إكس"
+                        },
+                        new
+                        {
+                            Id = 322,
+                            BrandId = 75,
+                            Name = "X5",
+                            NameAR = "إكس 5"
+                        },
+                        new
+                        {
+                            Id = 323,
+                            BrandId = 75,
+                            Name = "3 Series",
+                            NameAR = "3 سيريز"
+                        },
+                        new
+                        {
+                            Id = 324,
+                            BrandId = 76,
+                            Name = "e-tron",
+                            NameAR = "إي ترون"
+                        },
+                        new
+                        {
+                            Id = 325,
+                            BrandId = 76,
+                            Name = "e-tron GT",
+                            NameAR = "إي ترون جي تي"
+                        },
+                        new
+                        {
+                            Id = 326,
+                            BrandId = 76,
+                            Name = "Q5",
+                            NameAR = "كيو 5"
+                        },
+                        new
+                        {
+                            Id = 327,
+                            BrandId = 76,
+                            Name = "A4",
+                            NameAR = "إيه 4"
+                        },
+                        new
+                        {
+                            Id = 328,
+                            BrandId = 77,
+                            Name = "I-Pace",
+                            NameAR = "آي-بيس"
+                        },
+                        new
+                        {
+                            Id = 329,
+                            BrandId = 77,
+                            Name = "XF",
+                            NameAR = "إكس إف"
+                        },
+                        new
+                        {
+                            Id = 330,
+                            BrandId = 78,
+                            Name = "R1T",
+                            NameAR = "آر1 تي"
+                        },
+                        new
+                        {
+                            Id = 331,
+                            BrandId = 78,
+                            Name = "R1S",
+                            NameAR = "آر1 إس"
+                        },
+                        new
+                        {
+                            Id = 332,
+                            BrandId = 79,
+                            Name = "Air",
+                            NameAR = "آير"
+                        },
+                        new
+                        {
+                            Id = 333,
+                            BrandId = 80,
+                            Name = "ES8",
+                            NameAR = "إي إس8"
+                        },
+                        new
+                        {
+                            Id = 334,
+                            BrandId = 80,
+                            Name = "ES6",
+                            NameAR = "إي إس6"
+                        },
+                        new
+                        {
+                            Id = 335,
+                            BrandId = 81,
+                            Name = "P7",
+                            NameAR = "بي7"
+                        },
+                        new
+                        {
+                            Id = 336,
+                            BrandId = 81,
+                            Name = "G3",
+                            NameAR = "جي3"
+                        },
+                        new
+                        {
+                            Id = 337,
+                            BrandId = 82,
+                            Name = "Polestar 2",
+                            NameAR = "بولستار 2"
+                        },
+                        new
+                        {
+                            Id = 338,
+                            BrandId = 83,
+                            Name = "FF 91",
+                            NameAR = "إف إف 91"
+                        },
+                        new
+                        {
+                            Id = 339,
+                            BrandId = 84,
+                            Name = "Model S",
+                            NameAR = "موديل إس"
+                        },
+                        new
+                        {
+                            Id = 340,
+                            BrandId = 84,
+                            Name = "Model 3",
+                            NameAR = "موديل 3"
+                        },
+                        new
+                        {
+                            Id = 341,
+                            BrandId = 84,
+                            Name = "Model X",
+                            NameAR = "موديل إكس"
+                        },
+                        new
+                        {
+                            Id = 342,
+                            BrandId = 84,
+                            Name = "Model Y",
+                            NameAR = "موديل واي"
+                        },
+                        new
+                        {
+                            Id = 343,
+                            BrandId = 85,
+                            Name = "VF e34",
+                            NameAR = "في إف إي 34"
                         });
                 });
 
@@ -2951,6 +3932,9 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UserAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2968,6 +3952,8 @@ namespace Tripix.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("HelpooOrders");
                 });
@@ -6007,16 +6993,31 @@ namespace Tripix.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Condition")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateOnly?>("CreatedAt")
+                        .HasColumnType("date");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Gearbox_Type")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("LikeCounter")
                         .HasColumnType("int");
+
+                    b.Property<string>("Merchant_Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Merchant_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Merchant_Phone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -6032,6 +7033,9 @@ namespace Tripix.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Rate")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -7412,13 +8416,19 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CarType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserEmail")
+                    b.Property<string>("PricingPlan")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TurnDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -7429,6 +8439,8 @@ namespace Tripix.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("WashBookings");
                 });
@@ -7480,48 +8492,17 @@ namespace Tripix.Migrations
                     b.Property<string>("CarType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly?>("CreatedAt")
-                        .HasColumnType("date");
-
-                    b.Property<decimal?>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Gearbox_Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Merchant_Logo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Merchant_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Merchant_Phone")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Motor_Capacity")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Rate")
-                        .HasColumnType("int");
 
                     b.ToTable("Vehicles", t =>
                         {
                             t.Property("CarType")
                                 .HasColumnName("CarType1");
 
-                            t.Property("Discount")
-                                .HasColumnName("Car_Discount");
-
-                            t.Property("Gearbox_Type")
-                                .HasColumnName("Car_Gearbox_Type");
-
                             t.Property("Motor_Capacity")
                                 .HasColumnName("Car_Motor_Capacity");
-
-                            t.Property("Rate")
-                                .HasColumnName("Car_Rate");
                         });
 
                     b.HasDiscriminator().HasValue("Car");
@@ -7531,231 +8512,220 @@ namespace Tripix.Migrations
                         {
                             Id = 1,
                             Color = "black",
-                            Condition = "New",
                             Description = "E200 2025 \r\nAmg Premium Plus\r\nsoft close\r\nkeyless entry\r\nkeyless start\r\nelectric seats\r\nmemory seats\r\nheated seats\r\nheadup display\r\nfourzone ac\r\ncamera 360\r\nblind spot\r\nnight package\r\nblack rims\r\nfor more info call us at (View phone number)\r\nor visit us at 53 Abbas el Akkad",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "E200",
                             Name = "Mercedes-Benz",
                             Prand = "Mercedes",
                             Price = 5550000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2025",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "2000 CC",
-                            Rate = 5
+                            Motor_Capacity = "2000 CC"
                         },
                         new
                         {
                             Id = 2,
                             Color = "Gray",
-                            Condition = "New",
                             Description = "MERCEDES MAYBACH S-560 4MATIC 2024\r\n\r\nبأقل سعر فى مصر\r\nاسعارخاصه للعملاء الكاش\r\nمتاح انظمه تقسيط بدون حظر بيع و بدون م اداريه و بدون تأمين\r\nعروض خاصه و حصريه لرجال الاعمال بسجل تجارى و بطاقه ضريبيه تحصل على مقدم يبدأ من 5% و تقسيط لمده 10 سنوات\r\n\r\nمتاح استبدال سيارتك القديمه\r\nمتاح ايضا لدينا اكثر من 30 برنامج للتقسيط ل ربات البيوت والموظفين و الاطباء والظباط\r\n\r\n Available all colors, Models and Categories \r\nالاسعار تختلف حسب الفئه و الموديل\r\n   ",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/Teacher Motors.WEBP",
+                            Merchant_Name = "Teacher Motors",
+                            Merchant_Phone = "0114585330",
                             Model = "S-580",
                             Name = "MERCEDES MAYBACH",
                             Prand = "Mercedes",
                             Price = 24000000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/Teacher Motors.WEBP",
-                            Merchant_Name = "Teacher Motors",
-                            Merchant_Phone = "0114585330",
-                            Motor_Capacity = "4000 CC",
-                            Rate = 5
+                            Motor_Capacity = "4000 CC"
                         },
                         new
                         {
                             Id = 3,
                             Color = "White",
-                            Condition = "New",
                             Description = "Toyota corolla \r\nModel 2025\r\nالفئة الثالثة\r\nor visit us at 53 Abbas El Akkad, Nasr city",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Corolla",
                             Name = "Toyota Corolla 2025",
                             Prand = "Toyota",
                             Price = 1600000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2025",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "1600 CC",
-                            Rate = 5
+                            Motor_Capacity = "1600 CC"
                         },
                         new
                         {
                             Id = 4,
                             Color = "White",
-                            Condition = "New",
                             Description = "Glc 300 \r\nModel 2025\r\nhydraulic suspension\r\nrear axle\r\nHeadup display\r\nfourzone\r\ncamera360\r\nburmester speakers \r\nblind spot\r\nelectric seats\r\nmemory seats\r\nheater seats\r\nkeyless entry\r\nside doorstep\r\nfeather rims",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "GLC 300",
                             Name = "Mercedes-Benz GLC 300",
                             Prand = "Mercedes",
                             Price = 6250000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2025",
                             CarType = "Coupe",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "2000 CC",
-                            Rate = 5
+                            Motor_Capacity = "2000 CC"
                         },
                         new
                         {
                             Id = 5,
                             Color = "black",
-                            Condition = "New",
                             Description = "E200 \r\nmodel 2024 \r\nzero\r\nfully loaded \r\nnight package",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "E200",
                             Name = "Mercedes Benz E200",
                             Prand = "Mercedes",
                             Price = 5375000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "2000 CC",
-                            Rate = 5
+                            Motor_Capacity = "2000 CC"
                         },
                         new
                         {
                             Id = 8,
                             Color = "black",
-                            Condition = "New",
                             Description = "Range Rover Velar R-daynamic\r\n- Model 2025\r\n- ⁠Zero\r\n- فيها رخصه ٣ سنين\r\n- ⁠10 years warranty Protection\r\n- Engine : 2.0 liter\r\n- 250 HP\r\n- ⁠Exterior Color : Black \r\n- Interior Color : Beig leather\r\n- Apple Carplay & Android Auto\r\n- Slide Panoramic Sunroof\r\n- Meredian Sound system\r\n- Blind spot\r\n- Lane assist\r\n- Adaptive Control\r\n- 2 electric seats with memory \r\n- Head up Display\r\n- Air suspention\r\n- Ambient light system\r\n- electric trunk\r\n- Keyless Go\r\n- Front and rear sensor park\r\n- 360 camera\r\n- Heated seats\r\n- Automatic AC control\r\n- 20 inch Black allow wheel",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Velar",
                             Name = "Range Rover Velar 2025",
                             Prand = "Land Rover",
                             Price = 6350000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2025",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "2000 CC",
-                            Rate = 5
+                            Motor_Capacity = "2000 CC"
                         },
                         new
                         {
                             Id = 10,
                             Color = "black",
-                            Condition = "New",
                             Description = "Porsche Macan\r\nبورش ماكان\r\n\r\nModel 2024 (wakeel)\r\nموديل 2024 (وكيل)\r\n\r\nPre owned 17,000KM\r\nمستعملة بممشى 17,000 كم\r\n\r\nExterior: Metallic Black\r\nاللون الخارجي: أسود ميتاليك\r\n\r\nInterior: Red leather\r\nاللون الداخلي: جلد أحمر\r\n\r\nEngine type: turbocharged\r\nنوع المحرك: تيربو\r\n\r\n2L straight 4 cylinders\r\n2 لتر، 4 سلندر خطي\r\n\r\nHorsepower: 261 hp\r\nقوة المحرك: 261 حصان\r\n\r\nMax. torque 295 lb-ft\r\nأقصى عزم: 295 رطل/قدم\r\n\r\n0 - 60 mph in 5.8 seconds with Sport Chrono Package\r\nمن 0 إلى 60 ميل في الساعة في 5.8 ثانية مع باكيدج سبورت كرونو\r\n\r\nTransmission: 7-speed twin-clutch auto (PDK)\r\nناقل حركة أوتوماتيك 7 سرعات (PDK) ثنائي القابض\r\n\r\nAll wheel drive\r\nدفع كلي\r\n\r\nPanoramic sunroof\r\nفتحة سقف بانورامية\r\n\r\nRims: R20 multi spoke\r\nجنوط R20 متعددة الأذرع\r\n\r\n360 parking cameras\r\nكاميرات ركن 360 درجة\r\n\r\nBoss sound system\r\nنظام صوتي من Bose\r\n\r\nThe LED headlights including Porsche Dynamic Light System (PDLS)\r\nكشافات LED تشمل نظام الإضاءة الديناميكي من بورش (PDLS)\r\n\r\nKeyless entry and start/stop\r\nدخول وتشغيل بدون مفتاح\r\n\r\n8-way Front Sport Seats\r\nمقاعد أمامية رياضية بـ 8 وضعيات\r\n\r\nSeat heating\r\nتدفئة للمقاعد\r\n\r\nPorsche logo on seats\r\nشعار بورش على المقاعد\r\n\r\nPorsche word illuminate as welcome\r\nإضاءة كلمة Porsche عند الترحيب\r\n\r\nElectric tailgate\r\nباب شنطة خلفية كهربائي\r\n\r\nApple CarPlay\r\nابل كار بلاي\r\n\r\nAndroid Auto\r\nأندرويد أوتو\r\n\r\nWireless phone charger\r\nشاحن لاسلكي للهاتف\r\n\r\nNavigation system\r\nنظام ملاحة\r\n\r\nSport space tires\r\nكفرات سبور سبيس\r\n\r\nPrivacy glass\r\nزجاج فاميـه (خصوصي)\r\n\r\nLarge brake system with black paint callipers\r\nنظام فرامل كبير مع كاليبرات باللون الأسود\r\n\r\nElectronic brake distribution\r\nتوزيع إلكتروني لقوة الفرامل",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Macan",
                             Name = "Porsche Macan 2024",
                             Prand = "Porsche",
                             Price = 4850000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "2000 CC",
-                            Rate = 5
+                            Motor_Capacity = "2000 CC"
                         },
                         new
                         {
                             Id = 11,
                             Color = "White",
-                            Condition = "New",
                             Description = "هونداي الينترا cn7 اعلى فئة  ٢٠٢٥ متوفرة الان في اكسدرايف اوتوموتيف\r\n\r\n\r\n\r\nالمواصفات : بصمة داخليه خارجيه ، فتحة سقف ، عدادات ديجتال ، فرش جلد ، تحديد مسار ، تسخين كراسي ، تسخين مقود ، جنوط ١٧ لونين ، مرايات ضم ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش ، سينسور بارك امامي خلفي \r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة\r\n\r\n لمزيد من التفاصيل يرجى التواصل على الارقام التالية",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Elantra",
                             Name = "Hyundai Elantra 2025",
                             Prand = "Hyundai",
                             Price = 1550000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2025",
                             CarType = "Sedan",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "1500 CC",
-                            Rate = 5
+                            Motor_Capacity = "1500 CC"
                         },
                         new
                         {
                             Id = 14,
                             Color = "Gray",
-                            Condition = "New",
                             Description = "هونداي الينتراMG RX5 2024 Luxury  متوفرة الان في اكسدرايف اوتوموتيف \r\n\r\n\r\n\r\nالمواصفات : ١. ٥٠٠ سي سي توربو ، بصمة داخليه خارجيه ، فتحة سقف بانوراما ، تكييف ديجتال ، فرش جلد، جنوط١٨ ، مرايات ضم ، شاحن وايرلس ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش تدعم apple carplay و android auto ، سينسور بارك امامي خلفي ، كاميرات محيطية ٣٦٠ درجة\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "RX5",
                             Name = "MG RX5 2024",
                             Prand = "MG",
                             Price = 1450000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "1500 CC",
-                            Rate = 5
+                            Motor_Capacity = "1500 CC"
                         },
                         new
                         {
                             Id = 15,
-                            Condition = "New",
                             Description = "هونداي الينتراالسيارة الكهربائية بالكامل اودي Q4 e-tron موديل 2024 متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : 40e-tron ، محرك كهربائي يولد ٢٣٠ حصان ، ٧ راكب ، فتحة سقف بانورامية متحركة ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، شاشة عرض على الزجاج الامامي HUD ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Q4 E-Tron",
                             Name = "Audi Q4 E-Tron 2024",
                             Prand = "Audi",
                             Price = 2390000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "1500 CC",
-                            Rate = 5
+                            Motor_Capacity = "1500 CC"
                         },
                         new
                         {
                             Id = 20,
                             Color = "Gray",
-                            Condition = "New",
                             Description = "Audi Q3 sportback 2024\r\nExterior Color: Grey\r\nInterior: Black x red \r\nCondition: Brand New\r\nEngine: 1.5L\r\nHorse power:150 hp\r\n8-Speed Automatic Transmission\r\nAcceleration:0-100 km/h 9.2 sec\r\nLED Headlights\r\nElectrically Folding Exterior Mirrors\r\nFully Parking Sensors\r\nRim 19 inch\r\nSunroof\r\nElectric seats with memory package\r\nElectric tailgate\r\nWelcome lights\r\n360° Camera\r\n6 Airbags\r\n30-color Ambient Lighting\r\nVery special specs and color\r\nImmediate purchase\r\nFor reservations and inquiries contact us ",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Q3",
                             Name = "Audi Q3 sportback 2024",
                             Prand = "Audi",
                             Price = 1850000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
-                            Gearbox_Type = "Automatic",
-                            Merchant_Logo = "/Images/TripixLogo.png",
-                            Merchant_Name = "Tripix",
-                            Merchant_Phone = "01020652199",
-                            Motor_Capacity = "1500 CC",
-                            Rate = 5
+                            Motor_Capacity = "1500 CC"
                         });
                 });
 
@@ -7772,19 +8742,10 @@ namespace Tripix.Migrations
                     b.Property<int?>("ChargingTime")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Gearbox_Type")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Interior")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Power")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Rate")
                         .HasColumnType("int");
 
                     b.Property<int?>("TravelRange")
@@ -7794,15 +8755,6 @@ namespace Tripix.Migrations
                         {
                             t.Property("CarType")
                                 .HasColumnName("ElectricCars_CarType");
-
-                            t.Property("Discount")
-                                .HasColumnName("ElectricCars_Discount");
-
-                            t.Property("Gearbox_Type")
-                                .HasColumnName("ElectricCars_Gearbox_Type");
-
-                            t.Property("Rate")
-                                .HasColumnName("ElectricCars_Rate");
                         });
 
                     b.HasDiscriminator().HasValue("ElectricCar");
@@ -7812,45 +8764,48 @@ namespace Tripix.Migrations
                         {
                             Id = 6,
                             Color = "black",
-                            Condition = "New",
                             Description = "Id6 crozz pro 2024 \r\nEnergy type: Pure electric \r\nRange: 601\r\nMax speed: 160\r\nCamera 360\r\nBlind spot\r\nHeadup display",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "ID6 Crozz Pro",
                             Name = "Volkswagen ID6 Crozz Pro",
                             Prand = "Volkswagen",
                             Price = 2350000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
-                            Rate = 5,
                             TravelRange = 601
                         },
                         new
                         {
                             Id = 16,
                             Color = "White",
-                            Condition = "New",
                             Description = "السيارة الكهربائية بالكامل شانجان S7 موديل ٢٠٢٤  متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : محرك كهربائي يولد ٢٥٨ حصان ، فتحة سقف بانورامية ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، شاشة عرض على الزجاج الامامي HUD ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة\r\n",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "V7",
                             Name = "Changan S7 FULL ELECTRIC 2024",
                             Prand = "Changan",
                             Price = 1950000m,
+                            Rate = 5,
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
                             Interior = "Full Leather",
-                            Power = 258,
-                            Rate = 5
+                            Power = 258
                         });
                 });
 
             modelBuilder.Entity("Tripix.Entities.Motorbikes", b =>
                 {
                     b.HasBaseType("Tripix.Entities.Vehicle");
-
-                    b.Property<decimal?>("Discount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Motor_Capacity")
                         .IsRequired()
@@ -7859,51 +8814,13 @@ namespace Tripix.Migrations
                     b.Property<string>("MotorbikeType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Rate")
-                        .HasColumnType("int");
-
                     b.ToTable("Vehicles", t =>
                         {
-                            t.Property("Discount")
-                                .HasColumnName("Motorbikes_Discount");
-
                             t.Property("Motor_Capacity")
                                 .HasColumnName("Motorbikes_Motor_Capacity");
-
-                            t.Property("Rate")
-                                .HasColumnName("Motorbikes_Rate");
                         });
 
                     b.HasDiscriminator().HasValue("Motorbike");
-                });
-
-            modelBuilder.Entity("Tripix.Entities.Truck", b =>
-                {
-                    b.HasBaseType("Tripix.Entities.Vehicle");
-
-                    b.Property<decimal?>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("LoadCapacity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Motor_Capacity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Rate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TruckType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Vehicles", t =>
-                        {
-                            t.Property("Motor_Capacity")
-                                .HasColumnName("Truck_Motor_Capacity");
-                        });
-
-                    b.HasDiscriminator().HasValue("Truck");
                 });
 
             modelBuilder.Entity("Tripix.Entities.UsedCar", b =>
@@ -7913,35 +8830,17 @@ namespace Tripix.Migrations
                     b.Property<string>("CarType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FuelType")
+                    b.Property<string>("Condition")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gearbox_Type")
+                    b.Property<string>("FuelType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("KilometersDriven")
                         .HasColumnType("int");
 
                     b.Property<string>("Motor_Capacity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwenerAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwenerEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwenerImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwenerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwenerPhonenumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UsedCondition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("UsedCar");
@@ -7951,9 +8850,12 @@ namespace Tripix.Migrations
                         {
                             Id = 7,
                             Color = "black",
-                            Condition = "Used",
                             Description = "Available now at 4Matic\r\nPorsche Taycan \r\nModel 2024\r\n4000 Km\r\nLicensed\r\nhas Protection \r\nRange 400-500",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Taycan",
                             Name = "Porsche Taycan 2024",
                             Prand = "Porsche",
@@ -7961,18 +8863,20 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "Coupe",
+                            Condition = "Used",
                             FuelType = "Electric",
-                            Gearbox_Type = "Automatic",
-                            KilometersDriven = 4000,
-                            UsedCondition = "Like New"
+                            KilometersDriven = 4000
                         },
                         new
                         {
                             Id = 9,
                             Color = "White",
-                            Condition = "Used",
                             Description = "6500 km\r\nprotection\r\nlicensed\r\nlaurent & klement\r\ncamera 360\r\nالعنوان ٥٣ شارع عباس العقاد",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Taycan",
                             Name = "Skoda Kodiaq 2024 Laurin & Klement",
                             Prand = "Skoda",
@@ -7980,17 +8884,19 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
-                            KilometersDriven = 6500,
-                            UsedCondition = "Like New"
+                            KilometersDriven = 6500
                         },
                         new
                         {
                             Id = 12,
-                            Condition = "Used",
                             Description = "السيارة الكهربائية بالكامل كيا Ev5 موديل ٢٠٢٤  متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : محرك كهربائي يولد 215 حصان ، فتحة سقف بانورامية ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "EV5",
                             Name = "Kia EV5 2024",
                             Prand = "Kia",
@@ -7998,17 +8904,19 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2024",
                             CarType = "SUV",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
-                            KilometersDriven = 15449,
-                            UsedCondition = "Like New"
+                            KilometersDriven = 15449
                         },
                         new
                         {
                             Id = 13,
-                            Condition = "Used",
                             Description = "\r\nرانج روفر ايفوك ٢٠٢١ SE عداد ٨ الف كيلو متوفرة الان في اكسدرايف اوتوموتيف\r\n\r\nالمواصفات : ١٥٠٠ سي سي توربو ١٦٠ حصان ، ليد داخلي متعدد الألوانة ، كاميرا ٣٦٠ درجة ، بصمة داخليه خارجيه ، كرسي كهرباء ، عدادات ديجتال ، مرايات ضم ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش ، سينسور بارك امامي خلفي \r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "Evoque",
                             Name = "RANGE ROVE EVOQUE 2021",
                             Prand = "Land Rover",
@@ -8016,18 +8924,20 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2021",
                             CarType = "SUV",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
-                            KilometersDriven = 7000,
-                            UsedCondition = "Like New"
+                            KilometersDriven = 7000
                         },
                         new
                         {
                             Id = 17,
                             Color = "Gray",
-                            Condition = "Used",
                             Description = "BMW X6 M50i 2017\r\n4400cc\r\n523hp\r\nHarman/kardon sound system \r\nPanoramic sunroof \r\nHead-up display \r\nWireless Charger \r\nCamera 360 \r\nShifting paddles \r\nElectric seats with memory package \r\nFully loaded\r\nCheck our showroom to find your dream car. ",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "X6",
                             Name = "BMW X6 M50i2017",
                             Prand = "BMW",
@@ -8035,19 +8945,21 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2017",
                             CarType = "SUV",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
                             KilometersDriven = 170000,
-                            Motor_Capacity = "4400 CC",
-                            UsedCondition = "Like New"
+                            Motor_Capacity = "4400 CC"
                         },
                         new
                         {
                             Id = 18,
                             Color = "Black",
-                            Condition = "Used",
                             Description = "Jaguar f-type 2021 mti \r\n30.000km\r\n2000cc\r\n300Hp\r\nTop speed 250km/h\r\nAcceleration 5.7 km/h (s)\r\nR-dynamic\r\nMeridian sound system \r\nElectric seats \r\nPanoramic sunroof \r\nShifting paddles \r\nApple carplay\r\nAndroid auto\r\nAmbient lighting \r\nWelcome lights \r\nFull active sensors\r\nNavigation\r\nAll Maintenance in mti \r\nFor reservations and inquiries contact us\r\n(View phone number)\r\n(View phone number)\r\n(View phone number)\r\nYou can buy it in cash or in installments with all banks and companies starting from 20% without ani admin fees \r\nVisit our showroom",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "F-type",
                             Name = "Jaguar F-type 2021 mti",
                             Prand = "Jaguar",
@@ -8055,19 +8967,21 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2021",
                             CarType = "Coupe",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
                             KilometersDriven = 30000,
-                            Motor_Capacity = "2000 CC",
-                            UsedCondition = "Like New"
+                            Motor_Capacity = "2000 CC"
                         },
                         new
                         {
                             Id = 19,
                             Color = "Black",
-                            Condition = "Used",
                             Description = "BMW 750 Li 2009\r\n\r\n•Engine: 4.4- liter twin turbo v8\r\n•Horse power: 400 hp\r\nspeech “ Hello BMW”\r\n•keyless entry \r\n•Panoramic sliding sunroof \r\n•fully sensors \r\n•Electric seats with memory package \r\n•Electric tailgate\r\n•Lane keep assist \r\n•Break assist \r\n•Soft close \r\n•Blind spot \r\n•Dual zone air conditions\r\n•Cruise control \r\n•fully loaded \r\n•Very special specs and color\r\nFor reservations and inquiries contact us ",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "750",
                             Name = "BMW 750 Li 2009",
                             Prand = "BMW",
@@ -8075,19 +8989,21 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2009",
                             CarType = "Sedan",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
                             KilometersDriven = 129000,
-                            Motor_Capacity = "4400 CC",
-                            UsedCondition = "Like New"
+                            Motor_Capacity = "4400 CC"
                         },
                         new
                         {
                             Id = 21,
                             Color = "Black",
-                            Condition = "Used",
                             Description = "Mercedes c180 2009\r\nEngine 1.6 L turbo . 156 hp\r\nMulti function \r\nCruise control\r\nDynamic select\r\npark assist\r\nFully sensors \r\nActive brake assist\r\nAttention assist\r\nFor reservations and inquiries contact us\r\n(View phone number)\r\n(View phone number)\r\n(View phone number)\r\n(View phone number)\r\nYou can buy it in cash or in installments with all banks and companies starting from 20%\r\nVisit our showroom to find your dream car",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "C180",
                             Name = "Mercedes-Benz C180 2009",
                             Prand = "Mercedes",
@@ -8095,19 +9011,21 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2009",
                             CarType = "Sedan",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
                             KilometersDriven = 220000,
-                            Motor_Capacity = "1600 CC",
-                            UsedCondition = "Like New"
+                            Motor_Capacity = "1600 CC"
                         },
                         new
                         {
                             Id = 22,
                             Color = "Black",
-                            Condition = "Used",
                             Description = "Mercedes G63 2022  AMG\r\nV8 \r\n577 HP\r\nAMG Speedshift TCT 9-speed transmission \r\nSmartKey with keylees-start\r\nElectric tailgate \r\nElectric seats\r\nShifting paddle \r\nBlind spot \r\nCamera 360\r\nSound system Burmester\r\nSunroof\r\nWireless apple carplay\r\nActive brake assist \r\nActive emergency stop Assist \r\nFully loaded \r\nالسياره بها جميع الكماليات\r\n‎متاح التقسيط مع جميع البنوك و الشركات بمقدم يبدا من ٢٠٪؜ حتي ٨٤ شهر",
+                            Gearbox_Type = "Automatic",
                             LikeCounter = 0,
+                            Merchant_Logo = "/Images/TripixLogo.png",
+                            Merchant_Name = "Tripix",
+                            Merchant_Phone = "01020652199",
                             Model = "G63",
                             Name = "Mercedes-Benz G63 2022 AMG",
                             Prand = "Mercedes-Benz",
@@ -8115,11 +9033,10 @@ namespace Tripix.Migrations
                             Status = "Avilable",
                             Year = "2022",
                             CarType = "SUV",
+                            Condition = "Used",
                             FuelType = "Benzine",
-                            Gearbox_Type = "Automatic",
                             KilometersDriven = 15000,
-                            Motor_Capacity = "4000 CC",
-                            UsedCondition = "Like New"
+                            Motor_Capacity = "4000 CC"
                         });
                 });
 
@@ -8248,6 +9165,13 @@ namespace Tripix.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.HelpooOrders", b =>
+                {
+                    b.HasOne("Tripix.Entities.ApplicationUser", null)
+                        .WithMany("HelpooOrders")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("Tripix.Entities.Hotel", b =>
                 {
                     b.HasOne("Tripix.Entities.Event", null)
@@ -8272,7 +9196,7 @@ namespace Tripix.Migrations
             modelBuilder.Entity("Tripix.Entities.RepairBookings", b =>
                 {
                     b.HasOne("Tripix.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("RepairBookings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -8383,6 +9307,14 @@ namespace Tripix.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.WashBooking", b =>
+                {
+                    b.HasOne("Tripix.Entities.ApplicationUser", null)
+                        .WithMany("WashBookings")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Tripix.Entities.Driver", b =>
                 {
                     b.HasOne("Tripix.Entities.ApplicationUser", null)
@@ -8442,13 +9374,19 @@ namespace Tripix.Migrations
                 {
                     b.Navigation("FavouriteProducts");
 
+                    b.Navigation("HelpooOrders");
+
                     b.Navigation("Orders");
 
                     b.Navigation("REFTokens");
 
+                    b.Navigation("RepairBookings");
+
                     b.Navigation("Trips");
 
                     b.Navigation("VehicleBookings");
+
+                    b.Navigation("WashBookings");
                 });
 
             modelBuilder.Entity("Tripix.Entities.CarBrand", b =>

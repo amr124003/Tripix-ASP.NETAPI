@@ -14,11 +14,17 @@ namespace Tripix.Entities
         public List<VehicleImage> VehicleImages { get; set; }
         public decimal Price { get; set; }
         public string Prand { get; set; }
-        
-        [AllowedValues("Used", "New")]
-        public string Condition { get; set; }
         public VehicleBookings VehicleBooking { get; set; }
+
+        [AllowedValues("Manual", "Automatic")]
+        public GearboxTypes? Gearbox_Type { get; set; } = GearboxTypes.Automatic;
         public VehicleStatus Status { get; set; } = VehicleStatus.Avilable;
         public int LikeCounter { get; set; } = 0;
+        public string? Merchant_Name { get; set; } = "Tripix";
+        public string? Merchant_Phone { get; set; } = "01020652199";
+        public DateOnly? CreatedAt { get; set; }
+        public string Merchant_Logo { get; set; } = "/Images/TripixLogo.png";
+        public int? Rate { get; set; }
+        public decimal? Discount { get; set; }
     }
 }

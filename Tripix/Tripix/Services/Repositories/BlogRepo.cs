@@ -36,27 +36,23 @@ namespace Tripix.Services.Repositories
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.BlogImageUrl}{model.Image.FileName}");
 
-            
-
-            using (var stram = new FileStream(path, FileMode.Create))
+            using (var stream = new FileStream(path, FileMode.Create))
             {
-                await model.Image.CopyToAsync(stram);
+                await model.Image.CopyToAsync(stream);
             }
 
             var blog = model.Adapt<Blog>();
-            blog.Image = Urls.BlogImageUrl+model.Image.FileName;
+            blog.Image = Urls.BlogImageUrl + model.Image.FileName;
 
             await context.Blogs.AddAsync(blog);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return Result.Success(blog);
         }
-
         public async Task<List<Blog>> GetBlogListAsync ()
         {
             return context.Blogs.AsNoTracking().ToListAsync().Result;
         }
-
         public async Task<Result<Blog>> UpdateBlogAsync ( UpdateBlogDto model )
         {
             var blog = context.Blogs.FirstOrDefault(b => b.Id == model.Id);
@@ -74,7 +70,7 @@ namespace Tripix.Services.Repositories
 
             if (blog.Image != null)
             {
-                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{blog.Image}");
+                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/{blog.Image}");
 
                 if (System.IO.File.Exists(oldPath)) { System.IO.File.Delete(oldPath); }
             }
@@ -86,7 +82,7 @@ namespace Tripix.Services.Repositories
 
             blog.Image = $"Images/blogs/{model.NewImage.FileName}";
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return Result.Success(blog);
         }
@@ -95,10 +91,11 @@ namespace Tripix.Services.Repositories
         {
             var blog = context.Blogs.FirstOrDefault(x => x.Id == id);
 
-            if(blog is null) { Result.Failure(BlogErrors.BlogNotFound); }
+            if (blog is null) { Result.Failure(BlogErrors.BlogNotFound); }
 
             context.Blogs.Remove(blog);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+
             return Result.Success();
         }
     }

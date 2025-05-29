@@ -382,7 +382,168 @@ namespace Tripix.Context.Config
               new() { Id = 272, BrandId = 50, Name = "Dolphin", NameAR = "دولفين" },
               new() { Id = 273, BrandId = 50, Name = "Seal", NameAR = "سيل" },
               new() { Id = 274, BrandId = 50, Name = "Atto 3", NameAR = "آتو 3" },
-              new() { Id = 275, BrandId = 50, Name = "Qin Plus EV", NameAR = "تشين بلس إي في" }
+              new() { Id = 275, BrandId = 50, Name = "Qin Plus EV", NameAR = "تشين بلس إي في" },
+              // Harley-Davidson - BrandId = 54
+              new() { Id = 276, BrandId = 54, Name = "Street 750", NameAR = "ستريت 750" },
+              new() { Id = 277, BrandId = 54, Name = "Iron 883", NameAR = "آيرون 883" },
+              new() { Id = 278, BrandId = 54, Name = "Fat Bob", NameAR = "فات بوب" },
+              new() { Id = 279, BrandId = 54, Name = "Sportster S", NameAR = "سبورتستر S" },
+              
+              // Yamaha - BrandId = 55
+              new() { Id = 280, BrandId = 55, Name = "YZF-R1", NameAR = "واي زد إف R1" },
+              new() { Id = 281, BrandId = 55, Name = "MT-07", NameAR = "إم تي 07" },
+              new() { Id = 282, BrandId = 55, Name = "NMAX", NameAR = "إن ماكس" },
+              new() { Id = 283, BrandId = 55, Name = "FZ25", NameAR = "إف زد 25" },
+              
+              // Honda - BrandId = 56
+              new() { Id = 284, BrandId = 56, Name = "CBR500R", NameAR = "سي بي آر 500 آر" },
+              new() { Id = 285, BrandId = 56, Name = "CB650R", NameAR = "سي بي 650 آر" },
+              new() { Id = 286, BrandId = 56, Name = "Rebel 500", NameAR = "ريبل 500" },
+              new() { Id = 287, BrandId = 56, Name = "Africa Twin", NameAR = "أفريكا توين" },
+              
+              // BMW Motorrad - BrandId = 57
+              new() { Id = 288, BrandId = 57, Name = "R1250GS", NameAR = "آر 1250 جي إس" },
+              new() { Id = 289, BrandId = 57, Name = "G310R", NameAR = "جي 310 آر" },
+              new() { Id = 290, BrandId = 57, Name = "F900R", NameAR = "إف 900 آر" },
+              
+              // KTM - BrandId = 58
+              new() { Id = 291, BrandId = 58, Name = "Duke 390", NameAR = "ديوك 390" },
+              new() { Id = 292, BrandId = 58, Name = "RC 200", NameAR = "آر سي 200" },
+              new() { Id = 293, BrandId = 58, Name = "1290 Super Duke R", NameAR = "1290 سوبر ديوك آر" },
+              
+              // Ducati - BrandId = 59
+              new() { Id = 294, BrandId = 59, Name = "Panigale V4", NameAR = "بانيجالي V4" },
+              new() { Id = 295, BrandId = 59, Name = "Monster 937", NameAR = "مونستر 937" },
+              new() { Id = 296, BrandId = 59, Name = "Multistrada V4", NameAR = "مولتسترادا V4" },
+              
+              // Bajaj - BrandId = 60
+              new() { Id = 297, BrandId = 60, Name = "Pulsar 220F", NameAR = "بولسار 220 إف" },
+              new() { Id = 298, BrandId = 60, Name = "Dominar 400", NameAR = "دومينار 400" },
+              new() { Id = 299, BrandId = 60, Name = "Platina", NameAR = "بلاتينا" },
+              
+              // TVS - BrandId = 61
+              new() { Id = 300, BrandId = 61, Name = "Apache RTR 160", NameAR = "أباتشي RTR 160" },
+              new() { Id = 301, BrandId = 61, Name = "NTorq 125", NameAR = "إن تورك 125" },
+              new() { Id = 302, BrandId = 61, Name = "Raider 125", NameAR = "رايدر 125" },
+              // Bajaj
+              new() { Id = 344, BrandId = 62, Name = "Pulsar 150", NameAR = "بولسار 150" },
+              new() { Id = 345, BrandId = 62, Name = "Boxer X125", NameAR = "بوكسر X125" },
+              new() { Id = 346, BrandId = 62, Name = "Discover 125", NameAR = "ديسكفر 125" },
+              new() { Id = 347, BrandId = 62, Name = "Avenger Street 160", NameAR = "أفنجر ستريت 160" },
+              
+              // Hero
+              new() { Id = 348, BrandId = 63, Name = "Splendor Plus", NameAR = "سبليندر بلس" },
+              new() { Id = 349, BrandId = 63, Name = "HF Deluxe", NameAR = "إتش إف ديلوكس" },
+              new() { Id = 350, BrandId = 63, Name = "Glamour", NameAR = "غلامور" },
+              new() { Id = 351, BrandId = 63, Name = "Xtreme 160R", NameAR = "إكستريم 160R" },
+              
+              // TVS
+              new() { Id = 352, BrandId = 64, Name = "Apache RTR 160", NameAR = "أباتشي RTR 160" },
+              new() { Id = 353, BrandId = 64, Name = "Star City Plus", NameAR = "ستار سيتي بلس" },
+              new() { Id = 354, BrandId = 64, Name = "Sport", NameAR = "سبورت" },
+              new() { Id = 355, BrandId = 64, Name = "NTorq 125", NameAR = "إن تورك 125" },
+              
+              // Royal Enfield
+              new() { Id = 356, BrandId = 65, Name = "Classic 350", NameAR = "كلاسيك 350" },
+              new() { Id = 357, BrandId = 65, Name = "Bullet 350", NameAR = "بُلت 350" },
+              new() { Id = 358, BrandId = 65, Name = "Meteor 350", NameAR = "ميتيور 350" },
+              new() { Id = 359, BrandId = 65, Name = "Himalayan", NameAR = "هيماﻻيان" },
+              
+              // Aprilia
+              new() { Id = 360, BrandId = 66, Name = "SR 160", NameAR = "إس آر 160" },
+              new() { Id = 361, BrandId = 66, Name = "RS 660", NameAR = "آر إس 660" },
+              new() { Id = 362, BrandId = 66, Name = "Tuono 660", NameAR = "تونو 660" },
+              
+              // Benelli
+              new() { Id = 363, BrandId = 67, Name = "TNT 135", NameAR = "تي إن تي 135" },
+              new() { Id = 364, BrandId = 67, Name = "502C", NameAR = "502 سي" },
+              new() { Id = 365, BrandId = 67, Name = "Imperiale 400", NameAR = "إمبريالي 400" },
+              
+              // CFMoto
+              new() { Id = 366, BrandId = 68, Name = "300NK", NameAR = "300 إن كيه" },
+              new() { Id = 367, BrandId = 68, Name = "650NK", NameAR = "650 إن كيه" },
+              new() { Id = 368, BrandId = 68, Name = "250SR", NameAR = "250 إس آر" },
+              
+              // Vespa
+              new() { Id = 369, BrandId = 69, Name = "Primavera 150", NameAR = "بريمافيرا 150" },
+              new() { Id = 370, BrandId = 69, Name = "Sprint 150", NameAR = "سبرينت 150" },
+              new() { Id = 371, BrandId = 69, Name = "GTS Super 300", NameAR = "جي تي إس سوبر 300" },
+              
+              // SYM
+              new() { Id = 372, BrandId = 70, Name = "Jet 14", NameAR = "جيت 14" },
+              new() { Id = 373, BrandId = 70, Name = "Symphony ST", NameAR = "سيمفوني إس تي" },
+              new() { Id = 374, BrandId = 70, Name = "Cruisym 300", NameAR = "كروزيم 300" },
+
+              new() { Id = 303, BrandId = 71, Name = "KPR 150", NameAR = "كي بي آر 150" },
+              new() { Id = 304, BrandId = 71, Name = "KPR 200", NameAR = "كي بي آر 200" },
+              new() { Id = 305, BrandId = 71, Name = "KP Mini 110", NameAR = "كي بي ميني 110" },
+              new() { Id = 306, BrandId = 71, Name = "LF150-10", NameAR = "إل إف 150-10" },
+              new() { Id = 307, BrandId = 71, Name = "LF200-23", NameAR = "إل إف 200-23" },
+              new() { Id = 308, BrandId = 72, Name = "Zontes 310R", NameAR = "زونتس 310 آر" },
+              new() { Id = 309, BrandId = 72, Name = "Zontes 310X", NameAR = "زونتس 310 إكس" },
+              new() { Id = 310, BrandId = 72, Name = "Zontes 250", NameAR = "زونتس 250" },
+              new() { Id = 311, BrandId = 72, Name = "Zontes 125-U", NameAR = "زونتس 125-يو" },
+              // Nissan
+              new() { Id = 312, BrandId = 73, Name = "Leaf S", NameAR = "ليف إس" },
+              new() { Id = 313, BrandId = 73, Name = "Leaf SV", NameAR = "ليف إس في" },
+              new() { Id = 314, BrandId = 73, Name = "Altima", NameAR = "ألتيما" },
+              new() { Id = 315, BrandId = 73, Name = "Rogue", NameAR = "روغ" },
+              
+              // Chevrolet
+              new() { Id = 316, BrandId = 74, Name = "Bolt EV", NameAR = "بولت إي في" },
+              new() { Id = 317, BrandId = 74, Name = "Bolt EUV", NameAR = "بولت إيوي" },
+              new() { Id = 318, BrandId = 74, Name = "Malibu", NameAR = "ماليبو" },
+              new() { Id = 319, BrandId = 74, Name = "Tahoe", NameAR = "تاهو" },
+              
+              // BMW
+              new() { Id = 320, BrandId = 75, Name = "i3", NameAR = "آي 3" },
+              new() { Id = 321, BrandId = 75, Name = "iX", NameAR = "آي إكس" },
+              new() { Id = 322, BrandId = 75, Name = "X5", NameAR = "إكس 5" },
+              new() { Id = 323, BrandId = 75, Name = "3 Series", NameAR = "3 سيريز" },
+              
+              // Audi
+              new() { Id = 324, BrandId = 76, Name = "e-tron", NameAR = "إي ترون" },
+              new() { Id = 325, BrandId = 76, Name = "e-tron GT", NameAR = "إي ترون جي تي" },
+              new() { Id = 326, BrandId = 76, Name = "Q5", NameAR = "كيو 5" },
+              new() { Id = 327, BrandId = 76, Name = "A4", NameAR = "إيه 4" },
+              
+              // Jaguar
+              new() { Id = 328, BrandId = 77, Name = "I-Pace", NameAR = "آي-بيس" },
+              new() { Id = 329, BrandId = 77, Name = "XF", NameAR = "إكس إف" },
+              
+              // Rivian
+              new() { Id = 330, BrandId = 78, Name = "R1T", NameAR = "آر1 تي" },
+              new() { Id = 331, BrandId = 78, Name = "R1S", NameAR = "آر1 إس" },
+              
+              // Lucid Motors
+              new() { Id = 332, BrandId = 79, Name = "Air", NameAR = "آير" },
+              
+              // NIO
+              new() { Id = 333, BrandId = 80, Name = "ES8", NameAR = "إي إس8" },
+              new() { Id = 334, BrandId = 80, Name = "ES6", NameAR = "إي إس6" },
+              
+              // XPeng
+              new() { Id = 335, BrandId = 81, Name = "P7", NameAR = "بي7" },
+              new() { Id = 336, BrandId = 81, Name = "G3", NameAR = "جي3" },
+              
+              // Polestar
+              new() { Id = 337, BrandId = 82, Name = "Polestar 2", NameAR = "بولستار 2" },
+              
+              // Faraday Future
+              new() { Id = 338, BrandId = 83, Name = "FF 91", NameAR = "إف إف 91" },
+              
+              // Tesla
+              new() { Id = 339, BrandId = 84, Name = "Model S", NameAR = "موديل إس" },
+              new() { Id = 340, BrandId = 84, Name = "Model 3", NameAR = "موديل 3" },
+              new() { Id = 341, BrandId = 84, Name = "Model X", NameAR = "موديل إكس" },
+              new() { Id = 342, BrandId = 84, Name = "Model Y", NameAR = "موديل واي" },
+              
+              // VinFast
+              new() { Id = 343, BrandId = 85, Name = "VF e34", NameAR = "في إف إي 34" }
+
+
+
+
             });
 
         }

@@ -8,7 +8,7 @@ namespace Tripix.Services.Interfaces
     {
         public Task<Result> RegisterAsync ( RegisterModel model, CancellationToken token = default );
         public Task<Result<AuthResponse>> GetTokenAsync ( LoginModel model, CancellationToken token = default );
-        public Task<Result<AuthResponse>> GetRefreshtoken ( string Token  , CancellationToken cencellationtoken = default);
+        public Task<Result<AuthResponse>> GetRefreshtoken (string RefToken ,  string Token  , CancellationToken cencellationtoken = default);
         public Task<bool> RevokeRefreshTokenAsync ( string refreshToken, CancellationToken cancellationToken = default );
         public Task<Result<AuthResponse>> ConfirmEmailAsync ( ConfirmationEmailRequest request );
         public Task<Result> ResendConfirmEmailAsync ( ResendConfirmationEmailRequest request );

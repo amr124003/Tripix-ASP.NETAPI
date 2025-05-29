@@ -1220,73 +1220,11 @@
         }
       }
     },
-    "/api/Cars/BookCar": {
-      "post": {
-        "tags": [
-          "Cars"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookCarDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookCarDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookCarDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Cars/SellCar": {
       "post": {
         "tags": [
           "Cars"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Cars/LikeCar": {
-      "post": {
-        "tags": [
-          "Cars"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LikeCarDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LikeCarDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LikeCarDTO"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1337,10 +1275,21 @@
         }
       }
     },
-    "/api/CarWash/GetWashTurn": {
+    "/api/CarWash/GetWashTurn/{TurnId}": {
       "get": {
         "tags": [
           "CarWash"
+        ],
+        "parameters": [
+          {
+            "name": "TurnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1354,16 +1303,25 @@
         "tags": [
           "CarWash"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWashTurnDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWashTurnDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWashTurnDTO"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1393,41 +1351,7 @@
         }
       }
     },
-    "/api/CarWash/GetWashBookings": {
-      "get": {
-        "tags": [
-          "CarWash"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/CarWash/GetWashBooking": {
-      "get": {
-        "tags": [
-          "CarWash"
-        ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/CarWash/CancelTurn": {
+    "/api/CarWash": {
       "delete": {
         "tags": [
           "CarWash"
@@ -1441,6 +1365,18 @@
               "format": "int32"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CarWash/GetWashBookings": {
+      "get": {
+        "tags": [
+          "CarWash"
         ],
         "responses": {
           "200": {
@@ -1951,35 +1887,30 @@
         }
       }
     },
-    "/api/ElectricCars/BEVCars": {
-      "get": {
+    "/api/ElectricCars/GetElectricCars": {
+      "post": {
         "tags": [
           "ElectricCars"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
           }
-        }
-      }
-    },
-    "/api/ElectricCars/PHEVCars": {
-      "get": {
-        "tags": [
-          "ElectricCars"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/ElectricCars/HEVCars": {
-      "get": {
-        "tags": [
-          "ElectricCars"
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2001,6 +1932,13 @@
             }
           },
           {
+            "name": "Year",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "Model",
             "in": "query",
             "schema": {
@@ -2012,14 +1950,6 @@
             "in": "query",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Rate",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
             }
           },
           {
@@ -2038,6 +1968,28 @@
             }
           },
           {
+            "name": "Prand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MotorbikeType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MotorbikeTypes"
+            }
+          },
+          {
+            "name": "Rate",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
             "name": "Discount",
             "in": "query",
             "schema": {
@@ -2046,21 +1998,15 @@
             }
           },
           {
-            "name": "Prand",
+            "name": "CreatedAt",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date"
             }
           },
           {
-            "name": "Motor_Capacity",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Condition",
+            "name": "Merchant_Logo",
             "in": "query",
             "schema": {
               "type": "string"
@@ -2075,11 +2021,18 @@
             }
           },
           {
-            "name": "Range",
+            "name": "TravelRange",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Interior",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -2099,7 +2052,7 @@
             }
           },
           {
-            "name": "Type",
+            "name": "CarType",
             "in": "query",
             "schema": {
               "type": "string"
@@ -2112,7 +2065,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Image": {
+                  "Images": {
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -2122,7 +2075,7 @@
                 }
               },
               "encoding": {
-                "Image": {
+                "Images": {
                   "style": "form"
                 }
               }
@@ -2149,8 +2102,165 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Year",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Model",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Color",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Price",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Prand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MotorbikeType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MotorbikeTypes"
+            }
+          },
+          {
+            "name": "Rate",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Discount",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "CreatedAt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "Merchant_Logo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "BatteryCapacity",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TravelRange",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Interior",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ChargingTime",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Power",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CarType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "Images": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2180,30 +2290,11 @@
         }
       }
     },
-    "/api/ElectricCars/BookingElectricCar": {
-      "post": {
+    "/api/ElectricCars/GetBrands": {
+      "get": {
         "tags": [
           "ElectricCars"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarBookingDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarBookingDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarBookingDTO"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2777,47 +2868,30 @@
         }
       }
     },
-    "/api/Motorbikes/StandardMotorbikes": {
-      "get": {
+    "/api/Motorbikes/GetMotorbikes": {
+      "post": {
         "tags": [
           "Motorbikes"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
           }
-        }
-      }
-    },
-    "/api/Motorbikes/CruiserMotorbikes": {
-      "get": {
-        "tags": [
-          "Motorbikes"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Motorbikes/SportMotorbikes": {
-      "get": {
-        "tags": [
-          "Motorbikes"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Motorbikes/Off_RoadMotorbikes": {
-      "get": {
-        "tags": [
-          "Motorbikes"
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2834,17 +2908,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddmotorbikesDTO"
+                "$ref": "#/components/schemas/AddMotorbikeDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddmotorbikesDTO"
+                "$ref": "#/components/schemas/AddMotorbikeDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddmotorbikesDTO"
+                "$ref": "#/components/schemas/AddMotorbikeDTO"
               }
             }
           }
@@ -2861,16 +2935,25 @@
         "tags": [
           "Motorbikes"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMotorbikeDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMotorbikeDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMotorbikeDTO"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2878,7 +2961,7 @@
         }
       }
     },
-    "/api/Motorbikes/DeleteMotorbike": {
+    "/api/Motorbikes/DeleteMotorbike/{Id}": {
       "delete": {
         "tags": [
           "Motorbikes"
@@ -2886,7 +2969,8 @@
         "parameters": [
           {
             "name": "Id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2900,8 +2984,8 @@
         }
       }
     },
-    "/api/Motorbikes/BookingMotorbike": {
-      "post": {
+    "/api/Motorbikes/GetMotorbikesBrands": {
+      "get": {
         "tags": [
           "Motorbikes"
         ],
@@ -3678,6 +3762,52 @@
           }
         }
       }
+    },
+    "/api/Vehicle/BookVehicle/{CarId}": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "parameters": [
+          {
+            "name": "CarId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehicle/LikeCar/{CarId}": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "parameters": [
+          {
+            "name": "CarId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3765,32 +3895,14 @@
         },
         "additionalProperties": false
       },
-      "AddWashDTO": {
-        "type": "object",
-        "properties": {
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "userPhone": {
-            "type": "string",
-            "nullable": true
-          },
-          "carType": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddmotorbikesDTO": {
+      "AddMotorbikeDTO": {
         "type": "object",
         "properties": {
           "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
             "type": "string",
             "nullable": true
           },
@@ -3802,19 +3914,15 @@
             "type": "string",
             "nullable": true
           },
-          "rate": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "description": {
             "type": "string",
             "nullable": true
           },
-          "image": {
+          "vehicleImages": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/VehicleImage"
+              "type": "string",
+              "format": "binary"
             },
             "nullable": true
           },
@@ -3822,16 +3930,7 @@
             "type": "number",
             "format": "double"
           },
-          "discount": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
           "prand": {
-            "type": "string",
-            "nullable": true
-          },
-          "motor_Capacity": {
             "type": "string",
             "nullable": true
           },
@@ -3842,116 +3941,44 @@
           "motorbikeType": {
             "type": "string",
             "nullable": true
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "motor_Capacity": {
+            "type": "string",
+            "nullable": true
+          },
+          "discount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "ApplicationUser": {
+      "AddWashDTO": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
           "userName": {
             "type": "string",
             "nullable": true
           },
-          "normalizedUserName": {
+          "userPhone": {
             "type": "string",
             "nullable": true
           },
-          "email": {
+          "turnDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "carType": {
             "type": "string",
             "nullable": true
           },
-          "normalizedEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailConfirmed": {
-            "type": "boolean"
-          },
-          "passwordHash": {
-            "type": "string",
-            "nullable": true
-          },
-          "securityStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "concurrencyStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumberConfirmed": {
-            "type": "boolean"
-          },
-          "twoFactorEnabled": {
-            "type": "boolean"
-          },
-          "lockoutEnd": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "lockoutEnabled": {
-            "type": "boolean"
-          },
-          "accessFailedCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "isDisabled": {
-            "type": "boolean"
-          },
-          "refTokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RefreshTokens"
-            },
-            "nullable": true
-          },
-          "vehicleBookings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VehicleBookings"
-            },
-            "nullable": true
-          },
-          "favouriteProducts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FavouriteProduct"
-            },
-            "nullable": true
-          },
-          "orders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Order"
-            },
-            "nullable": true
-          },
-          "trips": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Trip"
-            },
-            "nullable": true
-          },
-          "userStatus": {
-            "$ref": "#/components/schemas/UserStatus"
-          },
-          "connectionId": {
+          "pricingPlan": {
             "type": "string",
             "nullable": true
           }
@@ -3973,16 +4000,6 @@
           "role": {
             "minLength": 1,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "BookCarDto": {
-        "type": "object",
-        "properties": {
-          "carId": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -4045,28 +4062,6 @@
         },
         "additionalProperties": false
       },
-      "CarBookingDTO": {
-        "type": "object",
-        "properties": {
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "userPhone": {
-            "type": "string",
-            "nullable": true
-          },
-          "carId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CarTypes": {
         "enum": [
           0,
@@ -4076,27 +4071,6 @@
         ],
         "type": "integer",
         "format": "int32"
-      },
-      "CarlicenseImage": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "driverId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "imageUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "driver": {
-            "$ref": "#/components/schemas/Driver"
-          }
-        },
-        "additionalProperties": false
       },
       "ChatRequest": {
         "type": "object",
@@ -4117,179 +4091,6 @@
           },
           "otp": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Driver": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "normalizedUserName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "normalizedEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailConfirmed": {
-            "type": "boolean"
-          },
-          "passwordHash": {
-            "type": "string",
-            "nullable": true
-          },
-          "securityStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "concurrencyStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumberConfirmed": {
-            "type": "boolean"
-          },
-          "twoFactorEnabled": {
-            "type": "boolean"
-          },
-          "lockoutEnd": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "lockoutEnabled": {
-            "type": "boolean"
-          },
-          "accessFailedCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "isDisabled": {
-            "type": "boolean"
-          },
-          "refTokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RefreshTokens"
-            },
-            "nullable": true
-          },
-          "vehicleBookings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VehicleBookings"
-            },
-            "nullable": true
-          },
-          "favouriteProducts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FavouriteProduct"
-            },
-            "nullable": true
-          },
-          "orders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Order"
-            },
-            "nullable": true
-          },
-          "trips": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Trip"
-            },
-            "nullable": true
-          },
-          "userStatus": {
-            "$ref": "#/components/schemas/UserStatus"
-          },
-          "driverFaceID": {
-            "type": "string",
-            "nullable": true
-          },
-          "driverLicense": {
-            "type": "string",
-            "nullable": true
-          },
-          "criminalRecord": {
-            "type": "string",
-            "nullable": true
-          },
-          "driverImage": {
-            "type": "string",
-            "nullable": true
-          },
-          "carName": {
-            "type": "string",
-            "nullable": true
-          },
-          "carModel": {
-            "type": "string",
-            "nullable": true
-          },
-          "carImage": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VehicleImage"
-            },
-            "nullable": true
-          },
-          "carLicense": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CarlicenseImage"
-            },
-            "nullable": true
-          },
-          "carType": {
-            "type": "string",
-            "nullable": true
-          },
-          "carBrand": {
-            "type": "string",
-            "nullable": true
-          },
-          "connectionId": {
-            "type": "string",
-            "nullable": true
-          },
-          "carDescription": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/DriverStatus"
-          },
-          "location": {
-            "$ref": "#/components/schemas/DriverLocation"
-          },
-          "compleltedSteps": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -4341,50 +4142,6 @@
         },
         "additionalProperties": false
       },
-      "DriverStatus": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "FavouriteProduct": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicleId": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicle": {
-            "$ref": "#/components/schemas/Vehicle"
-          },
-          "price": {
-            "type": "string",
-            "nullable": true
-          },
-          "image": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "GetTripDetails": {
         "type": "object",
         "properties": {
@@ -4405,30 +4162,6 @@
           "tokenID": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "LikeCarDTO": {
-        "type": "object",
-        "properties": {
-          "carId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Location": {
-        "type": "object",
-        "properties": {
-          "latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double"
           }
         },
         "additionalProperties": false
@@ -4458,39 +4191,15 @@
         },
         "additionalProperties": false
       },
-      "Order": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "category": {
-            "type": "string",
-            "nullable": true
-          },
-          "productId": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "string",
-            "nullable": true
-          },
-          "image": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
+      "MotorbikeTypes": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "OrderHelpooDTO": {
         "type": "object",
@@ -4567,41 +4276,6 @@
             "minLength": 1,
             "type": "string",
             "format": "email"
-          }
-        },
-        "additionalProperties": false
-      },
-      "RefreshTokens": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "refreshToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "expiredDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "revokeTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "isExpired": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "isActive": {
-            "type": "boolean",
-            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -4795,62 +4469,73 @@
         },
         "additionalProperties": false
       },
-      "Trip": {
+      "UpdateMotorbikeDTO": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int32"
           },
-          "userId": {
+          "name": {
             "type": "string",
             "nullable": true
           },
-          "user": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
-          "pickupLocation": {
-            "$ref": "#/components/schemas/Location"
-          },
-          "destinationLocation": {
-            "$ref": "#/components/schemas/Location"
-          },
-          "tripDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "firstName": {
+          "year": {
             "type": "string",
             "nullable": true
           },
-          "lastName": {
+          "model": {
             "type": "string",
             "nullable": true
           },
-          "phonenumber": {
+          "color": {
             "type": "string",
             "nullable": true
           },
-          "status": {
-            "$ref": "#/components/schemas/TripStatus"
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "vehicleImages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "nullable": true
           },
           "price": {
             "type": "number",
             "format": "double"
+          },
+          "prand": {
+            "type": "string",
+            "nullable": true
+          },
+          "condition": {
+            "type": "string",
+            "nullable": true
+          },
+          "motorbikeType": {
+            "type": "string",
+            "nullable": true
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "motor_Capacity": {
+            "type": "string",
+            "nullable": true
+          },
+          "discount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
-      },
-      "TripStatus": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32"
       },
       "UpdateTurnDTO": {
         "type": "object",
@@ -4878,6 +4563,36 @@
         },
         "additionalProperties": false
       },
+      "UpdateWashTurnDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "turnDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "carType": {
+            "type": "string",
+            "nullable": true
+          },
+          "pricingPlan": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UserSendMSGDTO": {
         "type": "object",
         "properties": {
@@ -4891,162 +4606,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "UserStatus": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "Vehicle": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "year": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "model": {
-            "type": "string",
-            "nullable": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicleImages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VehicleImage"
-            },
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "prand": {
-            "type": "string",
-            "nullable": true
-          },
-          "condition": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicleBooking": {
-            "$ref": "#/components/schemas/VehicleBookings"
-          },
-          "status": {
-            "$ref": "#/components/schemas/VehicleStatus"
-          },
-          "likeCounter": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "VehicleBookings": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userId": {
-            "type": "string",
-            "nullable": true
-          },
-          "applicationUser": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "userPhone": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicleId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "vehicle": {
-            "$ref": "#/components/schemas/Vehicle"
-          },
-          "category": {
-            "$ref": "#/components/schemas/bookingCategory"
-          }
-        },
-        "additionalProperties": false
-      },
-      "VehicleImage": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "vehicleId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "driverId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "vehicle": {
-            "$ref": "#/components/schemas/Vehicle"
-          },
-          "driver": {
-            "$ref": "#/components/schemas/Driver"
-          },
-          "imageUrl": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "VehicleStatus": {
-        "enum": [
-          0,
-          1
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "bookingCategory": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32"
       },
       "confirmDriverDTO": {
         "type": "object",

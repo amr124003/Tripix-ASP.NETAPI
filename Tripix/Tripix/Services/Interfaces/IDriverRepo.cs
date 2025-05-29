@@ -15,7 +15,7 @@ namespace Tripix.Services
         public Task<ConfirmTripResponse?> ConfirmTrip ( confirmTripDto model, string DriverId );
         public Task<bool> SetTripAsAvailable ( Trip newtrip, Driver driver );
         public Task<List<OrderTripDTO>> AvilableTrips ( string token );
-        public  Task<Result> SendMessage ( DriverSendMSGDTO model );
+        public Task<Result> SendMessage ( DriverSendMSGDTO model );
         public Task<Result> DriverRegister ( DriverRegisterDTO model );
     }
 }

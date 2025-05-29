@@ -1,4 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Tripix.Abstractions;
+using Tripix.Contracts.Common;
+using Tripix.Contracts.ElectricCar;
+using Tripix.Services.Interfaces;
 using Tripix.View_Models;
 
 namespace Tripix.Controllers
@@ -7,40 +11,47 @@ namespace Tripix.Controllers
     [ApiController]
     public class ElectricCarsController : ControllerBase
     {
-        [HttpGet("BEVCars")]
-        public IActionResult GetBEVCars ()
+        private readonly IUnitOfWork unitOfWork;
+
+        public ElectricCarsController (IUnitOfWork unitOfWork)
         {
-            return Ok("BEV cars");
+            this.unitOfWork = unitOfWork;
         }
-        [HttpGet("PHEVCars")]
-        public IActionResult GetPHEVCars ()
+        [HttpPost("GetElectricCars")]
+        public async Task<IActionResult> GetElectricCars ( RequestFilter model )
         {
-            return Ok("PHEV cars");
+            var response = await unitOfWork.ElectricCarRepo.GetAll(model);
+
+            return Ok(response);
         }
-        [HttpGet("HEVCars")]
-        public IActionResult GetHEVCars ()
-        {
-            return Ok("HEV cars");
-        }
+
         [HttpPost("AddElctricCar")]
-        public IActionResult AddElectricCar ( ElectricCarDTO model )
+        public async Task<IActionResult> AddElectricCar ( AddElectricCatDTO model )
         {
-            return Ok("Electric car added");
+            var response = await unitOfWork.ElectricCarRepo.AddCar(model);
+
+            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpPut("UpdateElectricCar")]
-        public IActionResult UpdateElectricCar ( int Id )
+        public async Task<IActionResult> UpdateElectricCar ( UpdateElectricCarDto model )
         {
-            return Ok("Electric car updated");
+            var response = await unitOfWork.ElectricCarRepo.UpdateCar(model);
+
+            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpDelete("DeleteElectricCar")]
-        public IActionResult DeleteElectricCar ( int Id )
+        public async Task<IActionResult> DeleteElectricCar ( int Id )
         {
-            return Ok("Electric car deleted");
+            var response = await unitOfWork.ElectricCarRepo.DeleteCar(Id);
+
+            return response.IsSuccess ? Ok(response) : response.ToProblem();
         }
-        [HttpPost("BookingElectricCar")]
-        public IActionResult BookingElectricCar ( CarBookingDTO model )
+        [HttpGet("GetBrands")]
+        public async Task<IActionResult> GetBrands ()
         {
-            return Ok("Electric car booked");
+            var response = await unitOfWork.ElectricCarRepo.GetBrands();
+
+            return Ok(response);
         }
     }
 }

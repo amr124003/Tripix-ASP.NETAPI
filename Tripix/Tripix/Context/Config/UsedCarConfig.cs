@@ -17,15 +17,15 @@ namespace Tripix.Context.Config
 
             builder.OwnsOne(x => x.CarLocation);
 
-            
-            
+
+
 
             builder.HasData(new List<UsedCar>
             {
                  new() {
                     Id = 7 ,
                     Name = "Porsche Taycan 2024",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 4000 ,
                     Year = "2024",
                     FuelType = "Electric",
@@ -41,7 +41,7 @@ namespace Tripix.Context.Config
                  new() {
                     Id = 9 ,
                     Name = "Skoda Kodiaq 2024 Laurin & Klement",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 6500 ,
                     Year = "2024",
                     FuelType = "Benzine",
@@ -57,7 +57,7 @@ namespace Tripix.Context.Config
                   new() {
                     Id = 12 ,
                     Name = "Kia EV5 2024",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 15449 ,
                     Year = "2024",
                     FuelType = "Benzine",
@@ -72,7 +72,7 @@ namespace Tripix.Context.Config
                   new() {
                     Id = 13 ,
                     Name = "RANGE ROVE EVOQUE 2021",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 7000 ,
                     Year = "2021",
                     FuelType = "Benzine",
@@ -87,7 +87,7 @@ namespace Tripix.Context.Config
                   new() {
                     Id = 17 ,
                     Name = "BMW X6 M50i2017",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 170000 ,
                     Year = "2017",
                     FuelType = "Benzine",
@@ -104,7 +104,7 @@ namespace Tripix.Context.Config
                   new() {
                     Id = 18 ,
                     Name = "Jaguar F-type 2021 mti",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 30000 ,
                     Year = "2021",
                     FuelType = "Benzine",
@@ -121,7 +121,7 @@ namespace Tripix.Context.Config
                   new() {
                     Id = 19 ,
                     Name = "BMW 750 Li 2009",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 129000 ,
                     Year = "2009",
                     FuelType = "Benzine",
@@ -138,7 +138,7 @@ namespace Tripix.Context.Config
                    new() {
                     Id = 21 ,
                     Name = "Mercedes-Benz C180 2009",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 220000 ,
                     Year = "2009",
                     FuelType = "Benzine",
@@ -155,7 +155,7 @@ namespace Tripix.Context.Config
                    new() {
                     Id = 22 ,
                     Name = "Mercedes-Benz G63 2022 AMG",
-                    UsedCondition = "Like New",
+
                     KilometersDriven = 15000 ,
                     Year = "2022",
                     FuelType = "Benzine",

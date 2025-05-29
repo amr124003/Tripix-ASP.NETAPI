@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Tripix.Authentication;
 using Tripix.Context;
+using Tripix.Contracts.Authentication;
 using Tripix.Entities;
 using Tripix.Hubs;
 using Tripix.Services.Interfaces;
@@ -12,16 +14,18 @@ namespace Tripix.Services.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbcontext context;
-        private readonly IJwtProvider jwtprovider;
         private readonly IHttpContextAccessor httpcontext;
-        private readonly IDistributedCache cache;
-        private readonly IHubContext<UserHub> hubContext;
-        private readonly IHubContext<RideHub> ridecontext;
         private readonly UserManager<ApplicationUser> usermanger;
         private readonly SignInManager<ApplicationUser> signinmanger;
         private readonly RoleManager<IdentityRole> rolemanger;
+        private readonly IOptions<JwtOptions> options;
+        private readonly IHubContext<RideHub> ridecontext;
+        private readonly IHubContext<UserHub> hubContext;
+        private readonly IDistributedCache cache;
 
         public IAdminRepo adminService { get; }
+
+        public IJwtProvider jwtProvider { get; }
 
         public IAuthService authService { get; }
 
@@ -37,19 +41,42 @@ namespace Tripix.Services.Repositories
 
         public IRent RentService { get; }
 
-        public IRepair RepairService { get; }
+        public IRepair repairService { get; }
 
-        public UnitOfWork ( IAdminRepo adminService, IAuthService authService, IBlog blogService, IDriverRepo driverService, ITripRepo tripService, IUserRepo userService, ICarRepo carRepo, IRent rentService, IRepair repairService )
+        public IMotorbike MotorbikeRepo { get; }
+
+        public IVehicle VehicleRepo { get; }
+
+        public IElectricCar ElectricCarRepo { get; }
+
+        public IWash WashServiceRepo {  get; }
+
+        public UnitOfWork ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> signinmanger, RoleManager<IdentityRole> rolemanger, IOptions<JwtOptions> options, IHttpContextAccessor httpcontext, IHubContext<UserHub> hubContext, IHubContext<RideHub> ridecontext, IDistributedCache cache )
         {
-            this.adminService = adminService;
-            this.authService = authService;
-            BlogService = blogService;
-            this.driverService = driverService;
-            this.tripService = tripService;
-            this.userService = userService;
-            this.carRepo = carRepo;
-            RentService = rentService;
-            RepairService = repairService;
+            adminService = new AdminRepo(usermanger, rolemanger);
+            jwtProvider = new JwtProvider(options);
+            authService = new AuthService(usermanger, signinmanger, context, jwtProvider, httpcontext, cache);
+            BlogService = new BlogRepo(context);
+            driverService = new DriverRepo(context, usermanger, jwtProvider, hubContext, cache);
+            tripService = new TripRepo(context, usermanger, jwtProvider, ridecontext);
+            userService = new UserRepo(usermanger, context, ridecontext);
+            carRepo = new CarRepo(context, usermanger);
+            RentService = new RentRepo(context, usermanger);
+            repairService = new RepairRepo(context, usermanger);
+            MotorbikeRepo = new MotorbikeRepo(context);
+            VehicleRepo = new VehicleRepo(context, usermanger);
+            ElectricCarRepo = new ElectricCarRepo(context);
+            WashServiceRepo = new WashRepo(usermanger, context);
+
+            this.context = context;
+            this.usermanger = usermanger;
+            this.signinmanger = signinmanger;
+            this.rolemanger = rolemanger;
+            this.options = options;
+            this.httpcontext = httpcontext;
+            this.ridecontext = ridecontext;
+            this.cache = cache;
+            this.hubContext = hubContext;
         }
 
         public void Dispose ()

@@ -16,7 +16,7 @@ namespace Tripix.Services.Repositories
     public class CarRepo : ICarRepo
     {
         private readonly ApplicationDbcontext context;
-        
+
         private readonly UserManager<ApplicationUser> usermanger;
 
         public CarRepo ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger )
@@ -28,71 +28,56 @@ namespace Tripix.Services.Repositories
         {
             if (model.CarImages is null || model.CarImages.Count == 0)
             {
-                return Result.Failure<CarResponse>(CarErrors.ImagesNotFound);
+                return Result.Failure<CarResponse>(VehicleErrors.ImagesNotFound);
             }
 
-            var Car = model.Adapt<Car>();
+            using var Transaction = context.Database.BeginTransaction();
 
-            Car.Gearbox_Type = (GearboxTypes)Enum.Parse(typeof(GearboxTypes), model.Gearbox_Type);
-
-            foreach (var image in model.CarImages)
+            try
             {
-                var imagepath = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.CarImageUrl}{image.FileName}");
 
-                using (var steam = new FileStream(imagepath, FileMode.Create))
+                var Car = model.Adapt<Car>();
+                Car.Gearbox_Type = (GearboxTypes)Enum.Parse(typeof(GearboxTypes), model.Gearbox_Type);
+
+                foreach (var image in model.CarImages)
                 {
-                    await image.CopyToAsync(steam);
+                    var imagepath = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.CarImageUrl}{image.FileName}");
+
+                    using (var steam = new FileStream(imagepath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(steam);
+                    }
+
+                    Car.VehicleImages.Add(new VehicleImage
+                    {
+                        ImageUrl = $"{Urls.CarImageUrl}{image.FileName}"
+                    });
+
                 }
 
-                Car.VehicleImages.Add(new VehicleImage
-                {
-                    ImageUrl = $"{Urls.CarImageUrl}{image.FileName}"
-                });
+                context.Vehicles.Add(Car);
+                context.SaveChanges();
+                await Transaction.CommitAsync();
 
+                var Response = Car.Adapt<CarResponse>();
+
+                return Result.Success(Response);
+            }
+            catch (Exception)
+            {
+                await Transaction.RollbackAsync();
+                return Result.Failure<CarResponse>(VehicleErrors.VehicleCannotAdded);
             }
 
-            context.Vehicles.Add(Car);
-            context.SaveChanges();
-
-            var Response = Car.Adapt<CarResponse>();
-
-            return Result.Success(Response);
         }
 
-        public async Task<Result<CarResponse>> BookingCar ( string UserId, BookCarDto model )
-        {
-            var Car = context.Vehicles.OfType<Car>().FirstOrDefault(x => x.Id == model.CarId);
 
-            if (Car == null) { return Result.Failure<CarResponse>(CarErrors.CarNotFound); }
-
-            if (Car.Status == VehicleStatus.Booked) { return Result.Failure<CarResponse>(CarErrors.CarIsBooked); }
-
-            var user = await usermanger.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == UserId);
-
-            if (user == null) { return Result.Failure<CarResponse>(UserErrors.UserNotFound); }
-
-            if (user.IsDisabled) { return Result.Failure<CarResponse>(UserErrors.DisabledUser); }
-
-            Car!.VehicleBooking = new VehicleBookings()
-            {
-                UserId = UserId,
-                UserName = user.Name,
-                UserEmail = user.Email,
-                UserPhone = user.PhoneNumber,
-                Category = bookingCategory.Car
-            };
-
-            var Response = Car.Adapt<CarResponse>();
-
-            await context.SaveChangesAsync();
-            return Result.Success(Response);
-        }
 
         public async Task<Result> DeleteCar ( int id )
         {
             var Car = context.Vehicles.OfType<Car>().FirstOrDefault(x => x.Id == id);
 
-            if (Car == null) { return Result.Failure<CarResponse>(CarErrors.CarNotFound); }
+            if (Car == null) { return Result.Failure<CarResponse>(VehicleErrors.VehicleNotFound); }
 
             context.Vehicles.Remove(Car);
             await context.SaveChangesAsync();
@@ -102,6 +87,7 @@ namespace Tripix.Services.Repositories
         public async Task<Result<PaginatedList<CarResponse>>> GetCars ( RequestFilter filters, CancellationToken CanToken )
         {
             var Cars = await context.Vehicles.OfType<Car>()
+                .AsNoTracking()
                 .ApplyFilter<Car>(filters.SearchValues)
                 .ProjectToType<CarResponse>()
                 .CreatePaginatedList<CarResponse>(filters.PageNumber, filters.PageSize, CanToken);
@@ -115,38 +101,21 @@ namespace Tripix.Services.Repositories
         {
             var Car = context.Vehicles.OfType<Car>().FirstOrDefault(x => x.Id == id);
 
-            if (Car == null) { return Result.Failure<Car>(CarErrors.CarNotFound); }
+            if (Car == null) { return Result.Failure<Car>(VehicleErrors.VehicleNotFound); }
 
             return Result.Success(Car);
         }
 
-        public async Task<Result> LikeCar ( string UserId, LikeCarDTO model )
-        {
-            var Car = context.Vehicles.OfType<Car>().FirstOrDefault(x => x.Id == model.CarId);
 
-            if (Car == null) { return Result.Failure<Car>(CarErrors.CarNotFound); }
-
-            var user = await usermanger.Users.Include(x => x.FavouriteProducts).FirstOrDefaultAsync(x => x.Id == UserId);
-
-            if (user == null) { return Result.Failure(UserErrors.UserNotFound); }
-
-            var favCar = Car.Adapt<FavouriteProduct>();
-
-            Car.LikeCounter++;
-            user.FavouriteProducts.Add(favCar);
-
-            await context.SaveChangesAsync();
-
-            return Result.Success();
-        }
 
         public async Task<Result<CarResponse>> UpdateCar ( int Id, CarDTO model )
         {
             var Car = context.Vehicles.OfType<Car>().FirstOrDefault(x => x.Id == Id);
 
-            if (Car == null) { return Result.Failure<CarResponse>(CarErrors.CarNotFound); }
+            if (Car == null) { return Result.Failure<CarResponse>(VehicleErrors.VehicleNotFound); }
 
             var UpdatedCar = model.Adapt<Car>();
+            context.Vehicles.Update(UpdatedCar);
             await context.SaveChangesAsync();
 
             var Response = Car.Adapt<CarResponse>();
@@ -157,6 +126,7 @@ namespace Tripix.Services.Repositories
         public async Task<List<BrandDto>> GetBrands ()
         {
             var res = context.Brands.Include(x => x.Models)
+                .Where(x => x.VehicleType == vehicletype.Car)
                 .Adapt<List<BrandDto>>();
 
             return res;

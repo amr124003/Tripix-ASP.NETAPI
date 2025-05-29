@@ -1,11 +1,15 @@
 using Mapster;
-using Microsoft.VisualBasic;
+using Tripix.Abstractions.Consts;
 using Tripix.Contracts.Admin;
 using Tripix.Contracts.Car;
 using Tripix.Contracts.CarRental;
 using Tripix.Contracts.CarRepair;
 using Tripix.Contracts.Driver;
+using Tripix.Contracts.ElectricCar;
+using Tripix.Contracts.Motorbikes;
 using Tripix.Contracts.Trip;
+using Tripix.Contracts.Vehicle;
+using Tripix.Contracts.Wash;
 using Tripix.Entities;
 using Tripix.View_Models;
 
@@ -57,12 +61,24 @@ namespace Tripix.Mapping
                 .Map(dest => dest.Title, src => src.Title)
                 .Map(dest => dest.Content, src => src.Content);
 
-            config.NewConfig<CarDTO, Car>();
+            config.NewConfig<CarDTO, Car>()
+                .Map(dest => dest.Gearbox_Type, src => Enum.Parse<GearboxTypes>(src.Gearbox_Type));
 
 
 
             TypeAdapterConfig<Car, CarResponse>.NewConfig()
                 .Map(dest => dest.ImagesUrls, src => src.VehicleImages.Select(x => x.ImageUrl));
+
+            TypeAdapterConfig<Motorbikes, Motorbikeresponse>.NewConfig()
+                .Map(dest => dest.ImagesUrls, src => src.VehicleImages.Select(x => x.ImageUrl));
+
+
+            TypeAdapterConfig<ElectricCars, ElectricCarsResponse>.NewConfig()
+               .Map(dest => dest.ImagesUrls, src => src.VehicleImages.Select(x => x.ImageUrl));
+
+
+
+
 
             config.NewConfig<Car, FavouriteProduct>();
 
@@ -87,11 +103,11 @@ namespace Tripix.Mapping
 
             config.NewConfig<BookingTurnDTO, RepairBookings>();
 
-            config.NewConfig<RepairBookings,CarRepairResponse>();
+            config.NewConfig<RepairBookings, CarRepairResponse>();
 
             config.NewConfig<UpdateTurnDTO, RepairBookings>();
 
-            TypeAdapterConfig<Trip , OrderTripDTO>.NewConfig()
+            TypeAdapterConfig<Trip, OrderTripDTO>.NewConfig()
                 .Map(src => src.TripId, dest => dest.Id)
                 .Map(src => src.PickupLatitude, dest => dest.PickupLocation.Latitude)
                 .Map(src => src.PickupLongitude, dest => dest.PickupLocation.Longitude)
@@ -103,6 +119,22 @@ namespace Tripix.Mapping
                 .Map(src => src.TripDate, dest => dest.TripDate);
 
             config.NewConfig<DriverRegisterDTO, Driver>();
+
+            config.NewConfig<Motorbikes, Motorbikeresponse>();
+
+            config.NewConfig<Motorbikes, AddmotorbikesDTO>();
+
+            config.NewConfig<UpdateMotorbikeDTO, Motorbikes>();
+
+            config.NewConfig<Vehicle, VehicleResponse>();
+
+            config.NewConfig<AddElectricCatDTO, ElectricCars>();
+
+            config.NewConfig<AddWashDTO, WashBooking>();
+
+            
+
+            config.NewConfig<UpdateElectricCarDto, ElectricCars>();
         }
     }
 }

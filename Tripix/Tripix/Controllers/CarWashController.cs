@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Tripix.Abstractions;
+using Tripix.Contracts.Wash;
+using Tripix.Services.Interfaces;
 using Tripix.View_Models;
 
 namespace Tripix.Controllers
@@ -7,40 +12,68 @@ namespace Tripix.Controllers
     [ApiController]
     public class CarWashController : ControllerBase
     {
-        [HttpPost("BookWashTurn")]
-        public IActionResult BookTurn ( AddWashDTO model )
+        private readonly IUnitOfWork unitOfWork;
+
+        public CarWashController ( IUnitOfWork unitOfWork )
         {
-            return Ok("Turn booked");
+            this.unitOfWork = unitOfWork;
         }
-        [HttpGet("GetWashTurn")]
-        public IActionResult GetTurnDetails ()
+
+        [HttpPost("BookWashTurn")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> BookTurn ( AddWashDTO model )
         {
-            return Ok("Turn");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var response = await unitOfWork.WashServiceRepo.BookingTurn(UserId!, model);
+
+            return response.IsSuccess ? Ok(response) : response.ToProblem();
+        }
+        [HttpGet("GetWashTurn/{TurnId}")]
+        [Authorize]
+        public async Task<IActionResult> GetTurnDetails ( int TurnId )
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var response = await unitOfWork.WashServiceRepo.GetTurnDetails(TurnId, UserId!);
+
+            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpPut("UpdateBooking")]
-        public IActionResult UpdateTurn ( int Id )
+        [Authorize]
+        public async Task<IActionResult> UpdateTurn ( UpdateWashTurnDTO model )
         {
-            return Ok("Turn updated");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var response = await unitOfWork.WashServiceRepo.UpdateTurn(UserId, model);
+
+            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpDelete("CencelBooking")]
-        public IActionResult DeleteTurn ( int Id )
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteTurn ( int Id )
         {
-            return Ok("Turn deleted");
+            var response = await unitOfWork.WashServiceRepo.DeleteTurn(Id);
+
+            return response.IsSuccess ? Ok(response) : response.ToProblem();
+
+        }
+        [HttpDelete]
+        public async Task<IActionResult> CancelTurn ( int Id )
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var response = await unitOfWork.WashServiceRepo.CancelTurn(UserId!, Id);
+
+            return response.IsSuccess ? Ok(response) : response.ToProblem();
         }
         [HttpGet("GetWashBookings")]
-        public IActionResult GetTurns ()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetTurns ()
         {
-            return Ok("Turns");
-        }
-        [HttpGet("GetWashBooking")]
-        public IActionResult GetTurn ( int Id )
-        {
-            return Ok("Turn");
-        }
-        [HttpDelete("CancelTurn")]
-        public IActionResult Cancelturn ( int Id )
-        {
-            return Ok("Turn canceled");
+            var response = await unitOfWork.WashServiceRepo.GetTurns();
+
+            return Ok(response);
         }
     }
 }

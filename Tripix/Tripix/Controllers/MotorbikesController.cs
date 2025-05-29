@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Tripix.View_Models;
+using Tripix.Abstractions;
+using Tripix.Contracts.Common;
+using Tripix.Contracts.Motorbikes;
+using Tripix.Services.Interfaces;
 
 namespace Tripix.Controllers
 {
@@ -7,46 +10,48 @@ namespace Tripix.Controllers
     [ApiController]
     public class MotorbikesController : ControllerBase
     {
-        [HttpGet("StandardMotorbikes")]
-        public IActionResult GetStandardMotorbikes ()
+        private readonly IUnitOfWork unitOfWork;
+
+        public MotorbikesController ( IUnitOfWork unitOfWork )
         {
-            return Ok("Standard motorbikes");
+            this.unitOfWork = unitOfWork;
         }
-        [HttpGet("CruiserMotorbikes")]
-        public IActionResult GetCruiserMotorbikes ()
+        [HttpPost("GetMotorbikes")]
+        public async Task<IActionResult> GetMotorbikes ( [FromBody] RequestFilter filters )
         {
-            return Ok("Cruiser motorbikes");
-        }
-        [HttpGet("SportMotorbikes")]
-        public IActionResult GetSportMotorbikes ()
-        {
-            return Ok("Sport motorbikes");
-        }
-        [HttpGet("Off_RoadMotorbikes")]
-        public IActionResult GetOff_RoadMotorbikes ()
-        {
-            return Ok("Off_Road motorbikes");
+            var response = await unitOfWork.MotorbikeRepo.GetAll(filters);
+
+            return Ok(response);
         }
         [HttpPost("AddMotorbike")]
-        public IActionResult AddMotorbike (AddmotorbikesDTO model)
+        public async Task<IActionResult> AddMotorbike ( [FromBody] AddMotorbikeDTO model )
         {
-            return Ok("Motorbike added");
+            var response = await unitOfWork.MotorbikeRepo.AddMotorbike(model);
+
+            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpPut("UpdateMotorbike")]
-        public IActionResult UpdateMotorbike (int Id)
+        public async Task<IActionResult> UpdateMotorbike ( [FromBody] UpdateMotorbikeDTO model )
         {
-            return Ok("Motorbike updated");
+            var response = await unitOfWork.MotorbikeRepo.UpdateMotorbike(model);
+
+            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
-        [HttpDelete("DeleteMotorbike")]
-        public IActionResult DeleteMotorbike (int Id)
+        [HttpDelete("DeleteMotorbike/{Id}")]
+        public async Task<IActionResult> DeleteMotorbikeAsync ( int Id )
         {
-            return Ok("Motorbike deleted");
+            var response = await unitOfWork.MotorbikeRepo.DeleteMotorbike(Id);
+
+            return response.IsSuccess ? Ok(response) : response.ToProblem();
         }
-        [HttpPost("BookingMotorbike")]
-        public IActionResult BookMotorbike ()
+        [HttpGet("GetMotorbikesBrands")]
+        public async Task<IActionResult> Getbrands ()
         {
-            return Ok("Motorbike booked");
+            var res = await unitOfWork.MotorbikeRepo.GetBrands();
+
+            return Ok(res);
         }
+
 
     }
 }

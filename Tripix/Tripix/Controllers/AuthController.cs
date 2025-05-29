@@ -11,11 +11,12 @@ namespace Tripix.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService authService;
+        private readonly IUnitOfWork unitOfWork;
 
-        public AuthController ( IAuthService AuthService )
+        public AuthController ( IUnitOfWork unitOfWork )
         {
-            authService = AuthService;
+
+            this.unitOfWork = unitOfWork;
         }
         [HttpPost("Register")]
         public async Task<IActionResult> Register ( [FromBody] RegisterModel model )
@@ -25,7 +26,7 @@ namespace Tripix.Controllers
                 return BadRequest(model);
             }
 
-            var authresult = await authService.RegisterAsync(model);
+            var authresult = await unitOfWork.authService.RegisterAsync(model);
 
             return authresult.IsSuccess ? Ok(authresult) : authresult.ToProblem();
 
@@ -40,7 +41,7 @@ namespace Tripix.Controllers
                 return BadRequest(model);
             }
 
-            var authResult = await authService.GetTokenAsync(model, cancellationToken);
+            var authResult = await unitOfWork.authService.GetTokenAsync(model, cancellationToken);
 
             if (!authResult.IsSuccess)
             {
@@ -64,6 +65,7 @@ namespace Tripix.Controllers
         }
 
         [HttpGet("RefreshToken")]
+        
         public async Task<IActionResult> Refreshtoken ()
         {
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();
@@ -75,8 +77,11 @@ namespace Tripix.Controllers
                 // ﬂœÂ „⁄«ﬂ «· token ›Ì «·„ €Ì— token
             }
 
+            var refreshToken = Request.Cookies["refreshToken"];
 
-            var authResult = await authService.GetRefreshtoken(token);
+
+
+            var authResult = await unitOfWork.authService.GetRefreshtoken(refreshToken , token);
 
             var AuthResponse = authResult.Value;
 
@@ -101,7 +106,7 @@ namespace Tripix.Controllers
 
             if (Token == null) { return BadRequest("Refresh Token Is Required"); }
 
-            var authResult = await authService.RevokeRefreshTokenAsync(model.Token);
+            var authResult = await unitOfWork.authService.RevokeRefreshTokenAsync(model.Token);
 
             return authResult ? Ok() : BadRequest("Invalid Refresh Token");
         }
@@ -109,7 +114,7 @@ namespace Tripix.Controllers
         [HttpPost("Confirm-Email")]
         public async Task<IActionResult> confirmEmail ( [FromBody] ConfirmationEmailRequest request )
         {
-            var authResult = await authService.ConfirmEmailAsync(request);
+            var authResult = await unitOfWork.authService.ConfirmEmailAsync(request);
 
             var RefreshToken = authResult.Value.RefreshToken;
 
@@ -121,14 +126,14 @@ namespace Tripix.Controllers
         [HttpPost("Resend-ConfirmationOTP")]
         public async Task<IActionResult> ResendConfirmEmail ( [FromBody] ResendConfirmationEmailRequest model )
         {
-            var authResult = await authService.ResendConfirmEmailAsync(model);
+            var authResult = await unitOfWork.authService.ResendConfirmEmailAsync(model);
 
             return authResult.IsSuccess ? Ok(authResult) : authResult.ToProblem();
         }
         [HttpPost("Forget-Password")]
         public async Task<IActionResult> ForgetPassword ( [FromBody] SendResetPasswordRequest model )
         {
-            var authResult = await authService.SendResetPasswordCodeAsync(model);
+            var authResult = await unitOfWork.authService.SendResetPasswordCodeAsync(model);
 
             return authResult.IsSuccess ? Ok(authResult) : authResult.ToProblem();
         }
@@ -136,17 +141,17 @@ namespace Tripix.Controllers
         [HttpPost("Reset-Password")]
         public async Task<IActionResult> ResetPassword ( [FromBody] ResetPasswordRequest model )
         {
-            var authResult = await authService.ResetPassowrdAsync(model);
+            var authResult = await unitOfWork.authService.ResetPassowrdAsync(model);
 
             return authResult.IsSuccess ? Ok(authResult) : authResult.ToProblem();
         }
 
-        
+
 
         [HttpPost("GoogleLogin")]
         public async Task<IActionResult> GoogleLogin ( [FromBody] GoogleAuthDTO model )
         {
-            var authResult = await authService.GoogleLogin(model);
+            var authResult = await unitOfWork.authService.GoogleLogin(model);
 
             var refreshtoken = authResult.Value.RefreshToken;
 

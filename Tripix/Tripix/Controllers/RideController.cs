@@ -23,7 +23,7 @@ namespace Tripix.Controllers
             {
                 return BadRequest("Invalid data.");
             }
-            // Send the driver's location to all clients in the ride group
+ 
             hubcontext.Clients.Group(model.RideID).SendAsync("ReceiveDriverLocation", model.Latitude, model.Longitude);
             return Ok("Driver location updated successfully.");
         }

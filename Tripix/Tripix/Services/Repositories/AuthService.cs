@@ -110,7 +110,7 @@ namespace Tripix.Services.Repositories
 
             return Result.Failure<AuthResponse>(res.IsNotAllowed ? UserErrors.DisabledUser : UserErrors.InvalidCredentials);
         }
-        public async Task<Result<AuthResponse>?> GetRefreshtoken ( string Token, CancellationToken cencellationtoken )
+        public async Task<Result<AuthResponse>?> GetRefreshtoken (string RefToken ,  string Token, CancellationToken cencellationtoken )
         {
             var UserId = jwtprovider.ValidateToken(Token);
             var AuthResponse = new AuthResponse();
@@ -122,7 +122,7 @@ namespace Tripix.Services.Repositories
                 return Result.Failure<AuthResponse>(UserErrors.UserNotFound);
             }
 
-            var refreshtoken = user.REFTokens.FirstOrDefault(x => x.RefreshToken == Token);
+            var refreshtoken = user.REFTokens.FirstOrDefault(x => x.RefreshToken == RefToken);
 
             if (!refreshtoken.IsActive)
             {
@@ -176,6 +176,7 @@ namespace Tripix.Services.Repositories
             var result = await usermanger.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await usermanger.AddToRoleAsync(user, "User");
                 var fromEmail = Environment.GetEnvironmentVariable("superAdminEmail");
                 var fromPassword = Environment.GetEnvironmentVariable("SMTPPassword");
 
@@ -289,9 +290,8 @@ namespace Tripix.Services.Repositories
             }
 
             user.EmailConfirmed = true;
-            await usermanger.AddToRoleAsync(user, "User");
-            await usermanger.UpdateAsync(user);
 
+            await usermanger.UpdateAsync(user);
             await cache.RemoveAsync($"OTP{user.Name}");
 
             var UserRoles = await usermanger.GetRolesAsync(user);

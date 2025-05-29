@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Tripix.Abstractions;
 using Tripix.Context;
 using Tripix.Services.Interfaces;
 
@@ -8,17 +9,17 @@ namespace Tripix.Services.Repositories
     {
         private readonly ApplicationDbcontext context;
         public DbSet<T> Entity;
-        
 
-        public Repository (ApplicationDbcontext context)
+
+        public Repository ( ApplicationDbcontext context )
         {
             this.context = context;
-            Entity = context.Set<T> (); 
+            Entity = context.Set<T>();
         }
         public async Task<T> CreateAsync ( T entity )
         {
-            await Entity.AddAsync( entity );  
-            await context.SaveChangesAsync (); 
+            await Entity.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
@@ -30,7 +31,7 @@ namespace Tripix.Services.Repositories
 
         public async Task<List<T>> GetAllAsync ()
         {
-            return Entity.ToListAsync().Result ?? new List<T> ();
+            return Entity.ToListAsync().Result ?? new List<T>();
         }
 
         public async Task<T> GetbyId ( int id )
@@ -43,6 +44,11 @@ namespace Tripix.Services.Repositories
             Entity.Update(entity);
             await context.SaveChangesAsync();
             return entity;
+        }
+
+        Task<PaginatedList<T>> IRepository<T>.GetAllAsync ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

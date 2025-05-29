@@ -14,6 +14,9 @@ namespace Tripix.Entities
         public List<Order> Orders { get; set; } = new();
         public List<Trip> Trips { get; set; } = new();
         public UserStatus UserStatus { get; set; } = UserStatus.Offline;
+        public List<WashBooking> WashBookings { get; set; } = new();
+        public List<RepairBookings> RepairBookings { get; set; } = new();
+        public List<HelpooOrders> HelpooOrders { get; set; } = new();
         public string? ConnectionId { get; set; }
     }
 }

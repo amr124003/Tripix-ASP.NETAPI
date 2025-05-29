@@ -30,7 +30,6 @@ namespace Tripix.Hubs
 
             await base.OnConnectedAsync();
         }
-
         public async Task UpdateLocation ( DriverLocation locationDto )
         {
             var httpContext = Context.GetHttpContext();
@@ -43,8 +42,6 @@ namespace Tripix.Hubs
                 await driverRepo.UpdateDriverLocationAsync(driverID, locationDto);
             }
         }
-
-
         public override async Task OnDisconnectedAsync ( Exception ex )
         {
             var httpContext = Context.GetHttpContext();

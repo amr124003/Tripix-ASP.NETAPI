@@ -10,12 +10,12 @@ using Tripix.Services.Interfaces;
 
 namespace Tripix.Services.Repositories
 {
-    public class RepairService : IRepair
+    public class RepairRepo : IRepair
     {
         private readonly ApplicationDbcontext context;
         private readonly UserManager<ApplicationUser> usermanger;
 
-        public RepairService ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger )
+        public RepairRepo ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger )
         {
             this.context = context;
             this.usermanger = usermanger;

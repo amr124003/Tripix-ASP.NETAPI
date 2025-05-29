@@ -30,7 +30,7 @@ namespace Tripix.Context.Config
                     Price = 5550000,
                     Prand = "Mercedes",
                     Motor_Capacity = "2000 CC",
-                    Condition = "New",
+
                     Gearbox_Type = GearboxTypes.Automatic,
                     Rate = 5,
                     CarType = CarTypes.Sedan
@@ -45,7 +45,7 @@ namespace Tripix.Context.Config
                     Price = 24000000,
                     Prand = "Mercedes",
                     Motor_Capacity = "4000 CC",
-                    Condition = "New",
+
                     Gearbox_Type = GearboxTypes.Automatic,
                     Rate = 5,
                     CarType = CarTypes.Sedan,
@@ -63,7 +63,7 @@ namespace Tripix.Context.Config
                     Price = 1600000,
                     Prand = "Toyota",
                     Motor_Capacity = "1600 CC",
-                    Condition = "New",
+
                     Gearbox_Type = GearboxTypes.Automatic,
                     Rate = 5,
                     CarType = CarTypes.Sedan
@@ -78,7 +78,7 @@ namespace Tripix.Context.Config
                     Price = 6250000,
                     Prand = "Mercedes",
                     Motor_Capacity = "2000 CC",
-                    Condition = "New",
+
                     Gearbox_Type = GearboxTypes.Automatic,
                     Rate = 5,
                     CarType = CarTypes.Coupe
@@ -92,7 +92,7 @@ namespace Tripix.Context.Config
                     Description = "E200 \r\nmodel 2024 \r\nzero\r\nfully loaded \r\nnight package",
                     Price = 5375000,
                     Prand = "Mercedes",
-                    Condition = "New",
+
                     Rate = 5,
                     CarType = CarTypes.Sedan,
                     Motor_Capacity = "2000 CC",
@@ -107,7 +107,7 @@ namespace Tripix.Context.Config
                     Description = "Range Rover Velar R-daynamic\r\n- Model 2025\r\n- ⁠Zero\r\n- فيها رخصه ٣ سنين\r\n- ⁠10 years warranty Protection\r\n- Engine : 2.0 liter\r\n- 250 HP\r\n- ⁠Exterior Color : Black \r\n- Interior Color : Beig leather\r\n- Apple Carplay & Android Auto\r\n- Slide Panoramic Sunroof\r\n- Meredian Sound system\r\n- Blind spot\r\n- Lane assist\r\n- Adaptive Control\r\n- 2 electric seats with memory \r\n- Head up Display\r\n- Air suspention\r\n- Ambient light system\r\n- electric trunk\r\n- Keyless Go\r\n- Front and rear sensor park\r\n- 360 camera\r\n- Heated seats\r\n- Automatic AC control\r\n- 20 inch Black allow wheel",
                     Price = 6350000,
                     Prand = "Land Rover",
-                    Condition = "New",
+
                     Rate = 5,
                     CarType = CarTypes.Sedan,
                     Motor_Capacity = "2000 CC",
@@ -122,7 +122,7 @@ namespace Tripix.Context.Config
                     Description = "Porsche Macan\r\nبورش ماكان\r\n\r\nModel 2024 (wakeel)\r\nموديل 2024 (وكيل)\r\n\r\nPre owned 17,000KM\r\nمستعملة بممشى 17,000 كم\r\n\r\nExterior: Metallic Black\r\nاللون الخارجي: أسود ميتاليك\r\n\r\nInterior: Red leather\r\nاللون الداخلي: جلد أحمر\r\n\r\nEngine type: turbocharged\r\nنوع المحرك: تيربو\r\n\r\n2L straight 4 cylinders\r\n2 لتر، 4 سلندر خطي\r\n\r\nHorsepower: 261 hp\r\nقوة المحرك: 261 حصان\r\n\r\nMax. torque 295 lb-ft\r\nأقصى عزم: 295 رطل/قدم\r\n\r\n0 - 60 mph in 5.8 seconds with Sport Chrono Package\r\nمن 0 إلى 60 ميل في الساعة في 5.8 ثانية مع باكيدج سبورت كرونو\r\n\r\nTransmission: 7-speed twin-clutch auto (PDK)\r\nناقل حركة أوتوماتيك 7 سرعات (PDK) ثنائي القابض\r\n\r\nAll wheel drive\r\nدفع كلي\r\n\r\nPanoramic sunroof\r\nفتحة سقف بانورامية\r\n\r\nRims: R20 multi spoke\r\nجنوط R20 متعددة الأذرع\r\n\r\n360 parking cameras\r\nكاميرات ركن 360 درجة\r\n\r\nBoss sound system\r\nنظام صوتي من Bose\r\n\r\nThe LED headlights including Porsche Dynamic Light System (PDLS)\r\nكشافات LED تشمل نظام الإضاءة الديناميكي من بورش (PDLS)\r\n\r\nKeyless entry and start/stop\r\nدخول وتشغيل بدون مفتاح\r\n\r\n8-way Front Sport Seats\r\nمقاعد أمامية رياضية بـ 8 وضعيات\r\n\r\nSeat heating\r\nتدفئة للمقاعد\r\n\r\nPorsche logo on seats\r\nشعار بورش على المقاعد\r\n\r\nPorsche word illuminate as welcome\r\nإضاءة كلمة Porsche عند الترحيب\r\n\r\nElectric tailgate\r\nباب شنطة خلفية كهربائي\r\n\r\nApple CarPlay\r\nابل كار بلاي\r\n\r\nAndroid Auto\r\nأندرويد أوتو\r\n\r\nWireless phone charger\r\nشاحن لاسلكي للهاتف\r\n\r\nNavigation system\r\nنظام ملاحة\r\n\r\nSport space tires\r\nكفرات سبور سبيس\r\n\r\nPrivacy glass\r\nزجاج فاميـه (خصوصي)\r\n\r\nLarge brake system with black paint callipers\r\nنظام فرامل كبير مع كاليبرات باللون الأسود\r\n\r\nElectronic brake distribution\r\nتوزيع إلكتروني لقوة الفرامل",
                     Price = 4850000,
                     Prand = "Porsche",
-                    Condition = "New",
+
                     Rate = 5,
                     CarType = CarTypes.Sedan,
                     Motor_Capacity = "2000 CC",
@@ -137,7 +137,7 @@ namespace Tripix.Context.Config
                     Description = "هونداي الينترا cn7 اعلى فئة  ٢٠٢٥ متوفرة الان في اكسدرايف اوتوموتيف\r\n\r\n\r\n\r\nالمواصفات : بصمة داخليه خارجيه ، فتحة سقف ، عدادات ديجتال ، فرش جلد ، تحديد مسار ، تسخين كراسي ، تسخين مقود ، جنوط ١٧ لونين ، مرايات ضم ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش ، سينسور بارك امامي خلفي \r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة\r\n\r\n لمزيد من التفاصيل يرجى التواصل على الارقام التالية",
                     Price = 1550000,
                     Prand = "Hyundai",
-                    Condition = "New",
+
                     Rate = 5,
                     CarType = CarTypes.Sedan,
                     Motor_Capacity = "1500 CC",
@@ -152,7 +152,7 @@ namespace Tripix.Context.Config
                     Description = "هونداي الينتراMG RX5 2024 Luxury  متوفرة الان في اكسدرايف اوتوموتيف \r\n\r\n\r\n\r\nالمواصفات : ١. ٥٠٠ سي سي توربو ، بصمة داخليه خارجيه ، فتحة سقف بانوراما ، تكييف ديجتال ، فرش جلد، جنوط١٨ ، مرايات ضم ، شاحن وايرلس ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش تدعم apple carplay و android auto ، سينسور بارك امامي خلفي ، كاميرات محيطية ٣٦٠ درجة\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
                     Price = 1450000,
                     Prand = "MG",
-                    Condition = "New",
+
                     Rate = 5,
                     CarType = CarTypes.SUV,
                     Motor_Capacity = "1500 CC",
@@ -166,7 +166,7 @@ namespace Tripix.Context.Config
                     Description = "هونداي الينتراالسيارة الكهربائية بالكامل اودي Q4 e-tron موديل 2024 متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : 40e-tron ، محرك كهربائي يولد ٢٣٠ حصان ، ٧ راكب ، فتحة سقف بانورامية متحركة ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، شاشة عرض على الزجاج الامامي HUD ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
                     Price = 2390000,
                     Prand = "Audi",
-                    Condition = "New",
+
                     Rate = 5,
                     CarType = CarTypes.SUV,
                     Motor_Capacity = "1500 CC",
@@ -180,7 +180,7 @@ namespace Tripix.Context.Config
                     Description = "Audi Q3 sportback 2024\r\nExterior Color: Grey\r\nInterior: Black x red \r\nCondition: Brand New\r\nEngine: 1.5L\r\nHorse power:150 hp\r\n8-Speed Automatic Transmission\r\nAcceleration:0-100 km/h 9.2 sec\r\nLED Headlights\r\nElectrically Folding Exterior Mirrors\r\nFully Parking Sensors\r\nRim 19 inch\r\nSunroof\r\nElectric seats with memory package\r\nElectric tailgate\r\nWelcome lights\r\n360° Camera\r\n6 Airbags\r\n30-color Ambient Lighting\r\nVery special specs and color\r\nImmediate purchase\r\nFor reservations and inquiries contact us ",
                     Price = 1850000,
                     Prand = "Audi",
-                    Condition = "New",
+
                     Rate = 5,
                     Color = "Gray",
                     CarType = CarTypes.SUV,

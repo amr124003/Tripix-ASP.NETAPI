@@ -8,11 +8,11 @@ using Tripix.Entities;
 
 namespace Tripix.Authentication
 {
-    public class JwtPorvider : IJwtProvider
+    public class JwtProvider : IJwtProvider
     {
         private readonly IOptions<JwtOptions> options;
 
-        public JwtPorvider ( IOptions<JwtOptions> options )
+        public JwtProvider ( IOptions<JwtOptions> options )
         {
             this.options = options;
         }

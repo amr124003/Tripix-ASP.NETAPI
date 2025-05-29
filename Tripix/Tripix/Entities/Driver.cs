@@ -5,7 +5,7 @@ namespace Tripix.Entities
     public class Driver : ApplicationUser
     {
         public string? DriverFaceID { get; set; }
-        public string?  DriverLicense { get; set; } 
+        public string? DriverLicense { get; set; }
         public string? CriminalRecord { get; set; }
         public string? DriverImage { get; set; }
         public string? CarName { get; set; }
@@ -18,6 +18,6 @@ namespace Tripix.Entities
         public string? CarDescription { get; set; }
         public DriverStatus? Status { get; set; }
         public DriverLocation Location { get; set; } = new(0, 0);
-        public int? CompleltedSteps { get; set; }
+        public int? CompleltedSteps { get; set; } = 0;
     }
 }

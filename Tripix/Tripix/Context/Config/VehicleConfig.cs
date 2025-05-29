@@ -21,7 +21,6 @@ namespace Tripix.Context.Config
             builder.HasDiscriminator<string>("VehicleType")
                 .HasValue<Car>("Car")
                 .HasValue<Motorbikes>("Motorbike")
-                .HasValue<Truck>("Truck")
                 .HasValue<ElectricCars>("ElectricCar")
                 .HasValue<UsedCar>("UsedCar");
 

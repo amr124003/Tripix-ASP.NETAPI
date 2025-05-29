@@ -116,6 +116,7 @@ namespace Tripix.Services.Repositories
 
             await hubcontext.Clients.Group($"Driver {model.DriverId}")
                 .SendAsync("UserMSG", new { model.Message });
+
             return Result.Success();
         }
     }
