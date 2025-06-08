@@ -88,6 +88,19 @@ namespace Tripix.Services.Repositories
             return res;
         }
 
+        public async Task<Result<int>> GetWashlet(string UserId, CancellationToken canToken = default)
+        {
+            int res = 0;
+
+            var user = await usermager.Users.Include(x => x.FavouriteProducts).FirstOrDefaultAsync(x => x.Id == UserId, canToken);
+
+            var validuser = user!.ValidUser(res); 
+            if(validuser.IsFalure) { return validuser; }
+
+            res = user!.FavouriteProducts.Count();
+            return Result.Success(res);
+        }
+
         public async Task<Result<int>> GetWashletcount(string UserId , CancellationToken canToken)
         {
             int res = 0;
