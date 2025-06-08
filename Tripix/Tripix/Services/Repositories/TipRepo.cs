@@ -92,7 +92,7 @@ namespace Tripix.Services.Repositories
             return Result.Success();
         }
 
-        public async Task<Result> DeleteComment(string UserId, int Id, CancellationToken canToken = default)
+        public async Task<Result> DeleteUserComment(string UserId, int Id, CancellationToken canToken = default)
         {
             var user = await userManger.Users.Include(x => x.TipComments).FirstOrDefaultAsync(x => x.Id == UserId, canToken);
 
@@ -167,6 +167,29 @@ namespace Tripix.Services.Repositories
             if(tip == null) {  return Result.Failure(TipError.TipNotFound); }
 
             tip.DisLikes++;
+            await context.SaveChangesAsync(canToken);
+            return Result.Success();
+        }
+        public async Task<Result> ReplyForComment(string UserId, ReplyForComment model , CancellationToken canToken = default)
+        {
+            var user = await userManger.Users.FirstOrDefaultAsync(x => x.Id == UserId, canToken);
+
+            var validuser = user!.ValidUser();
+            if (validuser.IsFalure) { return validuser; }
+
+            var comment = await context.TipComments.FirstOrDefaultAsync(x => x.Id == model.CommentId, canToken);
+
+            if(comment == null) { return Result.Failure(TipError.CommentNotFound); }
+
+            var Reply = new TipComments
+            {
+                ParentCommentId = model.CommentId,
+                Text = model.ReplyText,
+                TipId = comment.TipId,
+                UserId = user!.Id
+            };
+
+            context.TipComments.Add(Reply);
             await context.SaveChangesAsync(canToken);
             return Result.Success();
         }

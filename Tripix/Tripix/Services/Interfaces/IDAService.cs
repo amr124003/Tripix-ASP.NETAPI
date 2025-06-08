@@ -12,8 +12,9 @@ namespace Tripix.Services.Interfaces
         public Task<List<DAResponse>> GetTopRatedProduct ();
         public Task<List<DAResponse>> GetBestSellerProducts ();
         public Task<List<DAResponse>> GetNewArrivalsProduct ();
-        public Task<Testimonial> GetTestimonial ();
+        public Task<Result<Testimonial>> GetTestimonial ();
         public Task<List<ProductResponse>> GetProducts();
+        public Task<Result<int>> GetWashlet(string UserId , CancellationToken canToken = default);
 
     }
 }

@@ -61,6 +61,8 @@ namespace Tripix.Services.Repositories
 
         public ISparePart SparePartRepo {  get; }
 
+        public ITip TipRepo {  get; }
+
         public UnitOfWork ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> signinmanger, RoleManager<IdentityRole> rolemanger, IOptions<JwtOptions> options, IHttpContextAccessor httpcontext, IHubContext<UserHub> hubContext, IHubContext<RideHub> ridecontext, IDistributedCache cache )
         {
             adminService = new AdminRepo(usermanger, rolemanger);
@@ -82,6 +84,7 @@ namespace Tripix.Services.Repositories
             EventRepo = new EventRepo(context, usermanger);
             JopRepo = new JopRepo(context , usermanger);
             SparePartRepo = new SparePartRepo(context, usermanger);
+            TipRepo = new TipRepo(context , usermanger);
 
 
             this.context = context;

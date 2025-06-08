@@ -48,5 +48,9 @@ namespace Tripix.Controllers
 
             return Ok(res);
         }
+        public IActionResult GetUserWashlet()
+        {
+            return Ok();
+        }
     }
 }

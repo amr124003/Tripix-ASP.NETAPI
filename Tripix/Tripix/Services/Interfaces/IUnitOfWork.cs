@@ -22,6 +22,7 @@ namespace Tripix.Services.Interfaces
         IRepair repairService { get; }
         IEvent EventRepo { get; }
         IJOP JopRepo { get; }
+        ITip TipRepo { get; }
         ISparePart SparePartRepo { get; }
 
         Task<int> SavechangesAsync ();
