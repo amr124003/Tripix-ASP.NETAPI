@@ -881,16 +881,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.DAController",
-    "Method": "GetUserWashlet",
-    "RelativePath": "api/DA",
-    "HttpMethod": "",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.DAController",
     "Method": "BestSellerProducts",
     "RelativePath": "api/DA/BestSellerProducts",
     "HttpMethod": "GET",
@@ -903,6 +893,16 @@
     "ContainingType": "Tripix.Controllers.DAController",
     "Method": "Gettestimonial",
     "RelativePath": "api/DA/Gettestimonial",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetUserWashlet",
+    "RelativePath": "api/DA/GetWashletCount",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

@@ -76,6 +76,7 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
+        [HttpPost("CommentToTip")]
         public async Task<IActionResult> CommentToTip(CommentDto model , CancellationToken canToken)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
