@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Tripix.Abstractions;
 using Tripix.Services.Interfaces;
 
 namespace Tripix.Controllers
@@ -48,9 +51,15 @@ namespace Tripix.Controllers
 
             return Ok(res);
         }
-        public IActionResult GetUserWashlet()
+        [HttpGet("GetWashletCount")]
+        public async Task<IActionResult> GetUserWashlet(CancellationToken canToken)
         {
-            return Ok();
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.DAService.GetWashlet(UserId!,canToken);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
+
         }
     }
 }

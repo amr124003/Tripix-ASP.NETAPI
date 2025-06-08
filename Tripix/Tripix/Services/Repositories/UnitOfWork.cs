@@ -80,7 +80,7 @@ namespace Tripix.Services.Repositories
             ElectricCarRepo = new ElectricCarRepo(context);
             WashServiceRepo = new WashRepo(usermanger, context);
             HelpooService = new HelpooRepo(usermanger, context);
-            DAService = new DAServices(context);
+            DAService = new DAServices(context , usermanger);
             EventRepo = new EventRepo(context, usermanger);
             JopRepo = new JopRepo(context , usermanger);
             SparePartRepo = new SparePartRepo(context, usermanger);

@@ -881,6 +881,16 @@
   },
   {
     "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetUserWashlet",
+    "RelativePath": "api/DA",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
     "Method": "BestSellerProducts",
     "RelativePath": "api/DA/BestSellerProducts",
     "HttpMethod": "GET",
@@ -2107,7 +2117,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Image",
+        "Name": "Images",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
       },
@@ -2142,7 +2152,7 @@
   },
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
-    "Method": "DeleteOrder",
+    "Method": "DeleteOrderAsync",
     "RelativePath": "api/SpareParts/DeleteOrder/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -2192,6 +2202,22 @@
     "ContainingType": "Tripix.Controllers.SparePartsController",
     "Method": "GetOrders",
     "RelativePath": "api/SpareParts/GetOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.SparePartsController",
+    "Method": "GetUserOrderAsync",
+    "RelativePath": "api/SpareParts/GetUserOrders",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2217,11 +2243,17 @@
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
     "Method": "GetSparePart",
-    "RelativePath": "api/SpareParts/SparePart",
+    "RelativePath": "api/SpareParts/SparePart/{Id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -2231,7 +2263,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -2241,7 +2279,59 @@
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Price",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "Images",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Category",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Brand",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.SparePartsController",
+    "Method": "UpdateUserOrderAsync",
+    "RelativePath": "api/SpareParts/UpdateUserOrder",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.SpareParts.UpdateSparePartOrder",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -2288,6 +2378,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "CommentToTip",
+    "RelativePath": "api/Tips",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Tips.CommentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "AddTip",
     "RelativePath": "api/Tips/AddTip",
     "HttpMethod": "POST",
@@ -2314,6 +2420,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "DeleteComment",
+    "RelativePath": "api/Tips/DeleteComment/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "DeleteTip",
     "RelativePath": "api/Tips/DeleteTip",
     "HttpMethod": "DELETE",
@@ -2330,14 +2452,30 @@
   },
   {
     "ContainingType": "Tripix.Controllers.TipsController",
-    "Method": "LikeTip",
-    "RelativePath": "api/Tips/LikeTip",
-    "HttpMethod": "POST",
+    "Method": "DeleteUserComment",
+    "RelativePath": "api/Tips/DeleteUserComment/{Id}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "Dislike",
+    "RelativePath": "api/Tips/DislikeTip",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
         "Type": "System.Int32",
         "IsRequired": false
       }
@@ -2347,21 +2485,65 @@
   {
     "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "GetTip",
-    "RelativePath": "api/Tips/Tip",
+    "RelativePath": "api/Tips/GetTip/{Id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "GetTips",
-    "RelativePath": "api/Tips/Tips",
-    "HttpMethod": "GET",
+    "RelativePath": "api/Tips/GetTips",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "LikeTip",
+    "RelativePath": "api/Tips/LikeTip",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "Updatecomment",
+    "RelativePath": "api/Tips/UpdateComment",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Tips.UpdateCommentDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -2373,8 +2555,23 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "TipId",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
     ],
