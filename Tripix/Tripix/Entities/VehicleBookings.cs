@@ -13,6 +13,8 @@ namespace Tripix.Entities
         public string UserName { get; set; }
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }
+        public string VehicleImage {  get; set; }
+        public string VehicleName { get; set; }
         public int VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
         public bookingCategory Category { get; set; }    

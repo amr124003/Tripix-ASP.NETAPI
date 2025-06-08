@@ -170,14 +170,13 @@ namespace Tripix.Services.Repositories
             return degree * Math.PI / 180.0;
         }
 
-        public async Task<List<OrderTripDTO>> AvilableTrips ( string token )
+        public async Task<List<OrderTripDTO>> AvilableTrips ( string DriverId )
         {
             List<OrderTripDTO> result = new();
-            var driverId = jwtProvider.ValidateToken(token);
 
-            var driverfounded = await usermanger.FindByIdAsync(driverId!);
+            var driverfounded = await usermanger.FindByIdAsync(DriverId!);
 
-            var driver = context.Drivers.Include(x => x.Trips).FirstOrDefault(x => x.Id == driverId);
+            var driver = context.Drivers.Include(x => x.Trips).FirstOrDefault(x => x.Id == DriverId);
 
             if (driver == null || driver.Status == DriverStatus.Panned)
             {
@@ -186,8 +185,8 @@ namespace Tripix.Services.Repositories
 
             result = context.Trips
                             .Where(x => x.Status != TripStatus.Cancelled && x.Status != TripStatus.InProgress)
-                            .ProjectToType<OrderTripDTO>() // ✅ تحويل داخل SQL مباشرة
-                            .ToList();                     // ✅ يرجع فقط الأعمدة اللي محتاجها
+                            .ProjectToType<OrderTripDTO>()
+                            .ToList();
 
             return result;
         }
@@ -423,6 +422,70 @@ namespace Tripix.Services.Repositories
             return Result.Success();
         }
 
+        public async Task<Result> UpdateDriverData ( string DriverId, UpdateDriverData model )
+        {
+            var driver = await usermanger.Users.FirstOrDefaultAsync(x => x.Id == DriverId);
+
+            if (driver == null) { return Result.Failure(DriverErrors.DriverNotFound); }
+
+            model.Adapt(driver);
+            await context.SaveChangesAsync();
+            return Result.Success();
+        }
+
+        public async Task<Result<DriverResponse>> GetDriverData ( string DriverId )
+        {
+            var Driver = await context.Drivers
+                .Where(x => x.Id == DriverId)
+                .ProjectToType<DriverResponse>()
+                .FirstOrDefaultAsync();
+
+            if (Driver == null) { return Result.Failure<DriverResponse>(DriverErrors.DriverNotFound); }
+
+            return Result.Success(Driver);
+        }
+
+        public async Task<List<DriverResponse>> GetDrivers ()
+        {
+            var Drivers = await context.Drivers
+                .AsQueryable()
+                .ProjectToType<DriverResponse>()
+                .ToListAsync();
+
+            return Drivers;
+        }
+
+        public async Task<Result> AcceptDriver ( string DriverId )
+        {
+            var Driver = await context.Drivers.FirstOrDefaultAsync(x => x.Id == DriverId);
+
+            if (Driver == null) { return Result.Failure(DriverErrors.DriverNotFound); }
+
+            if (Driver.Status == DriverStatus.Confirmed) { return Result.Failure(DriverErrors.AlreadyConfirmedDriver); }
+
+            if (Driver.Status == DriverStatus.Rejected) { return Result.Failure(DriverErrors.RejectedDriver); }
+
+            Driver.Status = DriverStatus.Confirmed;
+            await context.SaveChangesAsync();
+            return Result.Success();
+
+        }
+
+        public async Task<Result> RejectDriver ( string DriverId )
+        {
+            var Driver = await context.Drivers.FirstOrDefaultAsync(x => x.Id == DriverId);
+
+            if (Driver == null) { return Result.Failure(DriverErrors.DriverNotFound); }
+
+            if (Driver!.Status == DriverStatus.Confirmed) { return Result.Failure(DriverErrors.AlreadyConfirmedDriver); }
+
+            if (Driver.Status == DriverStatus.Rejected) { return Result.Failure(DriverErrors.RejectedDriver); }
+
+            Driver.Status = DriverStatus.Rejected;
+            await context.SaveChangesAsync();
+            return Result.Success();
+        }
+
 
 
         private RefreshTokens GenerateRefreshToken ()
@@ -442,6 +505,7 @@ namespace Tripix.Services.Repositories
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
 
     }
 }

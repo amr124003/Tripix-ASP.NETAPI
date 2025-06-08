@@ -41,6 +41,8 @@ namespace Tripix.Services.Repositories
                      PricingPlan = model.PricingPlan
                  };
 
+            newTurn.UserEmail = user.Email;
+
             user.WashBookings.Add(newTurn);
             await context.SaveChangesAsync();
             return Result.Success();

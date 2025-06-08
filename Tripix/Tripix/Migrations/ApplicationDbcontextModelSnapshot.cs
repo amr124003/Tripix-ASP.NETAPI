@@ -3669,8 +3669,15 @@ namespace Tripix.Migrations
                     b.Property<int>("CarID")
                         .HasColumnType("int");
 
+                    b.Property<string>("CarName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("RentPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -3884,6 +3891,51 @@ namespace Tripix.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.EventTickets", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EventAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("EventTickets");
+                });
+
             modelBuilder.Entity("Tripix.Entities.FavouriteProduct", b =>
                 {
                     b.Property<string>("Id")
@@ -3935,13 +3987,18 @@ namespace Tripix.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("UserLatitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UserLongitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -4003,6 +4060,10 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdvertismentTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -4028,13 +4089,25 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("JopId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -4046,7 +4119,40 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("JopId");
+
+                    b.HasIndex("UserId1");
+
                     b.ToTable("JopApplications");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.LovedTips", b =>
+                {
+                    b.Property<int>("TipId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("LovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TipId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TipId", "UserId");
+
+                    b.HasIndex("TipId1");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("LovedTips");
                 });
 
             modelBuilder.Entity("Tripix.Entities.Notification", b =>
@@ -4070,6 +4176,10 @@ namespace Tripix.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -6789,7 +6899,14 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CarType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PricingPlan")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -6799,10 +6916,6 @@ namespace Tripix.Migrations
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -6814,9 +6927,34 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("RepairBookings");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.SparePartImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SparePartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SparePartsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SparePartsId");
+
+                    b.ToTable("SparePartImage");
                 });
 
             modelBuilder.Entity("Tripix.Entities.SparePartOrder", b =>
@@ -6827,11 +6965,18 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("OrderDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SparePartId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SparePartImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -6855,6 +7000,8 @@ namespace Tripix.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("SparePartsId");
 
@@ -6943,6 +7090,42 @@ namespace Tripix.Migrations
                     b.ToTable("Tips");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.TipComments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("TipId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TipComments");
+                });
+
             modelBuilder.Entity("Tripix.Entities.Trip", b =>
                 {
                     b.Property<int>("Id")
@@ -6993,8 +7176,8 @@ namespace Tripix.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly?>("CreatedAt")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -7046,6 +7229,9 @@ namespace Tripix.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
 
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
                     b.Property<string>("Year")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -7089,12 +7275,21 @@ namespace Tripix.Migrations
                     b.Property<int>("VehicleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("VehicleImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VehicleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.HasIndex("VehicleId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_VehicleBookings_VehicleId");
 
                     b.ToTable("VehicleBookings");
                 });
@@ -7117,17 +7312,12 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SparePartsId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("VehicleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DriverId1");
-
-                    b.HasIndex("SparePartsId");
 
                     b.HasIndex("VehicleId");
 
@@ -8430,6 +8620,10 @@ namespace Tripix.Migrations
                     b.Property<DateTime>("TurnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -8524,6 +8718,7 @@ namespace Tripix.Migrations
                             Price = 5550000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2025",
                             CarType = "Sedan",
                             Motor_Capacity = "2000 CC"
@@ -8544,6 +8739,7 @@ namespace Tripix.Migrations
                             Price = 24000000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "Sedan",
                             Motor_Capacity = "4000 CC"
@@ -8564,6 +8760,7 @@ namespace Tripix.Migrations
                             Price = 1600000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2025",
                             CarType = "Sedan",
                             Motor_Capacity = "1600 CC"
@@ -8584,6 +8781,7 @@ namespace Tripix.Migrations
                             Price = 6250000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2025",
                             CarType = "Coupe",
                             Motor_Capacity = "2000 CC"
@@ -8604,6 +8802,7 @@ namespace Tripix.Migrations
                             Price = 5375000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "Sedan",
                             Motor_Capacity = "2000 CC"
@@ -8624,6 +8823,7 @@ namespace Tripix.Migrations
                             Price = 6350000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2025",
                             CarType = "Sedan",
                             Motor_Capacity = "2000 CC"
@@ -8644,6 +8844,7 @@ namespace Tripix.Migrations
                             Price = 4850000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "Sedan",
                             Motor_Capacity = "2000 CC"
@@ -8664,6 +8865,7 @@ namespace Tripix.Migrations
                             Price = 1550000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2025",
                             CarType = "Sedan",
                             Motor_Capacity = "1500 CC"
@@ -8684,6 +8886,7 @@ namespace Tripix.Migrations
                             Price = 1450000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             Motor_Capacity = "1500 CC"
@@ -8703,6 +8906,7 @@ namespace Tripix.Migrations
                             Price = 2390000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             Motor_Capacity = "1500 CC"
@@ -8723,6 +8927,7 @@ namespace Tripix.Migrations
                             Price = 1850000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             Motor_Capacity = "1500 CC"
@@ -8776,6 +8981,7 @@ namespace Tripix.Migrations
                             Price = 2350000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             TravelRange = 601
@@ -8796,6 +9002,7 @@ namespace Tripix.Migrations
                             Price = 1950000m,
                             Rate = 5,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             Interior = "Full Leather",
@@ -8861,6 +9068,7 @@ namespace Tripix.Migrations
                             Prand = "Porsche",
                             Price = 6150000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "Coupe",
                             Condition = "Used",
@@ -8882,6 +9090,7 @@ namespace Tripix.Migrations
                             Prand = "Skoda",
                             Price = 2850000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             Condition = "Used",
@@ -8902,6 +9111,7 @@ namespace Tripix.Migrations
                             Prand = "Kia",
                             Price = 1690000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2024",
                             CarType = "SUV",
                             Condition = "Used",
@@ -8922,6 +9132,7 @@ namespace Tripix.Migrations
                             Prand = "Land Rover",
                             Price = 3150000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2021",
                             CarType = "SUV",
                             Condition = "Used",
@@ -8943,6 +9154,7 @@ namespace Tripix.Migrations
                             Prand = "BMW",
                             Price = 3000000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2017",
                             CarType = "SUV",
                             Condition = "Used",
@@ -8965,6 +9177,7 @@ namespace Tripix.Migrations
                             Prand = "Jaguar",
                             Price = 1500000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2021",
                             CarType = "Coupe",
                             Condition = "Used",
@@ -8987,6 +9200,7 @@ namespace Tripix.Migrations
                             Prand = "BMW",
                             Price = 1400000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2009",
                             CarType = "Sedan",
                             Condition = "Used",
@@ -9009,6 +9223,7 @@ namespace Tripix.Migrations
                             Prand = "Mercedes",
                             Price = 1050000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2009",
                             CarType = "Sedan",
                             Condition = "Used",
@@ -9031,6 +9246,7 @@ namespace Tripix.Migrations
                             Prand = "Mercedes-Benz",
                             Price = 7500000m,
                             Status = "Avilable",
+                            Views = 0,
                             Year = "2022",
                             CarType = "SUV",
                             Condition = "Used",
@@ -9122,7 +9338,7 @@ namespace Tripix.Migrations
                         .IsRequired();
 
                     b.HasOne("Tripix.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("carRents")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -9146,6 +9362,23 @@ namespace Tripix.Migrations
                     b.HasOne("Tripix.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.EventTickets", b =>
+                {
+                    b.HasOne("Tripix.Entities.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany("EventTickets")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Event");
 
                     b.Navigation("User");
                 });
@@ -9179,6 +9412,54 @@ namespace Tripix.Migrations
                         .HasForeignKey("EventId");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.JopApplications", b =>
+                {
+                    b.HasOne("Tripix.Entities.Jop", "Jop")
+                        .WithMany("JopApplications")
+                        .HasForeignKey("JopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany("JopApplications")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Jop");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.LovedTips", b =>
+                {
+                    b.HasOne("Tripix.Entities.Tip", null)
+                        .WithMany("LovedTips")
+                        .HasForeignKey("TipId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Tripix.Entities.Tip", "Tip")
+                        .WithMany()
+                        .HasForeignKey("TipId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", null)
+                        .WithMany("LovedTips")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tip");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tripix.Entities.Order", b =>
                 {
                     b.HasOne("Tripix.Entities.ApplicationUser", null)
@@ -9195,17 +9476,28 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.RepairBookings", b =>
                 {
-                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                    b.HasOne("Tripix.Entities.ApplicationUser", null)
                         .WithMany("RepairBookings")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.SparePartImage", b =>
+                {
+                    b.HasOne("Tripix.Entities.SpareParts", "SpareParts")
+                        .WithMany("Images")
+                        .HasForeignKey("SparePartsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("SpareParts");
                 });
 
             modelBuilder.Entity("Tripix.Entities.SparePartOrder", b =>
                 {
+                    b.HasOne("Tripix.Entities.ApplicationUser", null)
+                        .WithMany("sparePartOrders")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("Tripix.Entities.SpareParts", "SpareParts")
                         .WithMany()
                         .HasForeignKey("SparePartsId")
@@ -9213,6 +9505,31 @@ namespace Tripix.Migrations
                         .IsRequired();
 
                     b.Navigation("SpareParts");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.TipComments", b =>
+                {
+                    b.HasOne("Tripix.Entities.TipComments", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("Tripix.Entities.Tip", "Tip")
+                        .WithMany("TipComments")
+                        .HasForeignKey("TipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany("TipComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("Tip");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Tripix.Entities.Trip", b =>
@@ -9293,10 +9610,6 @@ namespace Tripix.Migrations
                         .WithMany("CarImage")
                         .HasForeignKey("DriverId1");
 
-                    b.HasOne("Tripix.Entities.SpareParts", null)
-                        .WithMany("Image")
-                        .HasForeignKey("SparePartsId");
-
                     b.HasOne("Tripix.Entities.Vehicle", "Vehicle")
                         .WithMany("VehicleImages")
                         .HasForeignKey("VehicleId")
@@ -9372,9 +9685,15 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("EventTickets");
+
                     b.Navigation("FavouriteProducts");
 
                     b.Navigation("HelpooOrders");
+
+                    b.Navigation("JopApplications");
+
+                    b.Navigation("LovedTips");
 
                     b.Navigation("Orders");
 
@@ -9382,11 +9701,17 @@ namespace Tripix.Migrations
 
                     b.Navigation("RepairBookings");
 
+                    b.Navigation("TipComments");
+
                     b.Navigation("Trips");
 
                     b.Navigation("VehicleBookings");
 
                     b.Navigation("WashBookings");
+
+                    b.Navigation("carRents");
+
+                    b.Navigation("sparePartOrders");
                 });
 
             modelBuilder.Entity("Tripix.Entities.CarBrand", b =>
@@ -9399,9 +9724,26 @@ namespace Tripix.Migrations
                     b.Navigation("Hotels");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.Jop", b =>
+                {
+                    b.Navigation("JopApplications");
+                });
+
             modelBuilder.Entity("Tripix.Entities.SpareParts", b =>
                 {
-                    b.Navigation("Image");
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.Tip", b =>
+                {
+                    b.Navigation("LovedTips");
+
+                    b.Navigation("TipComments");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.TipComments", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Tripix.Entities.Vehicle", b =>

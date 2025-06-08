@@ -110,12 +110,13 @@ namespace Tripix.Services.Repositories
 
             return Result.Failure<AuthResponse>(res.IsNotAllowed ? UserErrors.DisabledUser : UserErrors.InvalidCredentials);
         }
-        public async Task<Result<AuthResponse>?> GetRefreshtoken (string RefToken ,  string Token, CancellationToken cencellationtoken )
+        public async Task<Result<AuthResponse>?> GetRefreshtoken ( string RefToken, string Token, CancellationToken cencellationtoken )
         {
             var UserId = jwtprovider.ValidateToken(Token);
             var AuthResponse = new AuthResponse();
 
-            var user = await usermanger.FindByIdAsync(UserId);
+            var user =  await usermanger.Users.Include(u => u.REFTokens)
+                .FirstOrDefaultAsync(u => u.Id == UserId);
 
             if (user == null)
             {
@@ -128,6 +129,8 @@ namespace Tripix.Services.Repositories
             {
                 return Result.Failure<AuthResponse>(UserErrors.InActiveRefreshToken);
             }
+
+            refreshtoken.RevokeTime = DateTime.UtcNow;
 
             var userRoles = await usermanger.GetRolesAsync(user);
 
@@ -155,6 +158,7 @@ namespace Tripix.Services.Repositories
             await usermanger.UpdateAsync(user);
             AuthResponse.Name = user.Name;
             AuthResponse.Email = user.Email;
+            AuthResponse.Roles = userRoles.ToList();
             AuthResponse.Token = token;
             AuthResponse.ExpiredIn = expiresin;
             AuthResponse.RefreshToken = newRefreshtoken.RefreshToken;

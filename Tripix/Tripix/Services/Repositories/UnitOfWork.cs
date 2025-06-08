@@ -49,7 +49,17 @@ namespace Tripix.Services.Repositories
 
         public IElectricCar ElectricCarRepo { get; }
 
-        public IWash WashServiceRepo {  get; }
+        public IWash WashServiceRepo { get; }
+
+        public Ihelpoo HelpooService { get; }
+
+        public IDAService DAService { get; }
+
+        public IEvent EventRepo { get; }
+
+        public IJOP JopRepo { get; }
+
+        public ISparePart SparePartRepo {  get; }
 
         public UnitOfWork ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> signinmanger, RoleManager<IdentityRole> rolemanger, IOptions<JwtOptions> options, IHttpContextAccessor httpcontext, IHubContext<UserHub> hubContext, IHubContext<RideHub> ridecontext, IDistributedCache cache )
         {
@@ -67,6 +77,12 @@ namespace Tripix.Services.Repositories
             VehicleRepo = new VehicleRepo(context, usermanger);
             ElectricCarRepo = new ElectricCarRepo(context);
             WashServiceRepo = new WashRepo(usermanger, context);
+            HelpooService = new HelpooRepo(usermanger, context);
+            DAService = new DAServices(context);
+            EventRepo = new EventRepo(context, usermanger);
+            JopRepo = new JopRepo(context , usermanger);
+            SparePartRepo = new SparePartRepo(context, usermanger);
+
 
             this.context = context;
             this.usermanger = usermanger;

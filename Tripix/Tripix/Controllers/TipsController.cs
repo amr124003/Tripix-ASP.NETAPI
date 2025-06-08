@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using Tripix.View_Models;
 
 namespace Tripix.Controllers
@@ -33,9 +34,14 @@ namespace Tripix.Controllers
             return Ok("Tip deleted");
         }
         [HttpPost("LikeTip")]
-        public IActionResult LikeTip (int id)
+        public IActionResult LikeTip (int Id)
         {
             return Ok("Tip liked");
+        }
+        [HttpGet("DislikeTip")]
+        public IActionResult Dislike(int Id)
+        {
+            return Ok();
         }
     }
 }

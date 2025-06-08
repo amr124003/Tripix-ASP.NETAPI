@@ -2,9 +2,10 @@ namespace Tripix.Entities
 {
     public class SparePartOrder
     {
-        public  int Id { get; set; }
-        public string SparePartId { get; set; } 
+        public int Id { get; set; }
+        public string SparePartId { get; set; }
         public SpareParts SpareParts { get; set; }
+        public string SparePartImage { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }

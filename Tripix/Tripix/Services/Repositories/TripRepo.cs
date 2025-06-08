@@ -1,6 +1,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Tripix.Abstractions;
 using Tripix.Abstractions.Consts;
 using Tripix.Authentication;
@@ -27,7 +28,26 @@ namespace Tripix.Services.Repositories
             this.usermanger = usermanger;
             this.jwtProvider = jwtProvider;
             this.hubcontext = hubcontext;
-        } 
+        }
+
+        public async Task<Result> CancelTrip ( string UserId , int TripId)
+        {
+            var User = await usermanger.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+
+            if(User == null) { return Result.Failure(UserErrors.UserNotFound); }
+
+            if(User.IsDisabled) { return Result.Failure(UserErrors.DisabledUser); }
+
+            if(!User.EmailConfirmed) { return Result.Failure(UserErrors.UnconfirmedEmail); }
+
+            var trip = User.Trips.FirstOrDefault(x => x.Id == TripId);
+
+            if(trip == null) { return Result.Failure(TripErrors.TripNotFound); }
+
+            trip.Status = TripStatus.Cancelled;
+            await context.SaveChangesAsync();
+            return Result.Success();
+        }
 
         public async Task<Result<confirmDriverDTO>> ConfirmDriver ( confirmDriverDTO model )
         {

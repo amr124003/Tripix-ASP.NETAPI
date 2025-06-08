@@ -8,5 +8,9 @@ namespace Tripix.Services.Interfaces
     {
         public Task<Result<VehicleResponse>> BookVehicle (string UserId , int CarId);
         public Task<Result> LikeVehicle ( string UserId, int CarId);
+        public Task<Result> CancelBooking (string UserId, int BookingId);
+        public Task<Result> DeleteBooking (int BookingId);
+        
+
     }
 }

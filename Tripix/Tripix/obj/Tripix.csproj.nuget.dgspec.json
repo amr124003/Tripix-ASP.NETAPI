@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {}
+    "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {}
   },
   "projects": {
-    "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {
+    "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
+        "projectUniqueName": "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
         "projectName": "Tripix",
-        "projectPath": "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
-        "packagesPath": "C:\\Users\\AmrSoliman\\.nuget\\packages\\",
-        "outputPath": "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\obj\\",
+        "projectPath": "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
+        "packagesPath": "C:\\Users\\T.B\\.nuget\\packages\\",
+        "outputPath": "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\AmrSoliman\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\T.B\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -178,7 +178,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

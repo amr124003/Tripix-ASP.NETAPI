@@ -17,5 +17,9 @@ namespace Tripix.Abstractions.Consts
         public static readonly string DriverImages = $"{BaseUrl}DriverImage/";
         public static readonly string MotorbikeImageURL = $"{BaseUrl}Motorbikes/";
         public static readonly string ElectricCarImageURL = $"{BaseUrl}ElectricCars/";
+        public static readonly string EventImages = $"{BaseUrl}Events/";
+        public static readonly string JopApplicationCvs = $"{BaseUrl}JopApplicationCvs/";
+        public static readonly string SparePartImages = $"{BaseUrl}SparePartImages/";
+        public static readonly string TipImages = $"{BaseUrl}TipImages/";
     }
 }

@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Tripix.Abstractions;
 using Tripix.Authentication;
-using Tripix.Context;
 using Tripix.Contracts.Driver;
 using Tripix.Entities;
 using Tripix.Hubs;
@@ -18,16 +18,13 @@ namespace Tripix.Controllers
     public class DriverController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ApplicationDbcontext context;
-        private readonly UserManager<ApplicationUser> usermanger;
         private readonly IJwtProvider jwtprovider;
         private readonly IHubContext<UserHub> hubcontext;
 
-        public DriverController ( IUnitOfWork unitOfWork, ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, IJwtProvider jwtprovider, IHubContext<UserHub> hubcontext )
+        public DriverController ( IUnitOfWork unitOfWork, IJwtProvider jwtprovider, IHubContext<UserHub> hubcontext )
         {
             this.unitOfWork = unitOfWork;
-            this.context = context;
-            this.usermanger = usermanger;
+
             this.jwtprovider = jwtprovider;
             this.hubcontext = hubcontext;
         }
@@ -35,17 +32,20 @@ namespace Tripix.Controllers
         [HttpPost("RegisterDriver")]
         public async Task<IActionResult> RegisterDriver ( [FromForm] DriverRegisterDTO model )
         {
-            var res  = await unitOfWork.driverService.DriverRegister (model);
+            var res = await unitOfWork.driverService.DriverRegister(model);
 
-            return res.IsSuccess ? Ok(res) : res.ToProblem();    
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
 
         }
-        
-        
         [HttpPut("UpdateDriver")]
-        public IActionResult UpdateDriver ( int Id )
+        [Authorize]
+        public async Task<IActionResult> UpdateDriver ( UpdateDriverData model )
         {
-            return Ok("Driver updated");
+            var DriverId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var res = await unitOfWork.driverService.UpdateDriverData(DriverId, model);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpDelete("DeleteDriver")]
         public IActionResult DeleteDriver ( int Id )
@@ -60,32 +60,35 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpGet("Driver")]
-        public IActionResult GetDriver ( int Id )
+        public async Task<IActionResult> GetDriver ( string Id )
         {
-            return Ok("Driver");
+            var res = await unitOfWork.driverService.GetDriverData(Id);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpGet("Drivers")]
-        public IActionResult GetDrivers ()
+        public async Task<IActionResult> GetDrivers ()
         {
-            return Ok("Drivers");
-        }
-        [HttpGet("DriverTrips")]
-        public IActionResult GetDriverTrips ( int Id )
-        {
-            return Ok("Driver trips");
+            var res = await unitOfWork.driverService.GetDrivers();
+
+            return Ok(res);
         }
         [HttpPost("AcceptDriver")]
-        public IActionResult AcceptDriverRequest ( string Email )
+        public async Task<IActionResult> AcceptDriverRequest ( GetDriverDTO model )
         {
-            return Ok("Driver trip request accepted");
+            var res = await unitOfWork.driverService.AcceptDriver(model.DriverId);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("RejectDriver")]
-        public IActionResult RejectDriverRequest ( string Email )
+        public async Task<IActionResult> RejectDriverRequest ( GetDriverDTO model )
         {
-            return Ok("Driver trip request rejected");
+            var res = await unitOfWork.driverService.RejectDriver(model.DriverId);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("DriverStatistics")]
-        public IActionResult DriverStatistics ( int Id )
+        public IActionResult DriverStatistics ( GetDriverDTO model )
         {
             return Ok("Driver statistics");
         }
@@ -104,17 +107,9 @@ namespace Tripix.Controllers
         [HttpPost("Confirm-Trip")]
         public async Task<IActionResult> ConfirmTrip ( confirmTripDto model )
         {
-            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
-            var token = "";
+            var DriverId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-            if (authHeader != null && authHeader.StartsWith("Bearer "))
-            {
-                token = authHeader.Substring("Bearer ".Length).Trim();
-            }
-
-            var driverId = jwtprovider.ValidateToken(token);
-
-            var confirmedTripResponse = await unitOfWork.driverService.ConfirmTrip(model, driverId);
+            var confirmedTripResponse = await unitOfWork.driverService.ConfirmTrip(model, DriverId);
 
             await hubcontext.Clients.Group($"User {model.PhoneNumber}")
                    .SendAsync("NewDriver", confirmedTripResponse);
@@ -126,15 +121,9 @@ namespace Tripix.Controllers
         {
             try
             {
-                var authHeader = Request.Headers["Authorization"].FirstOrDefault();
-                var token = "";
+                string DriverId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-                if (authHeader != null && authHeader.StartsWith("Bearer "))
-                {
-                    token = authHeader.Substring("Bearer ".Length).Trim();
-                }
-
-                var trips = await unitOfWork.driverService.AvilableTrips(token);
+                var trips = await unitOfWork.driverService.AvilableTrips(DriverId);
 
                 return Ok(trips);
             }
@@ -154,22 +143,6 @@ namespace Tripix.Controllers
                     error = ex.Message
                 });
             }
-        }
-
-
-
-
-        private void SetRefreshTokenCookie ( string refreshToken )
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,   // „‰⁄ «·Ê’Ê· „‰ JavaScript
-                Secure = true,     // ≈—”«· «·ﬂÊﬂÌ ›ﬁÿ ⁄»— HTTPS
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(15)
-            };
-
-            Response.Cookies.Append("Driver-Ref-Token", refreshToken, cookieOptions);
         }
 
     }

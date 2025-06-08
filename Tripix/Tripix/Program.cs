@@ -22,12 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        policy => policy.SetIsOriginAllowed(origin => true)
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials()
-                        .WithExposedHeaders("Access-Control-Allow-Origin"));
-
+        policy =>
+        policy.WithOrigins("https://localhost:4200") 
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials()
+    );
 });
 
 var mapConfig = TypeAdapterConfig.GlobalSettings;
@@ -51,38 +51,31 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.";
 });
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = "localhost:6379";
-});
-
-
-
-builder.Configuration.AddUserSecrets<Program>();
-
-
 Env.Load();
 
 builder.Configuration.AddEnvironmentVariables();
 
+var Redis_Password = Environment.GetEnvironmentVariable("Redis_Password");
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = $"first-mako-36762.upstash.io:6379,password={Redis_Password},ssl=True,abortConnect=False";
+});
+
+builder.Configuration.AddUserSecrets<Program>();
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
-
-
-
 
 builder.Services.AddHttpClient<bininfoRepo>();
 builder.Services.AddDbContext<ApplicationDbcontext>(options =>
 {
-    options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"))
+    options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"),
+        sqloption => sqloption.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
            .EnableSensitiveDataLogging()
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
 
 builder.Services.AddSignalR();
-
-
-
-
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {

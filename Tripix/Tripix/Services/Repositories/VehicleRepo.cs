@@ -51,6 +51,16 @@ namespace Tripix.Services.Repositories
             return Result.Success(Response);
         }
 
+        public Task<Result> CancelBooking(string UserId, int BookingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> DeleteBooking(int BookingId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Result> LikeVehicle (string UserId ,  int CarId )
         {
             var Car = context.Vehicles.FirstOrDefault(x => x.Id == CarId);

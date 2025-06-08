@@ -103,6 +103,9 @@ namespace Tripix.Services.Repositories
 
             if (Car == null) { return Result.Failure<Car>(VehicleErrors.VehicleNotFound); }
 
+            Car.Views++;
+            await context.SaveChangesAsync();
+
             return Result.Success(Car);
         }
 

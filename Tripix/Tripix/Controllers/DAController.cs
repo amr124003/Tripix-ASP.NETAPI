@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Tripix.Services.Interfaces;
 
 namespace Tripix.Controllers
 {
@@ -6,30 +7,46 @@ namespace Tripix.Controllers
     [ApiController]
     public class DAController : ControllerBase
     {
-        [HttpGet("TrendingProducts")]
-        public IActionResult GetTrendingProducts ()
+        private readonly IUnitOfWork unitOfWork;
+
+        public DAController ( IUnitOfWork unitOfWork )
         {
-            return Ok("Products");
+            this.unitOfWork = unitOfWork;
+        }
+        [HttpGet("TrendingProducts")]
+        public async Task<IActionResult> GetTrendingProducts ()
+        {
+            var res = await unitOfWork.DAService.GetTrendingProducts();
+
+            return Ok(res);
         }
         [HttpGet("NewArrivalsProducts")]
-        public IActionResult GetNewArrivalsProducts ()
+        public async Task<IActionResult> GetNewArrivalsProducts ()
         {
-            return Ok();
+            var res = await unitOfWork.DAService.GetNewArrivalsProduct();
+
+            return Ok(res);
         }
         [HttpGet("TopRatedProducts")]
-        public IActionResult GetTopRatedProducts ()
+        public async Task<IActionResult> GetTopRatedProducts ()
         {
-            return Ok();
+            var res = await unitOfWork.DAService.GetTopRatedProduct();
+
+            return Ok(res);
         }
         [HttpGet("BestSellerProducts")]
-        public IActionResult BestSellerProducts ()
+        public async Task<IActionResult> BestSellerProducts ()
         {
-            return Ok();
+            var res = await unitOfWork.DAService.GetBestSellerProducts();
+
+            return Ok(res);
         }
         [HttpGet("Gettestimonial")]
-        public IActionResult Gettestimonial ()
+        public async Task<IActionResult> Gettestimonial ()
         {
-            return Ok();
+            var res = await unitOfWork.DAService.GetTestimonial();
+
+            return Ok(res);
         }
     }
 }

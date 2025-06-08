@@ -58,7 +58,7 @@ namespace Tripix.Controllers
             return response.IsSuccess ? Ok(response) : response.ToProblem();
 
         }
-        [HttpDelete]
+        [HttpDelete("CancelTurn")]
         public async Task<IActionResult> CancelTurn ( int Id )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

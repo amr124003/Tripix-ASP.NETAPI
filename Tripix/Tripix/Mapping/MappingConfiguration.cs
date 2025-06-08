@@ -1,15 +1,19 @@
 using Mapster;
 using Tripix.Abstractions.Consts;
+using Tripix.Contracts;
 using Tripix.Contracts.Admin;
 using Tripix.Contracts.Car;
 using Tripix.Contracts.CarRental;
 using Tripix.Contracts.CarRepair;
 using Tripix.Contracts.Driver;
 using Tripix.Contracts.ElectricCar;
+using Tripix.Contracts.Event;
+using Tripix.Contracts.Jop;
 using Tripix.Contracts.Motorbikes;
+using Tripix.Contracts.SpareParts;
+using Tripix.Contracts.Tips;
 using Tripix.Contracts.Trip;
 using Tripix.Contracts.Vehicle;
-using Tripix.Contracts.Wash;
 using Tripix.Entities;
 using Tripix.View_Models;
 
@@ -77,7 +81,8 @@ namespace Tripix.Mapping
                .Map(dest => dest.ImagesUrls, src => src.VehicleImages.Select(x => x.ImageUrl));
 
 
-
+            TypeAdapterConfig<SpareParts, SparePartResponse>.NewConfig()
+                .Map(dest => dest.Images, src => src.Images.Select(x => x.ImageUrl));
 
 
             config.NewConfig<Car, FavouriteProduct>();
@@ -132,9 +137,51 @@ namespace Tripix.Mapping
 
             config.NewConfig<AddWashDTO, WashBooking>();
 
-            
+            config.NewConfig<UpdateDriverData, ApplicationUser>();
+
+            TypeAdapterConfig<Driver, DriverResponse>.NewConfig()
+                .Map(dest => dest.Id, src => src.Id)
+                .Map(dest => dest.DriverImage, src => src.DriverImage)
+                .Map(dest => dest.CarImages, src => src.CarImage.Select(x => x.ImageUrl))
+                .Map(dest => dest.CarLicense, src => src.CarLicense.Select(x => x.ImageUrl))
+                .Map(dest => dest.DriverLicense, src => src.DriverLicense)
+                .Map(dest => dest.DriverFaceId, src => src.DriverFaceID)
+                .Map(dest => dest.Name, src => src.Name)
+                .Map(dest => dest.PhoneNumber, src => src.PhoneNumber)
+                .Map(dest => dest.Email, src => src.Email)
+                .Map(dest => dest.CarModel, src => src.CarModel)
+                .Map(dest => dest.CarName, src => src.CarName)
+                .Map(dest => dest.DriverStatus, src => src.Status.ToString())
+                .Map(dest => dest.Tripcounter, src => src.Trips.Count());
 
             config.NewConfig<UpdateElectricCarDto, ElectricCars>();
+
+            TypeAdapterConfig<Vehicle, DAResponse>.NewConfig()
+                .Map(dest => dest.Type, src => src.GetType().Name)
+                .Map(dest => dest.CarImage, src => src.VehicleImages.Select(x => x.ImageUrl).First());
+
+            config.NewConfig<AddEventDTO, Event>();
+            config.NewConfig<BookingEventDTO, EventTickets>();
+            config.NewConfig<UpdateTicketDTO, EventTickets>();
+            config.NewConfig<UpdateEventDTO, Event>();
+
+            config.NewConfig<JopApplications, JopApplicationResponse>();
+
+            config.NewConfig<AddJopDTO, Jop>();
+
+            TypeAdapterConfig<JopApplications, JopApplicationResponse>.NewConfig();
+
+            config.NewConfig<UpdateJopDTO, Jop>();
+
+            config.NewConfig<AddSparePartDTO, SpareParts>();
+
+            config.NewConfig<UpdateSparePart ,  SpareParts>();
+            
+            config.NewConfig<AddTipDTO , Tip>();
+
+            config.NewConfig<UpdateTipDTO , Tip>();
+
+            config.NewConfig<UpdateCommentDTO, TipComments>();
         }
     }
 }

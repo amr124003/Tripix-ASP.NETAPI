@@ -9,5 +9,6 @@ namespace Tripix.Services.Interfaces
         public Task<Result<TripResponse>> OrderTripAsync ( string Token, OrderTripDTO orderTripDTO );
         public Task<Result<confirmDriverDTO>> ConfirmDriver ( confirmDriverDTO model );
         public Task<Result<TripResponse>> GetTripDetails ( GetTripDetails model );
+        public Task<Result> CancelTrip ( string UserId, int TripId );
     }
 }

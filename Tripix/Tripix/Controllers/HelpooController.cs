@@ -1,4 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Tripix.Abstractions;
+using Tripix.Contracts.Helpoo;
+using Tripix.Services.Interfaces;
+using Tripix.Services.Repositories;
 using Tripix.View_Models;
 
 
@@ -8,65 +16,65 @@ namespace Tripix.Controllers
     [ApiController]
     public class HelpooController : ControllerBase
     {
-        [HttpGet("HelpooComments")]
-        public IActionResult GetHelpooComments ()
+        private readonly IUnitOfWork unitOfWork;
+
+        public HelpooController(IUnitOfWork unitOfWork)
         {
-            return Ok("Helpoo comments");
-        }
-        [HttpPost("AddHelpooComment")]
-        public IActionResult AddHelpooComment (AddCommentDTO model)
-        {
-            return Ok("Helpoo comment added");
-        }
-        [HttpPut("UpdateComment")]
-        public IActionResult UpdateHelpooComment (int Id)
-        {
-            return Ok("Helpoo comment updated");
-        }
-        [HttpDelete("DeleteComment")]
-        public IActionResult DeleteHelpooComment (int Id)
-        {
-            return Ok("Helpoo comment deleted");
-        }
-        [HttpPost("LikeComment")]
-        public IActionResult LikeHelpooComment (int Id)
-        {
-            return Ok("Helpoo comment liked");
-        }
-        [HttpPost("DisLikeComment")]
-        public IActionResult DislikeHelpooComment ( int Id )
-        {
-            return Ok("Helpoo comment Disliked");
+            this.unitOfWork = unitOfWork;
         }
         [HttpPost("OrderHelpoo")]
-        public IActionResult OrderHelpoo (OrderHelpooDTO model)
+        [Authorize]
+        public async Task<IActionResult> OrderHelpoo(OrderHelpooDTO model)
         {
-            return Ok("Turn booked");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var res = await unitOfWork.HelpooService.OrderHelpoo(UserId, model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpGet("OrderDetails")]
-        public IActionResult GetOrderDetails (int Id)
+        [Authorize]
+        public async Task<IActionResult> GetOrderDetails(int Id)
         {
-            return Ok("Turn");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.HelpooService.GetOrderDetails(Id, UserId!);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPut("UpdateOrder")]
-        public IActionResult UpdateTurn (int Id)
+        [Authorize]
+        public async Task<IActionResult> UpdateTurn(UpdateHelpooDTO model)
         {
-            return Ok("Turn updated");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.HelpooService.UpdateOrderDetials(UserId!, model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpDelete("CancelOrder")]
-        public IActionResult DeleteTurn (int Id)
+        public async Task<IActionResult> DeleteTurnAsync(int Id)
         {
-            return Ok("Turn deleted");
+            var res = await unitOfWork.HelpooService.DeleteOrder(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpGet("HelpooOrders")]
-        public IActionResult GetOrders ()
+        public IActionResult GetOrders()
         {
-            return Ok("Turns");
+            var res = unitOfWork.HelpooService.GetOrders();
+
+            return Ok(res);
         }
         [HttpPost("CencelOrder")]
-        public IActionResult Cancelturn (int Id)
+        public async Task<IActionResult> Cancelturn(int Id)
         {
-            return Ok("Turn canceled");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var res = await unitOfWork.HelpooService.CancelOrder(UserId, Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
+
     }
 }

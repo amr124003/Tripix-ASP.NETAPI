@@ -1,4 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Tripix.Abstractions;
+using Tripix.Contracts.Jop;
+using Tripix.Services.Interfaces;
 using Tripix.View_Models;
 
 namespace Tripix.Controllers
@@ -7,35 +13,84 @@ namespace Tripix.Controllers
     [ApiController]
     public class JopsController : ControllerBase
     {
-        [HttpGet("Jops")]
-        public IActionResult GetJops ()
+        private readonly IUnitOfWork unitOfWork;
+
+        public JopsController(IUnitOfWork unitOfWork)
         {
-            return Ok();
+            this.unitOfWork = unitOfWork;
+        }
+        [HttpGet("Jops")]
+        public async Task<IActionResult> GetJops()
+        {
+            var res = await unitOfWork.JopRepo.GetJopsAsync();
+
+            return Ok(res);
+
         }
         [HttpPost("AddJop")]
-        public IActionResult AddJop (AddJopDTO model)
+        public async Task<IActionResult> AddJop(AddJopDTO model)
         {
-            return Ok();
+            var res = await unitOfWork.JopRepo.AddJop(model);
+
+            return Ok(res);
         }
         [HttpPut("UpdateJop")]
-        public IActionResult UpdateJop (int Id)
+        public async Task<IActionResult> UpdateJop(UpdateJopDTO model)
         {
-            return Ok();
+            var res = await unitOfWork.JopRepo.UpdateJopAsync(model);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpDelete("DeleteJop")]
-        public IActionResult DeleteJop (int Id)
+        public async Task<IActionResult> DeleteJop(int Id)
         {
-            return Ok();
+            var res = await unitOfWork.JopRepo.DeleteJop(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("ApplyForJop")]
-        public IActionResult Apply_for_job (ApplyForJopDTO model)
+        public async Task<IActionResult> Apply_for_job(ApplyForJopDTO model, CancellationToken canToken)
         {
-            return Ok();
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var res = await unitOfWork.JopRepo.ApplyForJopAsync(UserId, model, canToken);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem() ;
         }
         [HttpGet("JopApplications")]
-        public IActionResult GetJopApplications ()
+        public async Task<IActionResult> GetJopApplications()
         {
-            return Ok();
+            var res = await unitOfWork.JopRepo.GetJopApplicationsAsync();
+
+            return Ok(res);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> RejectJopApplication(int Id)
+        {
+            var res = await unitOfWork.JopRepo.RejectJopApplicationAsync(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AcceptJopApplication(int Id)
+        {
+            var res = await unitOfWork.JopRepo.AcceptJopApplicationAsync(Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
+        }
+        [HttpGet("GetJopApplications")]
+        public async Task<IActionResult> GetJopUserApplications()
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var res = await unitOfWork.JopRepo.GetUserJopApplications(UserId!);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
+        }
+        [HttpDelete("DeleteJop/{Id}")]
+        public async Task<IActionResult> DeleteJopApplication(int Id , CancellationToken canToken)
+        {
+            var res = await unitOfWork.JopRepo.DeleteJopApplicaiton(Id , canToken);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
     }
 }

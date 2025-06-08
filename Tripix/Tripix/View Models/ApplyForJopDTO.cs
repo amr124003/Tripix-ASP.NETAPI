@@ -2,7 +2,7 @@ namespace Tripix.View_Models
 {
     public class ApplyForJopDTO
     {
-        public string Position { get; set; }
+        public int JopId { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }

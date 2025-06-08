@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Tripix OTP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+            animation: fadeInBody 1s ease-in;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: auto;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 1s ease forwards;
+            transition: transform 0.3s ease;
+        }
+
+            .card:hover {
+                transform: scale(1.02);
+            }
+
+        .otp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin: 10px 0;
+            animation: bounce 1.2s infinite;
+        }
+
+        @keyframes fadeInBody {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="https://i.postimg.cc/T3wHTJ5n/logo.png" alt="Tripix Logo" style="width: 120px; margin-bottom: 20px;">
+        <h2 style="color: #333;">Hi {{username}}</h2>
+        <p style="font-size: 18px; color: #666;">This Mail About Your Jop Application:</p>
+        <p class="otp">{{message}}</p>
+        <p style="color: #666; font-size: 14px;">{{bigmessage}}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+        <p style="font-size: 12px; color: #999;">© 2025 Tripix. All rights reserved.</p>
+    </div>
+</body>
+</html>

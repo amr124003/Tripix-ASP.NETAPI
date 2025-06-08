@@ -99,7 +99,7 @@
     "ContainingType": "Tripix.Controllers.AuthController",
     "Method": "Refreshtoken",
     "RelativePath": "api/Auth/RefreshToken",
-    "HttpMethod": "GET",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
@@ -385,14 +385,14 @@
   {
     "ContainingType": "Tripix.Controllers.CarRentController",
     "Method": "GetRented",
-    "RelativePath": "api/CarRent/ReturnedCars",
-    "HttpMethod": "POST",
+    "RelativePath": "api/CarRent/ReturnedCars/{Id}",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "model",
-        "Type": "Tripix.Contracts.CarRental.CancellCarForRent",
+        "Name": "Id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -606,6 +606,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.CarsController",
+    "Method": "GetCar",
+    "RelativePath": "api/Cars/GetCar/{Id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarsController",
     "Method": "GetCars",
     "RelativePath": "api/Cars/GetCars",
     "HttpMethod": "POST",
@@ -728,22 +744,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.CarWashController",
-    "Method": "CancelTurn",
-    "RelativePath": "api/CarWash",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.CarWashController",
     "Method": "BookTurn",
     "RelativePath": "api/CarWash/BookWashTurn",
     "HttpMethod": "POST",
@@ -754,6 +754,22 @@
         "Name": "model",
         "Type": "Tripix.View_Models.AddWashDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarWashController",
+    "Method": "CancelTurn",
+    "RelativePath": "api/CarWash/CancelTurn",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -922,9 +938,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Email",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Driver.GetDriverDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -971,7 +987,7 @@
     "Parameters": [
       {
         "Name": "Id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -996,25 +1012,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.DriverController",
-    "Method": "GetDriverTrips",
-    "RelativePath": "api/Driver/DriverTrips",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Driver.GetDriverDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -1104,9 +1104,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Email",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Driver.GetDriverDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -1152,8 +1152,23 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
+        "Name": "DriverImage",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Email",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -1427,9 +1442,29 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "model",
-        "Type": "Tripix.View_Models.AddEventDTO",
-        "IsRequired": true
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "Location",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -1452,8 +1487,8 @@
   },
   {
     "ContainingType": "Tripix.Controllers.EventsController",
-    "Method": "DeleteEvent",
-    "RelativePath": "api/Events/DeleteEvent",
+    "Method": "CancelTicket",
+    "RelativePath": "api/Events/CancelTicket/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1461,19 +1496,41 @@
       {
         "Name": "Id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "Tripix.Controllers.EventsController",
-    "Method": "GetEvent",
-    "RelativePath": "api/Events/Event",
-    "HttpMethod": "GET",
+    "Method": "DeleteEvent",
+    "RelativePath": "api/Events/DeleteEvent/{Id}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.EventsController",
+    "Method": "DeleteTicket",
+    "RelativePath": "api/Events/DeleteTicket/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -1488,9 +1545,9 @@
   },
   {
     "ContainingType": "Tripix.Controllers.EventsController",
-    "Method": "UpdateEvent",
-    "RelativePath": "api/Events/UpdateEvent/{Id}",
-    "HttpMethod": "PUT",
+    "Method": "GetEvent",
+    "RelativePath": "api/Events/GetEvent/{Id}",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1503,16 +1560,94 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "AddHelpooComment",
-    "RelativePath": "api/Helpoo/AddHelpooComment",
+    "ContainingType": "Tripix.Controllers.EventsController",
+    "Method": "GetEventTickets",
+    "RelativePath": "api/Events/GetEventTickets",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
+        "Name": "filter",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.EventsController",
+    "Method": "GetTicket",
+    "RelativePath": "api/Events/GetTicket/{Id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.EventsController",
+    "Method": "UpdateEvent",
+    "RelativePath": "api/Events/UpdateEvent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "Location",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotles",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.EventsController",
+    "Method": "UpdateTicket",
+    "RelativePath": "api/Events/UpdateTicket",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
         "Name": "model",
-        "Type": "Tripix.View_Models.AddCommentDTO",
+        "Type": "Tripix.Contracts.Event.UpdateTicketDTO",
         "IsRequired": true
       }
     ],
@@ -1520,7 +1655,7 @@
   },
   {
     "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "DeleteTurn",
+    "Method": "DeleteTurnAsync",
     "RelativePath": "api/Helpoo/CancelOrder",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -1552,70 +1687,12 @@
   },
   {
     "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "DeleteHelpooComment",
-    "RelativePath": "api/Helpoo/DeleteComment",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "DislikeHelpooComment",
-    "RelativePath": "api/Helpoo/DisLikeComment",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "GetHelpooComments",
-    "RelativePath": "api/Helpoo/HelpooComments",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.HelpooController",
     "Method": "GetOrders",
     "RelativePath": "api/Helpoo/HelpooOrders",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "LikeHelpooComment",
-    "RelativePath": "api/Helpoo/LikeComment",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
     "ReturnTypes": []
   },
   {
@@ -1652,9 +1729,25 @@
   },
   {
     "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "UpdateHelpooComment",
-    "RelativePath": "api/Helpoo/UpdateComment",
+    "Method": "UpdateTurn",
+    "RelativePath": "api/Helpoo/UpdateOrder",
     "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Helpoo.UpdateHelpooDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.JopsController",
+    "Method": "RejectJopApplication",
+    "RelativePath": "api/Jops",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1667,10 +1760,10 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Tripix.Controllers.HelpooController",
-    "Method": "UpdateTurn",
-    "RelativePath": "api/Helpoo/UpdateOrder",
-    "HttpMethod": "PUT",
+    "ContainingType": "Tripix.Controllers.JopsController",
+    "Method": "AcceptJopApplication",
+    "RelativePath": "api/Jops",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1692,7 +1785,7 @@
     "Parameters": [
       {
         "Name": "model",
-        "Type": "Tripix.View_Models.AddJopDTO",
+        "Type": "Tripix.Contracts.Jop.AddJopDTO",
         "IsRequired": true
       }
     ],
@@ -1707,8 +1800,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Position",
-        "Type": "System.String",
+        "Name": "JopId",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {
@@ -1752,6 +1845,32 @@
   },
   {
     "ContainingType": "Tripix.Controllers.JopsController",
+    "Method": "DeleteJopApplication",
+    "RelativePath": "api/Jops/DeleteJop/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.JopsController",
+    "Method": "GetJopUserApplications",
+    "RelativePath": "api/Jops/GetJopApplications",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.JopsController",
     "Method": "GetJopApplications",
     "RelativePath": "api/Jops/JopApplications",
     "HttpMethod": "GET",
@@ -1779,21 +1898,11 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Jop.UpdateJopDTO",
+        "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.MobileAppADSController",
-    "Method": "DowloadMobileApp",
-    "RelativePath": "api/MobileAppADS/DownLoadApp",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -1976,16 +2085,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
-    "Method": "GetAccessories",
-    "RelativePath": "api/SpareParts/Accessories",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.SparePartsController",
     "Method": "AddSparePart",
     "RelativePath": "api/SpareParts/AddSparePart",
     "HttpMethod": "POST",
@@ -2027,6 +2126,38 @@
   },
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
+    "Method": "CancelOrder",
+    "RelativePath": "api/SpareParts/CancelOrder/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.SparePartsController",
+    "Method": "DeleteOrder",
+    "RelativePath": "api/SpareParts/DeleteOrder/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.SparePartsController",
     "Method": "DeleteSparePart",
     "RelativePath": "api/SpareParts/DeleteSparePart",
     "HttpMethod": "DELETE",
@@ -2043,18 +2174,24 @@
   },
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
-    "Method": "ElectricSpareParts",
-    "RelativePath": "api/SpareParts/ElectricSpareParts",
+    "Method": "GetOrder",
+    "RelativePath": "api/SpareParts/GetOrder/{Id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
-    "Method": "GetOils",
-    "RelativePath": "api/SpareParts/Oils",
+    "Method": "GetOrders",
+    "RelativePath": "api/SpareParts/GetOrders",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2099,28 +2236,12 @@
   },
   {
     "ContainingType": "Tripix.Controllers.SparePartsController",
-    "Method": "GetTyres",
-    "RelativePath": "api/SpareParts/Tyres",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.SparePartsController",
     "Method": "UpdateSparePart",
     "RelativePath": "api/SpareParts/UpdateSparaParts",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -2293,22 +2414,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.TripixController",
-    "Method": "DeleteTrip",
-    "RelativePath": "api/Tripix/DeleteTrip",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "TripId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.TripixController",
     "Method": "GetTripDetails",
     "RelativePath": "api/Tripix/GetTripDetails",
     "HttpMethod": "POST",
@@ -2335,32 +2440,6 @@
         "Name": "model",
         "Type": "Tripix.View_Models.OrderTripDTO",
         "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.TripixController",
-    "Method": "GetTrips",
-    "RelativePath": "api/Tripix/Trips",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.TripixController",
-    "Method": "UpdateTrip",
-    "RelativePath": "api/Tripix/UpdateTrip",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "TripId",
-        "Type": "System.Int32",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []

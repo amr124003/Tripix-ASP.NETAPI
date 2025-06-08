@@ -9,5 +9,6 @@ namespace Tripix.Entities
         public DateTime Date { get; set; }
         public string Location { get; set; }
         public List<Hotel> Hotels { get; set; }
+        public bool Ended => DateTime.UtcNow > Date;
     }
 }

@@ -14,8 +14,13 @@ namespace Tripix.Services
         public Task<bool> MakeMeOfflineAsync ( string DriverId );
         public Task<ConfirmTripResponse?> ConfirmTrip ( confirmTripDto model, string DriverId );
         public Task<bool> SetTripAsAvailable ( Trip newtrip, Driver driver );
-        public Task<List<OrderTripDTO>> AvilableTrips ( string token );
+        public Task<List<OrderTripDTO>> AvilableTrips ( string UserId );
         public Task<Result> SendMessage ( DriverSendMSGDTO model );
         public Task<Result> DriverRegister ( DriverRegisterDTO model );
+        public Task<Result> UpdateDriverData (string DriverId ,  UpdateDriverData model );
+        public Task<Result<DriverResponse>> GetDriverData(string DriverId );
+        public Task<List<DriverResponse>> GetDrivers();
+        public Task<Result> AcceptDriver ( string DriverId );
+        public Task<Result> RejectDriver ( string DriverId );
     }
 }

@@ -25,5 +25,9 @@ namespace Tripix.Errors
         public static readonly Error CarImagesNotFound = new("Car Images Not Found", "Driver Can't Added Without Car Images", StatusCodes.Status400BadRequest);
 
         public static readonly Error DriverImageNotFound = new("Driver Image Not Found" , "Driver Can't Added Without Image" , StatusCodes.Status400BadRequest);
+
+        public static readonly Error AlreadyConfirmedDriver = new("AlreadyConfirmedDriver", "This Driver Already Confirmed", StatusCodes.Status409Conflict);
+
+        public static readonly Error RejectedDriver = new("RejectedDriver", "This Driver Rejected", StatusCodes.Status409Conflict);
     }
 }

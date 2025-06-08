@@ -22,9 +22,10 @@ namespace Tripix.Entities
         public int LikeCounter { get; set; } = 0;
         public string? Merchant_Name { get; set; } = "Tripix";
         public string? Merchant_Phone { get; set; } = "01020652199";
-        public DateOnly? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
         public string Merchant_Logo { get; set; } = "/Images/TripixLogo.png";
         public int? Rate { get; set; }
         public decimal? Discount { get; set; }
+        public int Views { get; set; } = 0;
     }
 }

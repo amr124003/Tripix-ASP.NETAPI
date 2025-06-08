@@ -1,4 +1,5 @@
 #nullable disable
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tripix.Abstractions;
 using Tripix.Contracts.Authentication;
@@ -64,7 +65,7 @@ namespace Tripix.Controllers
             return authResult.IsSuccess ? Ok(Authresponse) : authResult.ToProblem();
         }
 
-        [HttpGet("RefreshToken")]
+        [HttpPost("RefreshToken")]
         
         public async Task<IActionResult> Refreshtoken ()
         {
@@ -77,7 +78,7 @@ namespace Tripix.Controllers
                 // ﬂœÂ „⁄«ﬂ «· token ›Ì «·„ €Ì— token
             }
 
-            var refreshToken = Request.Cookies["refreshToken"];
+            var refreshToken = Request.Cookies["refreshToken"] ?? Request.Headers["X-Refresh-Token"].FirstOrDefault();
 
 
 
@@ -166,8 +167,6 @@ namespace Tripix.Controllers
             {
                 HttpOnly = true,     // „‰⁄ «·Ê’Ê· „‰ JavaScript
                 Expires = DateTime.UtcNow.AddDays(15),
-                SameSite = SameSiteMode.None,  // «·”„«Õ »≈—”«· «·ﬂÊﬂÌ“ ⁄»— «·œÊ„Ì‰«  «·„Œ ·›…
-                Secure = false       // ·«  ” Œœ„ Secure Â‰« ·Ê ﬂ‰  ⁄·Ï HTTP
             };
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
@@ -177,10 +176,8 @@ namespace Tripix.Controllers
         {
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,     // „‰⁄ «·Ê’Ê· „‰ JavaScript
+                HttpOnly = true,     
                 Expires = DateTime.UtcNow.AddDays(15),
-                SameSite = SameSiteMode.None,  // «·”„«Õ »≈—”«· «·ﬂÊﬂÌ“ ⁄»— «·œÊ„Ì‰«  «·„Œ ·›…
-                Secure = false       // ·«  ” Œœ„ Secure Â‰« ·Ê ﬂ‰  ⁄·Ï HTTP
             };
 
             Response.Cookies.Append("Driver-Ref-Token", refreshToken, cookieOptions);

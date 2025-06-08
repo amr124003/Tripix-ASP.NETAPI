@@ -1,12 +1,13 @@
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 using Tripix.Abstractions;
 using Tripix.Contracts.Driver;
 using Tripix.Contracts.Trip;
 using Tripix.Entities;
 using Tripix.Hubs;
-using Tripix.Services;
 using Tripix.Services.Interfaces;
 using Tripix.View_Models;
 
@@ -16,27 +17,26 @@ namespace Tripix.Controllers
     [ApiController]
     public class TripixController : ControllerBase
     {
-        private readonly ITripRepo tripRepo;
-        private readonly IDriverRepo driverRepo;
-        private readonly IHubContext<RideHub> hubcontext;
 
-        public TripixController ( ITripRepo tripRepo, IDriverRepo DriverRepo, IHubContext<RideHub> hubcontext )
+        private readonly IHubContext<RideHub> hubcontext;
+        private readonly IUnitOfWork unitOfWork;
+
+        public TripixController ( IHubContext<RideHub> hubcontext, IUnitOfWork unitOfWork )
         {
-            this.tripRepo = tripRepo;
-            driverRepo = DriverRepo;
             this.hubcontext = hubcontext;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost("OrderTrip")]
         public async Task<IActionResult> OrderTrip ( OrderTripDTO model )
-            {
+        {
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();
             var token = "";
 
             if (authHeader != null && authHeader.StartsWith("Bearer "))
             {
                 token = authHeader.Substring("Bearer ".Length).Trim();
-                // ﬂœÂ „⁄«ﬂ «· token ›Ì «·„ €Ì— token
+                
             }
 
             if (!ModelState.IsValid)
@@ -45,13 +45,13 @@ namespace Tripix.Controllers
             }
 
 
-            var tripResponse = await tripRepo.OrderTripAsync(token, model);
+            var tripResponse = await unitOfWork.tripService.OrderTripAsync(token, model);
 
             if (!tripResponse.IsSuccess) { return tripResponse.ToProblem(); }
 
             LocationDTO location = new(model.PickupLatitude, model.PickupLongitude);
 
-            var Drivers = await driverRepo.GetNearsetDriversAsync(location);
+            var Drivers = await unitOfWork.driverService.GetNearsetDriversAsync(location);
 
             if (!Drivers.Any()) { return BadRequest("Not Availbale Drivers Yet"); }
 
@@ -62,7 +62,7 @@ namespace Tripix.Controllers
                 await hubcontext.Clients.Group($"Driver {driver.Id}")
                     .SendAsync("NewTrip", tripResponse.Value);
 
-                await driverRepo.SetTripAsAvailable(trip, driver);
+                await unitOfWork.driverService.SetTripAsAvailable(trip, driver);
             }
 
             return tripResponse.IsSuccess ? Ok(tripResponse) : tripResponse.ToProblem();
@@ -71,34 +71,24 @@ namespace Tripix.Controllers
         [HttpPost("GetTripDetails")]
         public async Task<IActionResult> GetTripDetails ( GetTripDetails model )
         {
-            var Res = await tripRepo.GetTripDetails(model);
+            var Res = await unitOfWork.tripService.GetTripDetails(model);
 
             return Res.IsSuccess ? Ok(Res.Value) : Res.ToProblem();
         }
-        [HttpPut("UpdateTrip")]
-        public IActionResult UpdateTrip ( int TripId )
-        {
-            return Ok("Trip updated");
-        }
-        [HttpDelete("DeleteTrip")]
-        public IActionResult DeleteTrip ( int TripId )
-        {
-            return Ok("Trip deleted");
-        }
-        [HttpGet("Trips")]
-        public IActionResult GetTrips ()
-        {
-            return Ok("Trips");
-        }
         [HttpPost("CancelTrip")]
-        public IActionResult CancelTrip ( int TripId )
+        [Authorize]
+        public async Task<IActionResult> CancelTrip ( int TripId )
         {
-            return Ok("Trip canceled");
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.tripService.CancelTrip(UserId!, TripId);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("Confirm-Driver")]
         public async Task<IActionResult> ConfirmDriver ( confirmDriverDTO model )
         {
-            var res = await tripRepo.ConfirmDriver(model);
+            var res = await unitOfWork.tripService.ConfirmDriver(model);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }

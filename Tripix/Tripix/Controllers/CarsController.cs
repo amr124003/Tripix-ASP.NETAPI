@@ -40,6 +40,13 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
+        [HttpGet("GetCar/{Id}")]
+        public async Task<IActionResult> GetCar(int Id)
+        {
+            var res = await  unitOfWork.carRepo.GetCar(Id);
+
+            return res.IsSuccess ? Ok(res.IsSuccess) : res.ToProblem();
+        }
         [HttpDelete("DeleteNewCar")]
         public async Task<IActionResult> DeleteCar ( int Id )
         {

@@ -33,7 +33,7 @@ namespace Tripix.Context
 
             foreach (var trip in deletedTrips)
             {
-                
+
                 if (trip.Entity.Status == TripStatus.InProgress || trip.Entity.Status == TripStatus.Pending)
                 {
                     throw new InvalidOperationException("Cannot delete an in-progress trip.");
@@ -69,5 +69,9 @@ namespace Tripix.Context
         public DbSet<SpareParts> SpareParts { get; set; }
         public DbSet<CarBrand> Brands { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<EventTickets> EventTickets { get; set; }
+        public DbSet<LovedTips> LovedTips { get; set; }
+        public DbSet<TipComments> TipComments { get; set; }
+
     }
 }

@@ -7,5 +7,7 @@ namespace Tripix.Abstractions.Consts
         Pending = 2,
         Online = 3,
         Offline = 4,
+        Rejected = 5,
+
     }
 }

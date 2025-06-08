@@ -20,17 +20,17 @@ namespace Tripix.Controllers
         [HttpGet("AvilableCars")]
         public async Task<IActionResult> GetAvailable ()
         {
-            var res = await unitOfWork.RentService.GetAvilableCars();
+            var res = unitOfWork.RentService.GetAvilableCars();
 
             return Ok(res);
         }
-        [HttpPost("ReturnedCars")]
+        [HttpGet("ReturnedCars/{Id}")]
         [Authorize]
-        public async Task<IActionResult> GetRented ( CancellCarForRent model )
+        public async Task<IActionResult> GetRented ( int Id )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var res = await unitOfWork.RentService.GetCarRented(UserId);
+            var res = await unitOfWork.RentService.GetCarRented(UserId, Id);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
@@ -45,9 +45,11 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPost("ReturnCar")]
+        [Authorize]
         public async Task<IActionResult> ReturnCar ( int Id )
         {
-            var res = await unitOfWork.RentService.CancellCarforRent(Id);
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var res = await unitOfWork.RentService.CancellCarforRent(UserId!, Id);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
