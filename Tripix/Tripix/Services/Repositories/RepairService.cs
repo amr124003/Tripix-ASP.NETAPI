@@ -1,12 +1,16 @@
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Cryptography;
 using Tripix.Abstractions;
+using Tripix.Abstractions.Consts;
 using Tripix.Context;
 using Tripix.Contracts.Car;
 using Tripix.Contracts.CarRepair;
+using Tripix.Contracts.Common;
 using Tripix.Entities;
 using Tripix.Errors;
+using Tripix.Extentions;
 using Tripix.Services.Interfaces;
 
 namespace Tripix.Services.Repositories
@@ -37,12 +41,12 @@ namespace Tripix.Services.Repositories
                     UserName = user.Name,
                     UserPhone = user.PhoneNumber,
                     RepairDate = model.RepairTime,
-                    CarType = model.CarType,
-                    PricingPlan = model.PricingPlan
+                    CarType = (CarFuelTypes)Enum.Parse(typeof(CarFuelTypes) , model.CarType),
+                    PricingPlan = (PricingPlan)Enum.Parse(typeof (PricingPlan), model.PricingPlan),
                 };
             newRepairTurn.UserEmail = user.Email;
 
-            context.RepairBookings.Add(newRepairTurn);
+            user.RepairBookings.Add(newRepairTurn);
             await context.SaveChangesAsync();
 
             var res = newRepairTurn.Adapt<CarRepairResponse>();
@@ -52,7 +56,7 @@ namespace Tripix.Services.Repositories
 
         public async Task<Result> CancelTurn ( string UserId, int Id )
         {
-            var user = await usermanger.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+            var user = await usermanger.Users.Include(x => x.RepairBookings).FirstOrDefaultAsync(x => x.Id == UserId);
 
             if (user == null) { return Result.Failure(UserErrors.UserNotFound); }
 
@@ -81,23 +85,27 @@ namespace Tripix.Services.Repositories
             return Result.Success();
         }
 
-        public async Task<List<RepairBookings>> GetRepairBookings ()
+        public async Task<PaginatedList<RepairBookings>> GetRepairBookings (RequestFilter model , CancellationToken canToken)
         {
-            var res = await context.RepairBookings.AsNoTracking().ToListAsync();
+            var res = await context.RepairBookings.AsNoTracking()
+                .CreatePaginatedList<RepairBookings>(model.PageNumber, model.PageSize, canToken);
 
             return res;
         }
 
-        public async Task<Result<CarRepairResponse>> GetTurn ( string UserId, int Id )
+        public async Task<Result<List<RepairBookings>>> GetTurns ( string UserId )
         {
-            var repairbooking = await context.RepairBookings.FirstOrDefaultAsync(x => x.Id == Id);
+            var res = new List<RepairBookings>();
+            var user = await usermanger.Users.Include(x => x.RepairBookings).FirstOrDefaultAsync(x => x.Id == UserId);
 
-            if (repairbooking == null) { return Result.Failure<CarRepairResponse>(RepairErrors.TurnNotfound); }
+            var validuser = user!.ValidUser(res);
+            if(validuser.IsFalure) { return validuser!; }
 
-            var res = repairbooking.Adapt<CarRepairResponse>();
+            res =  user!.RepairBookings
+                .ToList();
+
             return Result.Success(res);
         }
-
 
         public async Task<Result<CarRepairResponse>> UpdateTurn ( UpdateTurnDTO model )
         {

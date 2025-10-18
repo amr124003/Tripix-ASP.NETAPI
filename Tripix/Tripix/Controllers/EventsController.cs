@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tripix.Abstractions;
@@ -19,6 +20,7 @@ namespace Tripix.Controllers
             this.unitOfWork = unitOfWork;
         }
         [HttpGet("Events")]
+        
         public async Task<IActionResult> GetEvents ()
         {
             var res = await unitOfWork.EventRepo.GetEvents();
@@ -26,20 +28,22 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpGet("GetEvent/{Id}")]
+        
         public async Task<IActionResult> GetEvent ( int Id )
         {
             var res = await unitOfWork.EventRepo.GetEvent(Id);
 
-            return res.IsSuccess ? Ok(res) : res.ToProblem();
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPost("AddEvent")]
-        public async Task<IActionResult> AddEvent ( AddEventDTO model )
+        public async Task<IActionResult> AddEvent ([FromForm] AddEventDTO model )
         {
             var res = await unitOfWork.EventRepo.AddEvent(model);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpDelete("DeleteEvent/{Id}")]
+        
         public async Task<IActionResult> DeleteEvent ( int Id )
         {
             var res = await unitOfWork.EventRepo.DeleteEvemt(Id);
@@ -47,13 +51,14 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPut("UpdateEvent")]
-        public async Task<IActionResult> UpdateEvent ( UpdateEventDTO model )
+        public async Task<IActionResult> UpdateEvent ([FromForm] UpdateEventDTO model )
         {
             var res = await unitOfWork.EventRepo.UpdateEvent(model);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpDelete("CancelTicket/{Id}")]
+        
         public async Task<IActionResult> CancelTicket ( int Id )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -63,6 +68,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPut("UpdateTicket")]
+        
         public async Task<IActionResult> UpdateTicket ( UpdateTicketDTO model )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -72,6 +78,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpGet("GetTicket/{Id}")]
+        
         public async Task<IActionResult> GetTicket ( int Id )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -81,6 +88,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpDelete("DeleteTicket/{Id}")]
+        
         public async Task<IActionResult> DeleteTicket ( int Id )
         {
             var res = await unitOfWork.EventRepo.DeleteTicket(Id);
@@ -88,6 +96,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("GetEventTickets")]
+        
         public async Task<IActionResult> GetEventTickets ( RequestFilter filter )
         {
             var res = await unitOfWork.EventRepo.GetEventTicket(filter);
@@ -95,6 +104,7 @@ namespace Tripix.Controllers
             return Ok(res);
         }
         [HttpPost("BookingTicket")]
+        
         public async Task<IActionResult> BookingEventTicket ( BookingEventDTO model )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

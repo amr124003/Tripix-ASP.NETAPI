@@ -1,5 +1,7 @@
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
+using RTools_NTS.Util;
 using Tripix.Abstractions;
 using Tripix.Abstractions.Consts;
 using Tripix.Context;
@@ -23,7 +25,7 @@ namespace Tripix.Services.Repositories
         }
         public async Task<Result<ElectricCarsResponse>> AddCar ( AddElectricCatDTO model )
         {
-            if (model.Images == null || model.Images.Count == 0)
+            if (model.CarImages == null || model.CarImages.Count == 0)
             {
                 return Result.Failure<ElectricCarsResponse>(VehicleErrors.ImagesNotFound);
             }
@@ -33,12 +35,11 @@ namespace Tripix.Services.Repositories
             try
             {
                 var newCar = model.Adapt<ElectricCars>();
-                await context.Vehicles.AddAsync(newCar);
-                await context.SaveChangesAsync();
+                
 
-                foreach (var Image in model.Images)
+                foreach (var Image in model.CarImages)
                 {
-                    ; var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.ElectricCarImageUrl}{Image.FileName}");
+                    ; var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.CarImageUrl}{Image.FileName}");
 
                     using (var Stream = new FileStream(path, FileMode.Create))
                     {
@@ -46,9 +47,10 @@ namespace Tripix.Services.Repositories
                     }
                     newCar.VehicleImages.Add(new VehicleImage()
                     {
-                        ImageUrl = $"{Urls.ElectricCarImageUrl}{Image.FileName}"
+                        ImageUrl = $"{Urls.SaveCarImageUrl}{Image.FileName}"
                     });
                 }
+                await context.Vehicles.AddAsync(newCar);
                 await context.SaveChangesAsync();
                 await Transaction.CommitAsync();
                 var response = newCar.Adapt<ElectricCarsResponse>();
@@ -62,25 +64,63 @@ namespace Tripix.Services.Repositories
             }
         }
 
-        public async Task<Result> DeleteCar ( int Id )
+        public async Task<Result> DeleteCar ( int Id , CancellationToken canToken)
         {
             var Car = await context.Vehicles.OfType<ElectricCars>()
+                .Include(x => x.VehicleImages)
                 .FirstOrDefaultAsync(x => x.Id == Id);
 
             if (Car == null) { return Result.Failure(VehicleErrors.VehicleNotFound); }
 
-            context.Vehicles.Remove(Car);
-            await context.SaveChangesAsync();
-            return Result.Success();
+            using var Transaction = context.Database.BeginTransaction();
+
+            try
+            {
+                if (Car.VehicleImages.Count == 0 || Car.VehicleImages != null)
+                {
+                    foreach (var image in Car.VehicleImages.Select(x => x.ImageUrl))
+                    {
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{image}");
+
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+                    }
+                }
+
+                context.Vehicles.Remove(Car);
+                await context.SaveChangesAsync(canToken);
+                await Transaction.CommitAsync(canToken);
+                return Result.Success();
+            }
+            catch
+            {
+                await Transaction.RollbackAsync(canToken);
+                return Result.Failure(VehicleErrors.VehicleNotFound);
+            }
         }
 
-        public async Task<PaginatedList<ElectricCarsResponse>> GetAll ( RequestFilter model, CancellationToken canToken )
+        public async Task<PaginatedList<ElectricCarsResponse>> GetAll (string UserId ,  RequestFilter model, CancellationToken canToken )
         {
+            var likedvehciles = await context.FavouriteProducts
+               .Where(f => f.UserId == UserId)
+               .Select(f => f.VehicleId)
+               .ToListAsync(canToken); 
+
             var Cars = await context.Vehicles.OfType<ElectricCars>()
                 .AsNoTracking()
                 .ApplyFilter<ElectricCars>(model.SearchValues)
                 .ProjectToType<ElectricCarsResponse>()
                 .CreatePaginatedList<ElectricCarsResponse>(model.PageNumber, model.PageSize, canToken);
+
+            var likedIdsSet = likedvehciles.ToHashSet(); 
+
+            foreach (var item in Cars.Items)
+            {
+                item.IsLiked = likedIdsSet.Contains(item.Id);
+            }
+
 
             return Cars;
         }
@@ -107,16 +147,52 @@ namespace Tripix.Services.Repositories
 
         public async Task<Result<ElectricCarsResponse>> UpdateCar ( UpdateElectricCarDto model )
         {
-            var Car = await context.Vehicles.OfType<ElectricCars>()
+            var Car = await context.Vehicles.OfType<ElectricCars>().Include(x => x.VehicleImages)
                 .FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (Car == null) { return Result.Failure<ElectricCarsResponse>(VehicleErrors.VehicleNotFound); }
 
-            model.Adapt(Car);
-            await context.SaveChangesAsync();
+            using var Transaction = context.Database.BeginTransaction();
 
-            var response = Car.Adapt<ElectricCarsResponse>();
-            return Result.Success(response);
+            try
+            {
+                model.Adapt(Car);
+                
+                foreach(var Image in Car.VehicleImages.Select(x => x.ImageUrl))
+                {
+                    var oldpath = Path.Combine(Directory.GetCurrentDirectory(), Image);
+
+                    if(File.Exists(oldpath))
+                    {
+                        File.Delete(oldpath);
+                    }
+                }
+
+                foreach (var Image in model.CarImages)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.SaveCarImageUrl}{Image.FileName}");
+
+                    using (var Stream = new FileStream(path, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(Stream);
+                    }
+                    Car.VehicleImages.Add(new VehicleImage()
+                    {
+                        ImageUrl = $"{Urls.SaveCarImageUrl}{Image.FileName}"
+                    });
+                }
+                model.Adapt(Car);
+                await context.SaveChangesAsync();
+                await Transaction.CommitAsync();
+                var response = Car.Adapt<ElectricCarsResponse>();
+                return Result.Success(response);
+            }
+            catch (Exception)
+            {
+                await Transaction.RollbackAsync();
+                return Result.Failure<ElectricCarsResponse>(VehicleErrors.VehicleCannotUpdate);
+
+            }
         }
     }
 }

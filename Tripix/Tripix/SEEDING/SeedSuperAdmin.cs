@@ -33,7 +33,8 @@ namespace Tripix.SEEDING
                     UserName = "SuperAdminv911",
                     Email = superAdminEmail,
                     PhoneNumber = "01020652199",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    
                 };
 
                 var result = await userManager.CreateAsync(SuperAdmin, superAdminPassword);
@@ -49,9 +50,6 @@ namespace Tripix.SEEDING
                 }
 
             }
-
-
-
         }
     }
 }

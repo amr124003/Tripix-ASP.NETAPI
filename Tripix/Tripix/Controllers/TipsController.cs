@@ -24,17 +24,18 @@ namespace Tripix.Controllers
         }
         [HttpPost("GetTips")]
         public async Task<IActionResult> GetTips(RequestFilter model , CancellationToken canToken)
-        {
+       {
             var res = await unitOfWork.TipRepo.GetTips(model, canToken);
 
             return Ok(res);
         }
+        
         [HttpGet("GetTip/{Id}")]
         public async Task<IActionResult> GetTip (int Id , CancellationToken canToken)
         {
             var res = await unitOfWork.TipRepo.GetTip(Id, canToken);
 
-            return res.IsSuccess ? Ok(res) : res.ToProblem();
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPost("AddTip")]
         public async Task<IActionResult> AddTip (AddTipDTO model , CancellationToken canToken)
@@ -50,7 +51,7 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        [HttpDelete("DeleteTip")]
+        [HttpDelete("DeleteTip/{Id}")]
         public async Task<IActionResult> DeleteTip (int Id)
         {
             var res = await unitOfWork.TipRepo.DeleteTip(Id);
@@ -58,21 +59,21 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("LikeTip")]
-        public async Task<IActionResult> LikeTip (int Id , CancellationToken canToken)
+        public async Task<IActionResult> LikeTip (ActionTip model, CancellationToken canToken)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var res = await unitOfWork.TipRepo.LikeTip(UserId!, Id, canToken);
+            var res = await unitOfWork.TipRepo.LikeTip(UserId!, model.TipId, canToken);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
 
         }
-        [HttpGet("DislikeTip")]
-        public async Task<IActionResult> Dislike(int Id , CancellationToken canToken)
+        [HttpPost("DislikeTip")]
+        public async Task<IActionResult> Dislike(ActionTip model , CancellationToken canToken)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var res = await unitOfWork.TipRepo.DislikeTip(UserId!, Id , canToken);
+            var res = await unitOfWork.TipRepo.DislikeTip(UserId!, model.TipId , canToken);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
@@ -110,5 +111,16 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
+        [HttpPost("ReplyForComment")]
+        public async Task<IActionResult> ReplyForComment(ReplyForComment model,CancellationToken canToken)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.TipRepo.ReplyForComment(UserId!, model, canToken);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
+        }
+        
+        
     }
 }

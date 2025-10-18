@@ -9,5 +9,7 @@ namespace Tripix.Services.Interfaces
         public Task<Result<AssignRoleModel>> AssignRole ( AssignRoleModel model);
         public Task<Result<AddAdminModel>> AddAdmin ( AddAdminModel model );
         public Task<Result<List<GetAdminsResponse>>> GetAdmins ();
+        public List<ServiceResponse> GetServiceBookings();
+        public bool DeleteBooking(DeleteServiceDTO model);
     }
 }

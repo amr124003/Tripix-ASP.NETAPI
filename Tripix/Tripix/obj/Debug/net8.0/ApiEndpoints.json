@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "Tripix.Controllers.AccountController",
+    "Method": "CommentToTip",
+    "RelativePath": "api/Account/CommentToTip",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.AccountController",
     "Method": "GetTripDetails",
     "RelativePath": "api/Account/Get-Trip-Details",
     "HttpMethod": "POST",
@@ -49,6 +59,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.AuthController",
+    "Method": "FacebookLogin",
+    "RelativePath": "api/Auth/facebookLogin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Authentication.FacebookLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.AuthController",
     "Method": "ForgetPassword",
     "RelativePath": "api/Auth/Forget-Password",
     "HttpMethod": "POST",
@@ -61,6 +87,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.AuthController",
+    "Method": "GetTest",
+    "RelativePath": "api/Auth/GetTest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -256,11 +292,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "Title",
         "Type": "System.String",
         "IsRequired": false
@@ -287,38 +318,38 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Name",
+        "Name": "CarName",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Model",
+        "Name": "CarModel",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Color",
+        "Name": "CarColor",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Rate",
+        "Name": "CarRate",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
-        "Name": "Description",
+        "Name": "CarDescription",
         "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Image",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       },
       {
         "Name": "HourlyPrice",
         "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
     ],
@@ -352,6 +383,32 @@
   },
   {
     "ContainingType": "Tripix.Controllers.CarRentController",
+    "Method": "DeleteRent",
+    "RelativePath": "api/CarRent/DeleteRent/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarRentController",
+    "Method": "GetRentedCars",
+    "RelativePath": "api/CarRent/GetRentedCars",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarRentController",
     "Method": "RentCar",
     "RelativePath": "api/CarRent/RentCar",
     "HttpMethod": "POST",
@@ -375,24 +432,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.CarRentController",
-    "Method": "GetRented",
-    "RelativePath": "api/CarRent/ReturnedCars/{Id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
+        "Name": "model",
+        "Type": "Tripix.Contracts.CarRental.CancellCarForRent",
         "IsRequired": true
       }
     ],
@@ -412,27 +453,27 @@
         "IsRequired": false
       },
       {
-        "Name": "Name",
+        "Name": "CarName",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Model",
+        "Name": "CarModel",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Color",
+        "Name": "CarColor",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Rate",
+        "Name": "CarRate",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
-        "Name": "Description",
+        "Name": "CarDescription",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -467,6 +508,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.CarRepairController",
+    "Method": "CancelTurn",
+    "RelativePath": "api/CarRepair/CancelTurn/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarRepairController",
     "Method": "DeleteTurn",
     "RelativePath": "api/CarRepair/DeleteRepairTurn",
     "HttpMethod": "DELETE",
@@ -485,6 +542,22 @@
     "ContainingType": "Tripix.Controllers.CarRepairController",
     "Method": "GetRepairs",
     "RelativePath": "api/CarRepair/Get-Repairs",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarRepairController",
+    "Method": "GetTurns",
+    "RelativePath": "api/CarRepair/GetTurns",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -516,7 +589,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Name",
+        "Name": "CarName",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -536,6 +609,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Rate",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
         "Name": "Merchant_Name",
         "Type": "System.String",
         "IsRequired": false
@@ -551,32 +629,27 @@
         "IsRequired": false
       },
       {
-        "Name": "Year",
+        "Name": "CarYear",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Model",
+        "Name": "CarModel",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Color",
+        "Name": "CarDescription",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Description",
+        "Name": "CarPrand",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Prand",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Price",
+        "Name": "CarPrice",
         "Type": "System.Decimal",
         "IsRequired": false
       },
@@ -591,7 +664,7 @@
   {
     "ContainingType": "Tripix.Controllers.CarsController",
     "Method": "DeleteCar",
-    "RelativePath": "api/Cars/DeleteNewCar",
+    "RelativePath": "api/Cars/DeleteNewCar/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -599,7 +672,7 @@
       {
         "Name": "Id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -648,16 +721,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.CarsController",
-    "Method": "Sellcar",
-    "RelativePath": "api/Cars/SellCar",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.CarsController",
     "Method": "UpdateCar",
     "RelativePath": "api/Cars/UpdateNewCar",
     "HttpMethod": "PUT",
@@ -670,7 +733,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Name",
+        "Name": "CarName",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -705,32 +768,32 @@
         "IsRequired": false
       },
       {
-        "Name": "Year",
+        "Name": "CarYear",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Model",
+        "Name": "CarModel",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Color",
+        "Name": "CarColor",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Description",
+        "Name": "CarDescription",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Prand",
+        "Name": "CarPrand",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Price",
+        "Name": "CarPrice",
         "Type": "System.Decimal",
         "IsRequired": false
       },
@@ -792,12 +855,28 @@
   },
   {
     "ContainingType": "Tripix.Controllers.CarWashController",
-    "Method": "GetTurns",
-    "RelativePath": "api/CarWash/GetWashBookings",
+    "Method": "GetUserTurns",
+    "RelativePath": "api/CarWash/GetUserTurns",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.CarWashController",
+    "Method": "GetTurns",
+    "RelativePath": "api/CarWash/GetWashBookings",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -891,12 +970,96 @@
   },
   {
     "ContainingType": "Tripix.Controllers.DAController",
-    "Method": "Gettestimonial",
-    "RelativePath": "api/DA/Gettestimonial",
+    "Method": "GetAllProductsName",
+    "RelativePath": "api/DA/GetAllProductNames",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetNewArrivalsForProduct",
+    "RelativePath": "api/DA/GetNewArrivalsForProduct",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.DA.FilterProductDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetProductCount",
+    "RelativePath": "api/DA/GetProductCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetProductName",
+    "RelativePath": "api/DA/GetProductNames",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Car.ProductSearch",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetCountOfProducts",
+    "RelativePath": "api/DA/getProductsCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetTopRatedForProduct",
+    "RelativePath": "api/DA/GetTopRatedForProduct",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.DA.FilterProductDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DAController",
+    "Method": "GetTrendingForProduct",
+    "RelativePath": "api/DA/GetTrendingForProduct",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.DA.FilterProductDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -973,22 +1136,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.DriverController",
-    "Method": "DeleteDriver",
-    "RelativePath": "api/Driver/DeleteDriver",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.DriverController",
     "Method": "GetDriver",
     "RelativePath": "api/Driver/Driver",
     "HttpMethod": "GET",
@@ -1015,24 +1162,18 @@
   },
   {
     "ContainingType": "Tripix.Controllers.DriverController",
-    "Method": "DriverStatistics",
-    "RelativePath": "api/Driver/DriverStatistics",
-    "HttpMethod": "POST",
+    "Method": "GetAvilableTrips",
+    "RelativePath": "api/Driver/GetAvilableTrips",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "model",
-        "Type": "Tripix.Contracts.Driver.GetDriverDTO",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
     "ContainingType": "Tripix.Controllers.DriverController",
-    "Method": "GetAvilableTrips",
-    "RelativePath": "api/Driver/GetAvilableTrips",
+    "Method": "GetDriverJopApplication",
+    "RelativePath": "api/Driver/GetdriverJopApplication",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1123,6 +1264,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.DriverController",
+    "Method": "RejectTrip",
+    "RelativePath": "api/Driver/RejectTrip/{TripId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TripId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.DriverController",
     "Method": "SendMSG",
     "RelativePath": "api/Driver/Send-MSG",
     "HttpMethod": "POST",
@@ -1193,42 +1350,37 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Name",
+        "Name": "CarName",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Year",
+        "Name": "CarYear",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Model",
+        "Name": "CarModel",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Color",
+        "Name": "CarColor",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Description",
+        "Name": "CarDescription",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Price",
+        "Name": "CarPrice",
         "Type": "System.Decimal",
         "IsRequired": false
       },
       {
-        "Name": "Prand",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "MotorbikeType",
+        "Name": "CarPrand",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -1244,7 +1396,7 @@
       },
       {
         "Name": "CreatedAt",
-        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -1253,7 +1405,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Images",
+        "Name": "CarImages",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
       },
@@ -1278,7 +1430,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Power",
+        "Name": "CarPower",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
@@ -1293,7 +1445,7 @@
   {
     "ContainingType": "Tripix.Controllers.ElectricCarsController",
     "Method": "DeleteElectricCar",
-    "RelativePath": "api/ElectricCars/DeleteElectricCar",
+    "RelativePath": "api/ElectricCars/DeleteElectricCar/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1301,7 +1453,7 @@
       {
         "Name": "Id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -1346,42 +1498,32 @@
         "IsRequired": false
       },
       {
-        "Name": "Name",
+        "Name": "CarName",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Year",
+        "Name": "CarYear",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Model",
+        "Name": "CarModel",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Color",
+        "Name": "CarDescription",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "Description",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Price",
+        "Name": "CarPrice",
         "Type": "System.Decimal",
         "IsRequired": false
       },
       {
-        "Name": "Prand",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "MotorbikeType",
+        "Name": "CarPrand",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -1397,7 +1539,7 @@
       },
       {
         "Name": "CreatedAt",
-        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -1406,7 +1548,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Images",
+        "Name": "CarImages",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
       },
@@ -1431,7 +1573,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Power",
+        "Name": "CarPower",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
@@ -1472,7 +1614,22 @@
         "IsRequired": false
       },
       {
+        "Name": "EventLatitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "EventLongitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
         "Name": "Location",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Governate",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -1640,8 +1797,18 @@
         "IsRequired": false
       },
       {
-        "Name": "Hotles",
-        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Name": "EventLatitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "EventLongitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "Governate",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -1755,32 +1922,16 @@
   },
   {
     "ContainingType": "Tripix.Controllers.JopsController",
-    "Method": "RejectJopApplication",
-    "RelativePath": "api/Jops",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.JopsController",
     "Method": "AcceptJopApplication",
-    "RelativePath": "api/Jops",
+    "RelativePath": "api/Jops/AcceptJopApplication",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Jop.AcceptJopApplicationDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -1811,7 +1962,7 @@
     "Parameters": [
       {
         "Name": "JopId",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -1856,7 +2007,7 @@
   {
     "ContainingType": "Tripix.Controllers.JopsController",
     "Method": "DeleteJopApplication",
-    "RelativePath": "api/Jops/DeleteJop/{Id}",
+    "RelativePath": "api/Jops/DeleteJopApplication/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1901,6 +2052,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.JopsController",
+    "Method": "RejectJopApplication",
+    "RelativePath": "api/Jops/RejectJopApplication/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.JopsController",
     "Method": "UpdateJop",
     "RelativePath": "api/Jops/UpdateJop",
     "HttpMethod": "PUT",
@@ -1924,9 +2091,64 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "model",
-        "Type": "Tripix.Contracts.Motorbikes.AddMotorbikeDTO",
-        "IsRequired": true
+        "Name": "MotorbikeName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeYear",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeModel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikePrand",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Gearbox_Type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Images",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikePrice",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeTypes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Rate",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Motor_Capacity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Discount",
+        "Type": "System.Nullable\u00601[[System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -1982,9 +2204,64 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "model",
-        "Type": "Tripix.Contracts.Motorbikes.UpdateMotorbikeDTO",
-        "IsRequired": true
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeYear",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeModel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Images",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikePrice",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikePrand",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MotorbikeType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Rate",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Motor_Capacity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Discount",
+        "Type": "System.Nullable\u00601[[System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2368,6 +2645,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.SuperAdminController",
+    "Method": "DeleteService",
+    "RelativePath": "api/SuperAdmin/DeleteService",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Admin.DeleteServiceDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.SuperAdminController",
     "Method": "GetAdmins",
     "RelativePath": "api/SuperAdmin/GetAdmins",
     "HttpMethod": "GET",
@@ -2377,19 +2670,13 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Tripix.Controllers.TipsController",
-    "Method": "CommentToTip",
-    "RelativePath": "api/Tips",
-    "HttpMethod": "",
+    "ContainingType": "Tripix.Controllers.SuperAdminController",
+    "Method": "GetServiceBookings",
+    "RelativePath": "api/SuperAdmin/GetServiceBookings",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "model",
-        "Type": "Tripix.Contracts.Tips.CommentDto",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -2420,6 +2707,22 @@
   },
   {
     "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "CommentToTip",
+    "RelativePath": "api/Tips/CommentToTip",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Tips.CommentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "DeleteComment",
     "RelativePath": "api/Tips/DeleteComment/{Id}",
     "HttpMethod": "DELETE",
@@ -2437,7 +2740,7 @@
   {
     "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "DeleteTip",
-    "RelativePath": "api/Tips/DeleteTip",
+    "RelativePath": "api/Tips/DeleteTip/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -2445,7 +2748,7 @@
       {
         "Name": "Id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -2470,14 +2773,14 @@
     "ContainingType": "Tripix.Controllers.TipsController",
     "Method": "Dislike",
     "RelativePath": "api/Tips/DislikeTip",
-    "HttpMethod": "GET",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Tips.ActionTip",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -2523,9 +2826,25 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "Tripix.Contracts.Tips.ActionTip",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.TipsController",
+    "Method": "ReplyForComment",
+    "RelativePath": "api/Tips/ReplyForComment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Tips.ReplyForComment",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -2642,15 +2961,143 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Tripix.Controllers.VehicleController",
-    "Method": "BookVehicle",
-    "RelativePath": "api/Vehicle/BookVehicle/{CarId}",
+    "ContainingType": "Tripix.Controllers.UsedVehicleController",
+    "Method": "GetUsedCars",
+    "RelativePath": "api/UsedVehicle/GetUsedCars",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "CarId",
+        "Name": "model",
+        "Type": "Tripix.Contracts.Common.RequestFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.UsedVehicleController",
+    "Method": "Sellcar",
+    "RelativePath": "api/UsedVehicle/SellCar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "CarImages",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "CarName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CarModel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Year",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "KilometersDriven",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Price",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Condition",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "GearboxTypes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CarTypes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CarDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Motor_Capacity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CarFuelTypes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SellerName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SellerPhone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SellerEmail",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Location_Latitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "Location_Longitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.VehicleController",
+    "Method": "BookVehicle",
+    "RelativePath": "api/Vehicle/BookVehicle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Vehicle.VehicleDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.VehicleController",
+    "Method": "DeleteBookings",
+    "RelativePath": "api/Vehicle/DeleteBookings/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -2659,15 +3106,47 @@
   },
   {
     "ContainingType": "Tripix.Controllers.VehicleController",
-    "Method": "LikeCar",
-    "RelativePath": "api/Vehicle/LikeCar/{CarId}",
+    "Method": "DisLike",
+    "RelativePath": "api/Vehicle/Dislike",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "CarId",
-        "Type": "System.Int32",
+        "Name": "model",
+        "Type": "Tripix.Contracts.Vehicle.VehicleDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.VehicleController",
+    "Method": "GetVehicleBookings",
+    "RelativePath": "api/Vehicle/GetVehicleBookings/{Category}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Category",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tripix.Controllers.VehicleController",
+    "Method": "LikeCar",
+    "RelativePath": "api/Vehicle/LikeVehicle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Tripix.Contracts.Vehicle.VehicleDTO",
         "IsRequired": true
       }
     ],

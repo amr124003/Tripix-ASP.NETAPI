@@ -23,6 +23,10 @@ namespace Tripix.Entities
         public List<JopApplications> JopApplications { get; set; } = new();
         public List<LovedTips> LovedTips { get; set; } = new();
         public List<TipComments> TipComments { get; set; } = new();
+        public List<PassengerOpinion> PassengerOpinion { get; set; }
+        public List<Rating> RatesAdded { get; set; } = new();
+        public List<Complains> Complains { get; set; } = new();
+        public List<Replies> Replies { get; set; }
         public string? ConnectionId { get; set; }
     }
 }

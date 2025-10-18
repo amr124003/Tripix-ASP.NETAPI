@@ -30,14 +30,14 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPost("AddBlog")]
-        public async Task<IActionResult> AddBlog ( BlogDTO model )
+        public async Task<IActionResult> AddBlog ([FromForm] BlogDTO model )
         {
             var res = await unitofwork.BlogService.AddBlogAsync(model);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPut("UpdateBlog")]
-        public async Task<IActionResult> UpdateBlog ( int Id, UpdateBlogDto model )
+        public async Task<IActionResult> UpdateBlog (UpdateBlogDto model )
         {
             var res = await unitofwork.BlogService.UpdateBlogAsync(model);
 

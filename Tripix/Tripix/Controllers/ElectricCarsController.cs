@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tripix.Abstractions;
 using Tripix.Contracts.Common;
 using Tripix.Contracts.ElectricCar;
@@ -18,28 +20,33 @@ namespace Tripix.Controllers
             this.unitOfWork = unitOfWork;
         }
         [HttpPost("GetElectricCars")]
+        
         public async Task<IActionResult> GetElectricCars ( RequestFilter model )
         {
-            var response = await unitOfWork.ElectricCarRepo.GetAll(model);
+            string UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+
+            var response = await unitOfWork.ElectricCarRepo.GetAll(UserId , model);
 
             return Ok(response);
         }
 
         [HttpPost("AddElctricCar")]
-        public async Task<IActionResult> AddElectricCar ( AddElectricCatDTO model )
+        
+        public async Task<IActionResult> AddElectricCar ([FromForm] AddElectricCatDTO model )
         {
             var response = await unitOfWork.ElectricCarRepo.AddCar(model);
 
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpPut("UpdateElectricCar")]
-        public async Task<IActionResult> UpdateElectricCar ( UpdateElectricCarDto model )
+        public async Task<IActionResult> UpdateElectricCar ([FromForm] UpdateElectricCarDto model )
         {
             var response = await unitOfWork.ElectricCarRepo.UpdateCar(model);
 
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
-        [HttpDelete("DeleteElectricCar")]
+        [HttpDelete("DeleteElectricCar/{Id}")]
+        
         public async Task<IActionResult> DeleteElectricCar ( int Id )
         {
             var response = await unitOfWork.ElectricCarRepo.DeleteCar(Id);
@@ -47,6 +54,7 @@ namespace Tripix.Controllers
             return response.IsSuccess ? Ok(response) : response.ToProblem();
         }
         [HttpGet("GetBrands")]
+        
         public async Task<IActionResult> GetBrands ()
         {
             var response = await unitOfWork.ElectricCarRepo.GetBrands();

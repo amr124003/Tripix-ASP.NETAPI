@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Castle.Components.DictionaryAdapter.Xml;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tripix.Entities;
 
@@ -16,10 +17,15 @@ namespace Tripix.Context.Config
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.HasOne<Tip>()
+            builder.HasOne(x => x.Tip)
                 .WithMany(x => x.LovedTips)
                 .HasForeignKey(x => x.TipId)
                 .OnDelete(DeleteBehavior.NoAction); 
+
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.LovedTips)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

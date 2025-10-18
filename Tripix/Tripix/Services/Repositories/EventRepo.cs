@@ -19,12 +19,12 @@ namespace Tripix.Services.Repositories
         private readonly ApplicationDbcontext context;
         private readonly UserManager<ApplicationUser> usermanger;
 
-        public EventRepo ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger )
+        public EventRepo(ApplicationDbcontext context, UserManager<ApplicationUser> usermanger)
         {
             this.context = context;
             this.usermanger = usermanger;
         }
-        public async Task<Result<Event>> AddEvent ( AddEventDTO model )
+        public async Task<Result<Event>> AddEvent(AddEventDTO model)
         {
             if (model.Image == null || model.Image.Length == 0)
             {
@@ -44,7 +44,12 @@ namespace Tripix.Services.Repositories
                     await model.Image.CopyToAsync(stream);
                 }
 
-                newEvent.Image = $"{Urls.EventImages}{model.Image.FileName}";
+                newEvent.Image = $"{Urls.SaveEventImages}{model.Image.FileName}";
+
+                var Hotels = await context.Hotels.Where(x => x.GovernateName == model.Governate).ToListAsync();
+
+                newEvent.Hotels.AddRange(Hotels);
+
                 await context.Events.AddAsync(newEvent);
                 await context.SaveChangesAsync();
                 await Transaction.CommitAsync();
@@ -57,7 +62,7 @@ namespace Tripix.Services.Repositories
             }
         }
 
-        public async Task<Result<EventTickets>> BookingEventTicket ( string UserId, BookingEventDTO model )
+        public async Task<Result<EventTickets>> BookingEventTicket(string UserId, BookingEventDTO model)
         {
             var user = await usermanger.Users.FirstOrDefaultAsync(user => user.Id == UserId);
 
@@ -67,7 +72,7 @@ namespace Tripix.Services.Repositories
 
             if (!user.EmailConfirmed) { Result.Failure<EventTickets>(UserErrors.UnconfirmedEmail); }
 
-            var Event = await context.Events.FirstOrDefaultAsync(x => x.Id == model.EventId && !x.Ended);
+            var Event = await context.Events.FirstOrDefaultAsync(x => x.Id == model.EventId && x.Date >= DateTime.UtcNow);
 
             var newEventTicket = model.UserPhone != null ? model.Adapt<EventTickets>() : new EventTickets()
             {
@@ -75,16 +80,17 @@ namespace Tripix.Services.Repositories
                 UserName = user.Name,
                 UserEmail = user.Email!,
                 UserPhone = user.PhoneNumber,
-                EventDate = Event.Date,
-                EventAddress = Event.Location,
             };
+
+            newEventTicket.EventDate = Event!.Date;
+            newEventTicket.EventAddress = Event.Location;
 
             user.EventTickets.Add(newEventTicket);
             await context.SaveChangesAsync();
             return Result.Success(newEventTicket);
         }
 
-        public async Task<Result> CancelTicket ( string UserId, int EventTicketId )
+        public async Task<Result> CancelTicket(string UserId, int EventTicketId)
         {
             var user = await usermanger.Users.FirstOrDefaultAsync(user => user.Id == UserId);
 
@@ -103,7 +109,7 @@ namespace Tripix.Services.Repositories
             return Result.Success();
         }
 
-        public async Task<Result> DeleteEvemt ( int Id )
+        public async Task<Result> DeleteEvemt(int Id)
         {
             var Event = await context.Events.FirstOrDefaultAsync(x => x.Id == Id);
 
@@ -114,30 +120,29 @@ namespace Tripix.Services.Repositories
             return Result.Success();
         }
 
-        public async Task<Result<Event>> GetEvent ( int Id )
+        public async Task<Result<Event>> GetEvent(int Id)
         {
             var Event = await context.Events
                 .Include(x => x.Hotels)
-                .FirstOrDefaultAsync(x => x.Id == Id && !x.Ended);
+                .FirstOrDefaultAsync(x => x.Id == Id && x.Date >= DateTime.UtcNow);
 
             if (Event == null) { return Result.Failure<Event>(EventsErrors.EventNotFound); }
 
             return Result.Success(Event);
         }
 
-        public async Task<Result<List<Event>>> GetEvents ()
+        public async Task<Result<List<Event>>> GetEvents()
         {
             var Events = await context.Events
-                .Include(x => x.Hotels)
-                .Where(x => !x.Ended)
+                .Where(x => x.Date >= DateTime.UtcNow)
                 .ToListAsync();
 
             return Result.Success(Events);
         }
 
-        public async Task<Result<EventTickets>> GetTicket ( string UserId, int TicketId )
+        public async Task<Result<EventTickets>> GetTicket(string UserId, int TicketId)
         {
-            var user = await usermanger.Users.FirstOrDefaultAsync(user => user.Id == UserId);
+            var user = await usermanger.Users.Include(x => x.EventTickets).FirstOrDefaultAsync(user => user.Id == UserId);
 
             if (user == null) { Result.Failure<EventTickets>(UserErrors.UserNotFound); }
 
@@ -152,9 +157,9 @@ namespace Tripix.Services.Repositories
             return Result.Success(EventTicket!);
         }
 
-        public async Task<Result<Event>> UpdateEvent ( UpdateEventDTO model )
+        public async Task<Result<Event>> UpdateEvent(UpdateEventDTO model)
         {
-            var Event = await context.Events.FirstOrDefaultAsync(x => x.Id == model.Id);
+            var Event = await context.Events.Include(x => x.Hotels).FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (Event == null) { return Result.Failure<Event>(EventsErrors.EventNotFound); }
 
@@ -163,14 +168,16 @@ namespace Tripix.Services.Repositories
             try
             {
                 model.Adapt(Event);
-                if(Event.Image != null)
+                if (Event.Image != null)
                 {
                     var oldPath = Path.Combine(Directory.GetCurrentDirectory(), Event.Image);
 
-                    if(File.Exists(oldPath))
+                    if (File.Exists(oldPath))
                     {
                         File.Delete(oldPath);
                     }
+
+                    if (Event.Hotels != null) { Event.Hotels.Clear(); await context.SaveChangesAsync(); }
                 }
                 if (model.Image != null && model.Image.Length > 0)
                 {
@@ -181,6 +188,11 @@ namespace Tripix.Services.Repositories
                     }
                     Event.Image = $"{Urls.EventImages}{model.Image.FileName}";
                 }
+
+                var Hotels = await context.Hotels.Where(x => x.GovernateName == model.Governate).ToListAsync();
+
+                Event.Hotels!.AddRange(Hotels);
+
                 await context.SaveChangesAsync();
                 await Transaction.CommitAsync();
                 return Result.Success(Event);
@@ -193,9 +205,9 @@ namespace Tripix.Services.Repositories
 
         }
 
-        public async Task<Result<EventTickets>> UpdateTicket ( string UserId , UpdateTicketDTO model )
+        public async Task<Result<EventTickets>> UpdateTicket(string UserId, UpdateTicketDTO model)
         {
-            var user = await usermanger.Users.FirstOrDefaultAsync(user => user.Id == UserId);
+            var user = await usermanger.Users.Include(x => x.EventTickets).FirstOrDefaultAsync(user => user.Id == UserId);
 
             if (user == null) { Result.Failure<EventTickets>(UserErrors.UserNotFound); }
 
@@ -205,25 +217,25 @@ namespace Tripix.Services.Repositories
 
             var Ticket = user.EventTickets.FirstOrDefault(x => x.Id == model.Id);
 
-            if(Ticket == null) { return Result.Failure<EventTickets>(EventsErrors.EventTicketNotFound); }
+            if (Ticket == null) { return Result.Failure<EventTickets>(EventsErrors.EventTicketNotFound); }
 
             model.Adapt(Ticket);
             await context.SaveChangesAsync();
             return Result.Success(Ticket);
         }
 
-        public async Task<Result> DeleteTicket ( int TicketId )
+        public async Task<Result> DeleteTicket(int TicketId)
         {
-            var Ticket = await context.EventTickets.FirstOrDefaultAsync(x => x.Id ==  TicketId);
+            var Ticket = await context.EventTickets.FirstOrDefaultAsync(x => x.Id == TicketId);
 
-            if(Ticket == null) { return Result.Failure(EventsErrors.EventTicketNotFound); }
+            if (Ticket == null) { return Result.Failure(EventsErrors.EventTicketNotFound); }
 
             context.EventTickets.Remove(Ticket);
             await context.SaveChangesAsync();
             return Result.Success();
         }
 
-        public async Task<PaginatedList<EventTickets>> GetEventTicket(RequestFilter filters , CancellationToken CanToken)
+        public async Task<PaginatedList<EventTickets>> GetEventTicket(RequestFilter filters, CancellationToken CanToken)
         {
             var Tickets = await context.EventTickets.CreatePaginatedList<EventTickets>(filters.PageNumber, filters.PageSize, CanToken);
 

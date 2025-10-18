@@ -6,5 +6,6 @@ namespace Tripix.Contracts.CarRepair
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }
         public string CarType { get; set; }
+        public string PrisingPaln { get; set; }
     }
 }

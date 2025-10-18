@@ -29,8 +29,9 @@ namespace Tripix.Services.Repositories
         private readonly IJwtProvider jwtprovider;
         private readonly IHttpContextAccessor httpcontext;
         private readonly IDistributedCache cache;
+        private readonly HttpClient httpclient;
 
-        public AuthService ( UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> Signinmanger, ApplicationDbcontext context, IJwtProvider jwtprovider, IHttpContextAccessor Httpcontext, IDistributedCache Cache )
+        public AuthService ( UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> Signinmanger, ApplicationDbcontext context, IJwtProvider jwtprovider, IHttpContextAccessor Httpcontext, IDistributedCache Cache  , HttpClient httpclient)
         {
             this.usermanger = usermanger;
             signinmanger = Signinmanger;
@@ -38,11 +39,12 @@ namespace Tripix.Services.Repositories
             this.jwtprovider = jwtprovider;
             httpcontext = Httpcontext;
             cache = Cache;
+            this.httpclient = httpclient;
         }
         public async Task<Result<AuthResponse>> GetTokenAsync ( LoginModel model, CancellationToken cancellationtoken )
         {
             var Authresponse = new AuthResponse();
-            var user = await usermanger.Users.Include(x => x.REFTokens).FirstAsync(x => x.Email == model.Email);
+            var user = await usermanger.Users.Include(x => x.REFTokens).FirstOrDefaultAsync(x => x.Email == model.Email , cancellationtoken);
 
             if (user == null)
             {
@@ -54,15 +56,8 @@ namespace Tripix.Services.Repositories
                 return Result.Failure<AuthResponse>(UserErrors.InvalidCredentials);
             }
 
-            if (!user.EmailConfirmed)
-            {
-                return Result.Failure<AuthResponse>(UserErrors.UnconfirmedEmail);
-            }
-
-            if (user.IsDisabled)
-            {
-                return Result.Failure<AuthResponse>(UserErrors.DisabledUser);
-            }
+            var validuser = user.ValidUser(Authresponse);
+            if(validuser.IsFalure) { return validuser!; }
 
             var res = await signinmanger.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
@@ -87,45 +82,39 @@ namespace Tripix.Services.Repositories
                 Authresponse.ExpiredIn = expiresin;
 
 
-                if (user.REFTokens.Any(x => x.IsActive))
-                {
-                    var refreshtoken = user.REFTokens.FirstOrDefault(x => x.IsActive);
-                    Authresponse.RefreshToken = refreshtoken.RefreshToken;
-                    Authresponse.RefreshTokenExpiredIn = refreshtoken.ExpiredDate;
-                }
-                else
-                {
-                    var RefreshToken = GenerateRefreshToken();
-                    Authresponse.RefreshToken = RefreshToken.RefreshToken;
-                    Authresponse.RefreshTokenExpiredIn = RefreshToken.ExpiredDate;
+                
+                user.REFTokens!.RemoveAll(x => !x.IsActive); 
 
+                var newRefreshToken = GenerateRefreshToken();
 
+                user.REFTokens.Add(newRefreshToken);
 
-                    user.REFTokens.Add(RefreshToken);
+                Authresponse.RefreshToken = newRefreshToken.RefreshToken;
+                Authresponse.RefreshTokenExpiredIn = newRefreshToken.ExpiredDate;
 
-                    await usermanger.UpdateAsync(user);
-                }
+                await usermanger.UpdateAsync(user);
+
                 return Result.Success(Authresponse);
             }
 
             return Result.Failure<AuthResponse>(res.IsNotAllowed ? UserErrors.DisabledUser : UserErrors.InvalidCredentials);
         }
-        public async Task<Result<AuthResponse>?> GetRefreshtoken ( string RefToken, string Token, CancellationToken cencellationtoken )
+        public async Task<Result<AuthResponse>> GetRefreshtoken ( string RefToken, string Token, CancellationToken cencellationtoken )
         {
             var UserId = jwtprovider.ValidateToken(Token);
             var AuthResponse = new AuthResponse();
 
             var user =  await usermanger.Users.Include(u => u.REFTokens)
-                .FirstOrDefaultAsync(u => u.Id == UserId);
+                .FirstOrDefaultAsync(u => u.Id == UserId , cencellationtoken);
 
             if (user == null)
             {
                 return Result.Failure<AuthResponse>(UserErrors.UserNotFound);
             }
 
-            var refreshtoken = user.REFTokens.FirstOrDefault(x => x.RefreshToken == RefToken);
+            var refreshtoken = user.REFTokens!.FirstOrDefault(x => x.RefreshToken == RefToken);
 
-            if (!refreshtoken.IsActive)
+            if (!refreshtoken!.IsActive || refreshtoken == null)
             {
                 return Result.Failure<AuthResponse>(UserErrors.InActiveRefreshToken);
             }
@@ -149,7 +138,7 @@ namespace Tripix.Services.Repositories
 
 
 
-            user.REFTokens.Add(new RefreshTokens
+            user.REFTokens!.Add(new RefreshTokens
             {
                 RefreshToken = newRefreshtoken.RefreshToken,
                 ExpiredDate = refreshTokenExpiration,
@@ -174,7 +163,7 @@ namespace Tripix.Services.Repositories
             if (foundeduser != null) { return Result.Failure(UserErrors.DuplicatedEmail); }
             if (usermanger.Users.Any(x => x.PhoneNumber == model.Phone)) { return Result.Failure(UserErrors.DuplicatedPhone); }
             var user = model.Adapt<ApplicationUser>();
-            user.Name = user.UserName.GetNameFromUserName();
+            user.Name = user.UserName.GetNameFromUserName()!;
             user.EmailConfirmed = false;
 
             var result = await usermanger.CreateAsync(user, model.Password);
@@ -214,13 +203,13 @@ namespace Tripix.Services.Repositories
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress(fromEmail, "Tripix Support"),
+                    From = new MailAddress(fromEmail!, "Tripix Support"),
                     Subject = subject,
                     Body = body,
                     IsBodyHtml = true,
                 };
 
-                mailMessage.ReplyToList.Add(new MailAddress(fromEmail));
+                mailMessage.ReplyToList.Add(new MailAddress(fromEmail!));
                 mailMessage.Headers.Add("X-Priority", "1");
                 mailMessage.Headers.Add("X-MSMail-Priority", "High");
                 mailMessage.Headers.Add("Importance", "High");
@@ -238,25 +227,25 @@ namespace Tripix.Services.Repositories
                 };
 
                 var jsonData = JsonConvert.SerializeObject(otpObject);
-                await cache.SetStringAsync($"OTP{user.Name}", jsonData, CacheOptions);
+                await cache.SetStringAsync($"OTP_{user.Name}", jsonData, CacheOptions);
                 return Result.Success();
             }
             var error = result.Errors.FirstOrDefault();
 
-            return Result.Failure(new Error(error.Code, error.Description, StatusCodes.Status400BadRequest));
+            return Result.Failure(new Error(error!.Code, error.Description, StatusCodes.Status400BadRequest));
         }
 
 
 
         public async Task<bool> RevokeRefreshTokenAsync ( string refreshToken, CancellationToken cancellationToken = default )
         {
-            var user = usermanger.Users.FirstOrDefault(x => x.REFTokens.Any(x => x.RefreshToken == refreshToken));
+            var user = usermanger.Users.FirstOrDefault(x => x.REFTokens!.Any(x => x.RefreshToken == refreshToken));
 
             if (user == null) { return false; }
 
-            var RefreshToken = user.REFTokens.SingleOrDefault(x => x.RefreshToken == refreshToken);
+            var RefreshToken = user.REFTokens!.SingleOrDefault(x => x.RefreshToken == refreshToken);
 
-            RefreshToken.RevokeTime = DateTime.UtcNow;
+            RefreshToken!.RevokeTime = DateTime.UtcNow;
             await usermanger.UpdateAsync(user);
 
             return true;
@@ -277,14 +266,14 @@ namespace Tripix.Services.Repositories
 
             var OTP = request.OTP;
 
-            var SavedOTP = await cache.GetStringAsync($"OTP{user.Name}");
+            var SavedOTP = await cache.GetStringAsync($"OTP_{user.Name}");
 
             var RedisOTP = "";
 
             if (SavedOTP != null)
             {
                 var otpobj = JsonConvert.DeserializeObject<OTPObject>(SavedOTP);
-                RedisOTP = otpobj.OTP;
+                RedisOTP = otpobj!.OTP;
 
             }
 
@@ -312,7 +301,7 @@ namespace Tripix.Services.Repositories
             var Refreshtoken = GenerateRefreshToken();
             var RefreshtokenExpiration = DateTime.UtcNow.AddDays(15);
 
-            user.REFTokens.Add(Refreshtoken);
+            user.REFTokens!.Add(Refreshtoken);
             await usermanger.UpdateAsync(user);
 
             Authrepsponse.Token = token;
@@ -363,13 +352,13 @@ namespace Tripix.Services.Repositories
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(fromEmail, "Tripix Support"),
+                From = new MailAddress(fromEmail!, "Tripix Support"),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = true,
             };
 
-            mailMessage.ReplyToList.Add(new MailAddress(fromEmail));
+            mailMessage.ReplyToList.Add(new MailAddress(fromEmail!));
             mailMessage.Headers.Add("X-Priority", "1");
             mailMessage.Headers.Add("X-MSMail-Priority", "High");
             mailMessage.Headers.Add("Importance", "High");
@@ -387,7 +376,7 @@ namespace Tripix.Services.Repositories
             };
 
             var jsonData = JsonConvert.SerializeObject(otpObject);
-            await cache.SetStringAsync($"OTP{user.Name}", jsonData, CacheOptions);
+            await cache.SetStringAsync($"OTP{user!.Name}", jsonData, CacheOptions);
             return Result.Success();
         }
 
@@ -427,13 +416,13 @@ namespace Tripix.Services.Repositories
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(fromEmail, "Tripix Support"),
+                From = new MailAddress(fromEmail!, "Tripix Support"),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = true,
             };
 
-            mailMessage.ReplyToList.Add(new MailAddress(fromEmail));
+            mailMessage.ReplyToList.Add(new MailAddress(fromEmail!));
             mailMessage.Headers.Add("X-Priority", "1");
             mailMessage.Headers.Add("X-MSMail-Priority", "High");
             mailMessage.Headers.Add("Importance", "High");
@@ -451,7 +440,7 @@ namespace Tripix.Services.Repositories
             };
 
             var jsonData = JsonConvert.SerializeObject(otpObject);
-            await cache.SetStringAsync($"ResetPasswordOTP{user.Name}", jsonData, CacheOptions);
+            await cache.SetStringAsync($"ResetPasswordOTP{user!.Name}", jsonData, CacheOptions);
             return Result.Success();
         }
 
@@ -471,7 +460,7 @@ namespace Tripix.Services.Repositories
             if (SavedOTP != null)
             {
                 var otpobj = JsonConvert.DeserializeObject<OTPObject>(SavedOTP);
-                RedisOTP = otpobj.OTP;
+                RedisOTP = otpobj!.OTP;
 
             }
 
@@ -525,7 +514,7 @@ namespace Tripix.Services.Repositories
                     UserName = payload.Email.GetUserNameFromEmail(),
                 };
 
-                newUser.Name = newUser.UserName.GetNameFromUserName();
+                newUser.Name = newUser.UserName.GetNameFromUserName()!;
 
                 var result = await usermanger.CreateAsync(newUser);
 
@@ -535,10 +524,10 @@ namespace Tripix.Services.Repositories
                 }
 
                 user = await usermanger.FindByEmailAsync(payload.Email);
-                await usermanger.AddToRoleAsync(user, "User");
+                await usermanger.AddToRoleAsync(user!, "User");
             }
 
-            var userRoles = await usermanger.GetRolesAsync(user);
+            var userRoles = await usermanger.GetRolesAsync(user!);
 
             var userpermissions = await context.Roles
                 .Join(context.RoleClaims, role => role.Id, claim => claim.RoleId,
@@ -548,7 +537,7 @@ namespace Tripix.Services.Repositories
                 .Distinct()
                 .ToListAsync(cancellationToken);
 
-            var (token, ExpiresIn) = jwtprovider.generateToken(user, userRoles, userpermissions);
+            var (token, ExpiresIn) = jwtprovider.generateToken(user!, userRoles, userpermissions!);
 
             var RefreshToken = GenerateRefreshToken();
 
@@ -557,11 +546,71 @@ namespace Tripix.Services.Repositories
             authresponse.RefreshToken = RefreshToken.RefreshToken;
             authresponse.RefreshTokenExpiredIn = DateTime.UtcNow.AddDays(15);
             authresponse.Roles = userRoles.ToList();
-            authresponse.Name = user.Name;
+            authresponse.Name = user!.Name;
             authresponse.Email = user.Email;
 
             return Result.Success(authresponse);
         }
+        public async Task<Result<AuthResponse>> FacebookLogin(FacebookLoginRequest model, CancellationToken cancellationToken = default)
+        {
+            var authresponse = new AuthResponse();
+            var result = await httpclient.GetAsync($"https://graph.facebook.com/me?fields=id,name,email&access_token={model.AccessToken}");
+
+            if (!result.IsSuccessStatusCode) return Result.Failure<AuthResponse>(UserErrors.InvalidFacebookToken);
+                
+
+            var json = await result.Content.ReadAsStringAsync();
+            var fbUser = JsonConvert.DeserializeObject<FacebookUserData>(json);
+
+            
+            if (string.IsNullOrEmpty(fbUser!.Email))
+                return Result.Failure<AuthResponse>(UserErrors.EmptyEmail);
+
+            var user = await usermanger.FindByEmailAsync(fbUser.Email);
+
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    UserName = fbUser.Email.GetUserNameFromEmail(),
+                    Email = fbUser.Email,
+                    Name = fbUser.Email.GetUserNameFromEmail().GetNameFromUserName()!
+                };
+
+                var resultCreate = await usermanger.CreateAsync(user);
+
+                if (!resultCreate.Succeeded)
+                    return Result.Failure<AuthResponse>(UserErrors.FailedToCreateUser);
+
+                user = await usermanger.FindByEmailAsync(user.Email);
+                await usermanger.AddToRoleAsync(user!, "User");
+            }
+
+            var userRoles = await usermanger.GetRolesAsync(user!);
+
+            var userpermissions = await context.Roles
+                .Join(context.RoleClaims, role => role.Id, claim => claim.RoleId,
+                (role, claim) => new { role, claim })
+                .Where(x => userRoles.Contains(x.role.Name!))
+                .Select(x => x.claim.ClaimValue)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            var (token, ExpiresIn) = jwtprovider.generateToken(user!, userRoles, userpermissions!);
+
+            var RefreshToken = GenerateRefreshToken();
+
+            authresponse.Token = token;
+            authresponse.ExpiredIn = ExpiresIn;
+            authresponse.RefreshToken = RefreshToken.RefreshToken;
+            authresponse.RefreshTokenExpiredIn = DateTime.UtcNow.AddDays(15);
+            authresponse.Roles = userRoles.ToList();
+            authresponse.Name = user!.Name;
+            authresponse.Email = user.Email;
+
+            return Result.Success(authresponse);
+        }
+
         private RefreshTokens GenerateRefreshToken ()
         {
             return new RefreshTokens
@@ -574,7 +623,6 @@ namespace Tripix.Services.Repositories
         }
 
 
-
         private string GenerateOtp ( int length = 4 )
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -582,5 +630,7 @@ namespace Tripix.Services.Repositories
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        
     }
 }

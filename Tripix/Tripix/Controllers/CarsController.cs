@@ -20,34 +20,41 @@ namespace Tripix.Controllers
             this.unitOfWork = unitOfWork;
         }
         [HttpPost("GetCars")]
+        [Authorize]
         public async Task<IActionResult> GetCars ( RequestFilter model )
         {
-            var res = await unitOfWork.carRepo.GetCars(model);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var res = await unitOfWork.carRepo.GetCars(userId , model);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPost("AddCar")]
-        public async Task<IActionResult> AddNewCar ( CarDTO model )
+        
+        public async Task<IActionResult> AddNewCar ([FromForm] CarDTO model )
         {
             var res = await unitOfWork.carRepo.AddCar(model);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPut("UpdateNewCar")]
-        public async Task<IActionResult> UpdateCar ( int Id, CarDTO model )
+        
+        public async Task<IActionResult> UpdateCar ([FromForm] UpdateCar model , CancellationToken canToken)
         {
-            var res = await unitOfWork.carRepo.UpdateCar(Id, model);
+            var res = await unitOfWork.carRepo.UpdateCar(model , canToken);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpGet("GetCar/{Id}")]
+        
         public async Task<IActionResult> GetCar(int Id)
-        {
+       {
             var res = await  unitOfWork.carRepo.GetCar(Id);
 
-            return res.IsSuccess ? Ok(res.IsSuccess) : res.ToProblem();
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        [HttpDelete("DeleteNewCar")]
+        [HttpDelete("DeleteNewCar/{Id}")]
+        
         public async Task<IActionResult> DeleteCar ( int Id )
         {
             var res = await unitOfWork.carRepo.DeleteCar(Id);
@@ -55,13 +62,8 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         
-        [HttpPost("SellCar")]
-        public IActionResult Sellcar ()
-        {
-            return Ok("Car sold");
-        }
-        
         [HttpGet("GetPrands")]
+        
         public async Task<IActionResult> Getbrands()
         {
             var res = await unitOfWork.carRepo.GetBrands();

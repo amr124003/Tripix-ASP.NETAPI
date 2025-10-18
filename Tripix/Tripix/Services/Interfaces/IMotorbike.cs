@@ -9,10 +9,10 @@ namespace Tripix.Services.Interfaces
     public interface IMotorbike
     {
         public Task<Result<Motorbikes>> GetById ( int Id );
-        public Task<PaginatedList<Motorbikeresponse>> GetAll ( RequestFilter filters, CancellationToken cenToken = default );
+        public Task<PaginatedList<Motorbikeresponse>> GetAll (string UserId , RequestFilter filters, CancellationToken cenToken = default );
         public Task<Result<Motorbikeresponse>> AddMotorbike ( AddMotorbikeDTO model );
         public Task<Result<Motorbikeresponse>> UpdateMotorbike ( UpdateMotorbikeDTO model );
-        public Task<Result> DeleteMotorbike ( int id );
+        public Task<Result> DeleteMotorbike ( int id  , CancellationToken canToken = default);
         public Task<List<BrandDto>> GetBrands ();
     }
 }

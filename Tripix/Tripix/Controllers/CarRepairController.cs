@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Tripix.Abstractions;
 using Tripix.Contracts.CarRepair;
+using Tripix.Contracts.Common;
 using Tripix.Services.Interfaces;
 
 namespace Tripix.Controllers
@@ -18,12 +20,12 @@ namespace Tripix.Controllers
             this.unitofwork = unitofwork;
         }
         [HttpPost("BookRepairTurn")]
-        [Authorize]
+        
         public async Task<IActionResult> BookRepair ( BookingTurnDTO model )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var res = await unitofwork.repairService.BookingTurn(UserId, model);
+            var res = await unitofwork.repairService.BookingTurn(UserId!, model);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
@@ -42,12 +44,31 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
-        [HttpGet("Get-Repairs")]
-        public async Task<IActionResult> GetRepairs ()
+        [HttpPost("Get-Repairs")]
+        public async Task<IActionResult> GetRepairs (RequestFilter model , CancellationToken canToken)
         {
-            var res = await unitofwork.repairService.GetRepairBookings();
+            var res = await unitofwork.repairService.GetRepairBookings(model , canToken);
 
             return Ok(res);
+        }
+        [HttpGet("GetTurns")]
+        
+        public async Task<IActionResult> GetTurns()
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitofwork.repairService.GetTurns(UserId!);
+
+            return res.IsSuccess ? Ok(res?.Value) : res.ToProblem();
+        }
+        [HttpDelete("CancelTurn/{Id}")]
+        public async Task<IActionResult> CancelTurn(int Id)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var res = await unitofwork.repairService.CancelTurn(UserId!, Id);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
     }
 }

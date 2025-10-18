@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 using Tripix.Entities;
 
 namespace Tripix.Context.Config
@@ -9,6 +10,7 @@ namespace Tripix.Context.Config
         public void Configure ( EntityTypeBuilder<Vehicle> builder )
         {
             builder.HasKey(v => v.Id);
+
             builder.Property(v => v.Id)
                 .ValueGeneratedOnAdd()
                 .IsRequired();
@@ -22,7 +24,7 @@ namespace Tripix.Context.Config
                 .HasValue<Car>("Car")
                 .HasValue<Motorbikes>("Motorbike")
                 .HasValue<ElectricCars>("ElectricCar")
-                .HasValue<UsedCar>("UsedCar");
+                .HasValue<UsedVehicle>("UsedCar");
 
             builder.Property(x => x.Status)
                 .HasConversion<string>();

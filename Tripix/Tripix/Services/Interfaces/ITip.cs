@@ -15,10 +15,11 @@ namespace Tripix.Services.Interfaces
         public Task<Result> DeleteTip(int Id , CancellationToken canToken = default);
         public Task<Result> LikeTip(string UserId , int Id , CancellationToken canToken = default);
         public Task<Result> DislikeTip(string UserId , int Id, CancellationToken canToken = default);
-        public Task<Result> CommentToTip(string UserId , CommentDto model, CancellationToken canToken = default);
+        public Task<Result> CommentToTip(string UserId, CommentDto model, CancellationToken canToken = default);
         public Task<Result> UpdateComment(string UserId , UpdateCommentDTO model, CancellationToken cancellationToken = default);
         public Task<Result> DeleteComment(int Id , CancellationToken canToken = default);
         public Task<Result> DeleteUserComment(string UserId , int Id , CancellationToken canToken = default);
         public Task<Result> ReplyForComment (string UserId , ReplyForComment model , CancellationToken canToken = default);
+        
     }
 }

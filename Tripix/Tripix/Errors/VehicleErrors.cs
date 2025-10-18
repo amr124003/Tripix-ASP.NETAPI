@@ -11,5 +11,11 @@ namespace Tripix.Errors
         public static readonly Error VehicleIsBooked = new("Vehicle Booked", "The Vehicle have been Booked", StatusCodes.Status400BadRequest);
 
         public static readonly Error VehicleCannotAdded = new("Vehcile Can't Added" , "Error Occured During Add This Vehicle" , StatusCodes.Status400BadRequest);
+
+        public static readonly Error VehicleCannotUpdate = new("Vehcile Can't Update" , "Error Occured During Update This Vehicle" , StatusCodes.Status400BadRequest);
+
+        public static readonly Error BookingNotFound = new("Booking Not Found", "This Booking Not Found", StatusCodes.Status404NotFound);
+
+        
     }
 }

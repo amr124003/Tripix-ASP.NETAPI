@@ -23,7 +23,6 @@ namespace Tripix.Controllers
             this.unitOfWork = unitOfWork;
         }
         [HttpPost("OrderHelpoo")]
-        [Authorize]
         public async Task<IActionResult> OrderHelpoo(OrderHelpooDTO model)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
@@ -33,7 +32,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpGet("OrderDetails")]
-        [Authorize]
+        
         public async Task<IActionResult> GetOrderDetails(int Id)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,7 +42,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPut("UpdateOrder")]
-        [Authorize]
+        
         public async Task<IActionResult> UpdateTurn(UpdateHelpooDTO model)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

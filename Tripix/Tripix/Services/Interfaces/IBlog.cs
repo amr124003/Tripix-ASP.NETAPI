@@ -7,10 +7,10 @@ namespace Tripix.Services.Interfaces
 {
     public interface IBlog
     {
-        public Task<List<Blog>> GetBlogListAsync();
-        public Task<Result<Blog>> GetBlogAsync(int id);
-        public Task<Result<Blog>> AddBlogAsync(BlogDTO model);
-        public Task<Result<Blog>> UpdateBlogAsync (UpdateBlogDto model);
+        public Task<List<Blog>> GetBlogListAsync(CancellationToken canToken = default);
+        public Task<Result<Blog>> GetBlogAsync(int id , CancellationToken canToken = default);
+        public Task<Result<Blog>> AddBlogAsync(BlogDTO model , CancellationToken canToken = default);
+        public Task<Result<Blog>> UpdateBlogAsync (UpdateBlogDto model , CancellationToken canToken = default);
         public Task<Result> DeleteBlog(int id);
     }
 }

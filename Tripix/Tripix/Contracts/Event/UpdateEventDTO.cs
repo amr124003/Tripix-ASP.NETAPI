@@ -1,3 +1,5 @@
+using Tripix.Abstractions.Consts;
+
 namespace Tripix.Contracts.Event
 {
     public class UpdateEventDTO
@@ -8,6 +10,8 @@ namespace Tripix.Contracts.Event
         public IFormFile Image { get; set; }
         public DateTime Date { get; set; }
         public string Location { get; set; }
-        public List<string> Hotles { get; set; }
+        public double EventLatitude { get; set; }
+        public double EventLongitude { get; set; }
+        public Governates Governate { get; set; }
     }
 }

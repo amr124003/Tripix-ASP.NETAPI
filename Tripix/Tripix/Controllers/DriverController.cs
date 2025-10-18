@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Tripix.Abstractions;
 using Tripix.Authentication;
 using Tripix.Contracts.Driver;
@@ -32,25 +33,21 @@ namespace Tripix.Controllers
         [HttpPost("RegisterDriver")]
         public async Task<IActionResult> RegisterDriver ( [FromForm] DriverRegisterDTO model )
         {
-            var res = await unitOfWork.driverService.DriverRegister(model);
+            string? DriverId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.driverService.DriverRegister(DriverId ,model);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
-
         }
         [HttpPut("UpdateDriver")]
-        [Authorize]
-        public async Task<IActionResult> UpdateDriver ( UpdateDriverData model )
+        
+        public async Task<IActionResult> UpdateDriver ( [FromForm] UpdateDriverData model )
         {
             var DriverId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
             var res = await unitOfWork.driverService.UpdateDriverData(DriverId, model);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
-        }
-        [HttpDelete("DeleteDriver")]
-        public IActionResult DeleteDriver ( int Id )
-        {
-            return Ok("Driver deleted");
         }
         [HttpPost("Send-MSG")]
         public async Task<IActionResult> SendMSG ( DriverSendMSGDTO model )
@@ -62,7 +59,9 @@ namespace Tripix.Controllers
         [HttpGet("Driver")]
         public async Task<IActionResult> GetDriver ( string Id )
         {
-            var res = await unitOfWork.driverService.GetDriverData(Id);
+            var DriverId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.driverService.GetDriverData(DriverId!);
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
@@ -87,11 +86,7 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
-        [HttpPost("DriverStatistics")]
-        public IActionResult DriverStatistics ( GetDriverDTO model )
-        {
-            return Ok("Driver statistics");
-        }
+        
         [HttpPost("Update-Driver-Location")]
         public async Task<IActionResult> UpdateDriverLocation ( DriverLocation model )
         {
@@ -103,7 +98,15 @@ namespace Tripix.Controllers
 
             return UpdateStatus ? Ok() : BadRequest(ModelState);
         }
+        [HttpDelete("RejectTrip/{TripId}")]
+        public async Task<IActionResult> RejectTrip(int TripId)
+        {
+            var DriverId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            var res = await unitOfWork.driverService.RejectTrip(DriverId!, TripId);
+
+            return res.IsSuccess ? Ok(res) : res.ToProblem();
+        }
         [HttpPost("Confirm-Trip")]
         public async Task<IActionResult> ConfirmTrip ( confirmTripDto model )
         {
@@ -115,6 +118,13 @@ namespace Tripix.Controllers
                    .SendAsync("NewDriver", confirmedTripResponse);
 
             return Ok(confirmedTripResponse);
+        }
+        [HttpGet("GetdriverJopApplication")]
+        public async Task<IActionResult> GetDriverJopApplication()
+        {
+            var res = await unitOfWork.driverService.GetDriverApplication();
+
+            return Ok(res);
         }
         [HttpGet("GetAvilableTrips")]
         public async Task<IActionResult> GetAvilableTrips ()

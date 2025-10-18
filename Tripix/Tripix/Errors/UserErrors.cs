@@ -35,5 +35,9 @@ namespace Tripix.Errors
         public static readonly Error ErrorInCreate = new Error("Create Error" , "Error In Create New Admin" , StatusCodes.Status400BadRequest);
 
         public static readonly Error ConfirmDatalikeYourCredentials = new("ConfirmDatalikeYourCredentials", "Confirm Data Must Be Like Your Credentials", StatusCodes.Status400BadRequest);
+
+        public static readonly Error EmptyEmail = new("Empty Email", "You Can't Login Without Email", StatusCodes.Status400BadRequest);
+
+        public static readonly Error InvalidFacebookToken = new("Invalid Facebook Token", "This Facebook Token Is Invalid", StatusCodes.Status400BadRequest);
     }
 }

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Tripix.Entities
 {
     public class VehicleImage
@@ -5,6 +7,7 @@ namespace Tripix.Entities
         public int Id { get; set; }
         public int? VehicleId { get; set; }
         public int? DriverId { get; set; }
+        [JsonIgnore]
         public Vehicle? Vehicle { get; set; }
         public Driver? Driver { get; set; }
         public string ImageUrl { get; set; }

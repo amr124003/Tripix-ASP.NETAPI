@@ -22,6 +22,7 @@ namespace Tripix.Services.Repositories
         private readonly IHubContext<RideHub> ridecontext;
         private readonly IHubContext<UserHub> hubContext;
         private readonly IDistributedCache cache;
+        private readonly HttpClient httpClient;
 
         public IAdminRepo adminService { get; }
 
@@ -63,13 +64,13 @@ namespace Tripix.Services.Repositories
 
         public ITip TipRepo {  get; }
 
-        public UnitOfWork ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> signinmanger, RoleManager<IdentityRole> rolemanger, IOptions<JwtOptions> options, IHttpContextAccessor httpcontext, IHubContext<UserHub> hubContext, IHubContext<RideHub> ridecontext, IDistributedCache cache )
+        public UnitOfWork ( ApplicationDbcontext context, UserManager<ApplicationUser> usermanger, SignInManager<ApplicationUser> signinmanger, RoleManager<IdentityRole> rolemanger, IOptions<JwtOptions> options, IHttpContextAccessor httpcontext, IHubContext<UserHub> hubContext, IHubContext<RideHub> ridecontext, IDistributedCache cache  , HttpClient httpClient)
         {
-            adminService = new AdminRepo(usermanger, rolemanger);
+            adminService = new AdminRepo(context,usermanger, rolemanger);
             jwtProvider = new JwtProvider(options);
-            authService = new AuthService(usermanger, signinmanger, context, jwtProvider, httpcontext, cache);
+            authService = new AuthService(usermanger, signinmanger, context, jwtProvider, httpcontext, cache , httpClient);
             BlogService = new BlogRepo(context);
-            driverService = new DriverRepo(context, usermanger, jwtProvider, hubContext, cache);
+            driverService = new DriverRepo(context, usermanger, jwtProvider, hubContext, cache , rolemanger);
             tripService = new TripRepo(context, usermanger, jwtProvider, ridecontext);
             userService = new UserRepo(usermanger, context, ridecontext);
             carRepo = new CarRepo(context, usermanger);
@@ -95,6 +96,7 @@ namespace Tripix.Services.Repositories
             this.httpcontext = httpcontext;
             this.ridecontext = ridecontext;
             this.cache = cache;
+            this.httpClient = httpClient;
             this.hubContext = hubContext;
         }
 

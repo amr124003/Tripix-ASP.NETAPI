@@ -19,8 +19,6 @@ namespace Tripix.Extentions
 
             if(filters == null) { return  Query; }
 
-            
-
             foreach (var filter in filters)
             {
                 propertyName = filter.Key;
@@ -67,11 +65,11 @@ namespace Tripix.Extentions
 
                 switch(Operation.ToLower())
                 {
-                    case "min":
+                    case "minprice":
                         exoperation = Expression.GreaterThanOrEqual(property, Constant);
                         break;
 
-                    case "max":
+                    case "maxprice":
                         exoperation= Expression.LessThanOrEqual(property, Constant);
                         break;
 
@@ -94,7 +92,8 @@ namespace Tripix.Extentions
             return Query;
         }
 
-        public static async Task<PaginatedList<T>> CreatePaginatedList<T> ( this IQueryable<T> Items, int pageNumber, int pageSize, CancellationToken CanToken )
+        public static async Task<PaginatedList<T>> CreatePaginatedList<T> ( this IQueryable<T> Items, int pageNumber,
+            int pageSize, CancellationToken CanToken )
         {
             var itemsCount = await Items.CountAsync(CanToken);
             var items = await Items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(CanToken);

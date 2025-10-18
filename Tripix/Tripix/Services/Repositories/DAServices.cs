@@ -1,9 +1,15 @@
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OpenQA.Selenium;
+using RTools_NTS.Util;
+using Stripe.Tax;
+using System.Text.RegularExpressions;
 using Tripix.Abstractions;
 using Tripix.Context;
-using Tripix.Contracts;
+using Tripix.Contracts.Car;
+using Tripix.Contracts.Common;
+using Tripix.Contracts.DA;
 using Tripix.Contracts.Vehicle;
 using Tripix.Entities;
 using Tripix.Extentions;
@@ -16,101 +22,270 @@ namespace Tripix.Services.Repositories
         private readonly ApplicationDbcontext context;
         private readonly UserManager<ApplicationUser> usermager;
 
-        public DAServices ( ApplicationDbcontext context , UserManager<ApplicationUser> usermager)
+        public DAServices(ApplicationDbcontext context, UserManager<ApplicationUser> usermager)
         {
             this.context = context;
             this.usermager = usermager;
         }
-        public async Task<List<DAResponse>> GetBestSellerProducts ()
-        {
-            var Res = await context.VehicleBookings
-                .GroupBy(x => x.VehicleId)
-                .OrderByDescending(g => g.Count())
-                .Select(x => new { CarId = x.Key })
-                .Take(10)
-                .Join(context.Vehicles,
-                x => x.CarId, v => v.Id, ( x, v ) => v)
-                .ProjectToType<DAResponse>()
-                .ToListAsync();
 
-            return Res;
+        public List<ProductSearchResponse> GetAllProductsName()
+        {
+            var res = context.Vehicles.ProjectToType<ProductSearchResponse>().ToList();
+
+            return res;
         }
 
-        public async Task<List<DAResponse>> GetNewArrivalsProduct ()
+        public async Task<List<DAResponse>> GetBestSellerFromProducts(string ProductName)
         {
-            var Res = await context.Vehicles.
-                Where(x => (DateTime.UtcNow - x.CreatedAt) < TimeSpan.FromDays(2))
-                .Take(10)
-                .ProjectToType<DAResponse>()
-                .ToListAsync();
+            
 
-            return Res;
-        }
-
-        public Task<List<ProductResponse>> GetProducts()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Result<Testimonial>> GetTestimonial ()
-        {
-            var MaxId = await context.testimonials.MaxAsync(x => x.Id);
-
-            var random = new Random();
-            int Id = random.Next(1, MaxId + 1);
-
-            var res = await context.testimonials.FirstOrDefaultAsync(x => x.Id == Id);
-
-            if (res == null) { return Result.Failure<Testimonial>(new Error("Testimonial Not Found", "This Testimonial Not Found", StatusCodes.Status400BadRequest ) ); }
-
-            return Result.Success(res);
-        }
-
-        public async Task<List<DAResponse>> GetTopRatedProduct ()
-        {
-            var res =
-                await context.Vehicles.OrderByDescending(x => x.Rate)
-                .Take(10)
+            var res = await context.Vehicles
+                .FromSqlInterpolated($@"
+                              SELECT TOP 10 V.*
+                              FROM Vehicles V
+                              INNER JOIN(
+                                  SELECT VehicleId, COUNT(*) AS BookingsCount
+                                  FROM VehicleBookings
+                                  GROUP BY VehicleId
+                              ) VB ON V.Id = VB.VehicleId
+                              WHERE V.VehicleType = '{ProductName}'
+                              ORDER BY VB.BookingsCount DESC")
+                .AsNoTracking()
                 .ProjectToType<DAResponse>()
                 .ToListAsync();
 
             return res;
         }
 
-        public async Task<List<DAResponse>> GetTrendingProducts ()
+        public async Task<List<DAResponse>> GetBestSellerProducts()
         {
-            var res = await
-                context.Vehicles.OrderByDescending(x => x.Views)
-                .Take (10)
+            var sql = @"
+                              SELECT TOP 10 V.*
+                              FROM Vehicles V
+                              INNER JOIN (
+                                  SELECT VehicleId, COUNT(*) AS BookingsCount
+                                  FROM VehicleBookings
+                                  GROUP BY VehicleId
+                              ) VB ON V.Id = VB.VehicleId
+                              ORDER BY VB.BookingsCount DESC";
+
+            var res = await context.Vehicles
+                .FromSqlRaw(sql)
+                .AsNoTracking()
+                .ProjectToType<DAResponse>()
+                .ToListAsync();
+
+            return res;
+
+        }
+
+        public async Task<List<DAResponse>> GetNewArrivalFromProduct(string ProductName)
+        {
+            var res = await context.Vehicles
+                                  .FromSqlInterpolated($@"
+                                      SELECT TOP 5 * FROM Vehicles 
+                                      WHERE VehicleType = {ProductName} 
+                                      ORDER BY CreatedAt DESC")
+                                  .AsNoTracking()
+                                  .ProjectToType<DAResponse>()
+                                  .ToListAsync();
+
+            return res;
+
+        }
+
+        public async Task<List<DAResponse>> GetNewArrivalsProduct()
+        {
+            var sql = @"
+                             SELECT TOP 3 * 
+                             FROM Vehicles 
+                             WHERE VehicleType = 'Car'
+                             ORDER BY CreatedAt DESC
+                             
+                             UNION ALL
+                             
+                             SELECT TOP 3 * 
+                             FROM Vehicles 
+                             WHERE VehicleType = 'Motorbike'
+                             ORDER BY CreatedAt DESC
+                             
+                             UNION ALL
+                             
+                             SELECT TOP 3 * 
+                             FROM Vehicles 
+                             WHERE VehicleType = 'ElectricCar'
+                             ORDER BY CreatedAt DESC
+                             
+                             UNION ALL
+                             
+                             SELECT TOP 3 * 
+                             FROM Vehicles 
+                             WHERE VehicleType = 'UsedCar'
+                             ORDER BY CreatedAt DESC";
+
+            var res = await context.Vehicles
+                .FromSqlRaw(sql)
+                .AsNoTracking()
                 .ProjectToType<DAResponse>()
                 .ToListAsync();
 
             return res;
         }
 
-        public async Task<Result<int>> GetWashlet(string UserId, CancellationToken canToken = default)
+
+
+        public async Task<List<int>> GetProductcounts()
         {
-            int res = 0;
+            var sql = @"
+                          SELECT COUNT(*) FROM Vehicles WHERE VehicleType = 'Car'
+                          UNION ALL
+                          SELECT COUNT(*) FROM Vehicles WHERE VehicleType = 'Motorbike'
+                          UNION ALL
+                          SELECT COUNT(*) FROM Vehicles WHERE VehicleType = 'ElectricCar'
+                          UNION ALL
+                          SELECT COUNT(*) FROM Vehicles WHERE VehicleType = 'UsedCar';";
+
+            var result = await context.Database
+                .SqlQueryRaw<int>(sql)
+                .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<PaginatedList<ProductResponse>> GetProducts(RequestFilter model, CancellationToken canToken)
+        {
+            var sql = @"
+                             SELECT * FROM 
+                             Vehicles WHERE VehicleType = 'Car'      
+                             UNION ALL
+                             SELECT * FROM 
+                             Vehicles WHERE VehicleType = 'Motorbike' 
+                             UNION ALL
+                             SELECT * FROM 
+                             Vehicles WHERE VehicleType = 'ElectricCar' 
+                             UNION ALL
+                             SELECT * FROM 
+                             Vehicles WHERE VehicleType = 'UsedCar'";
+
+            var res = await context.Vehicles
+                .FromSqlRaw(sql)
+                .ProjectToType<ProductResponse>()
+                .CreatePaginatedList<ProductResponse>(model.PageNumber, model.PageSize, canToken);
+
+            return res;
+        }
+
+        public async Task<List<ProductSearchResponse>> GetProductsName (string Product)
+        {
+            var res = await context.Vehicles
+                                  .FromSqlInterpolated($@"
+                                      SELECT * FROM Vehicles 
+                                      WHERE VehicleType = {Product}")
+                                  .AsNoTracking()
+                                  .ProjectToType<ProductSearchResponse>()
+                                  .ToListAsync();
+
+            return res;
+        }
+
+       
+
+        public async Task<List<DAResponse>> GetTopRatedFromProduct(string ProductName)
+        {
+            var res = await context.Vehicles
+                .FromSqlInterpolated($@"
+                             SELECT TOP 10 *
+                             FROM Vehicles
+                             WHERE VehicleType = {ProductName}
+                             ORDER BY Views DESC")
+                .AsNoTracking()
+                .ProjectToType<DAResponse>()
+                .ToListAsync();
+
+            return res;
+
+        }
+
+        public async Task<List<DAResponse>> GetTopRatedProduct()
+        {
+            var sql = @"SELECT TOP 10 * 
+                             FROM Vehicles 
+                             ORDER BY Rate DESC";
+
+            var res = await context.Vehicles
+                .FromSqlRaw(sql)
+                .AsNoTracking()
+                .ProjectToType<DAResponse>()
+                .ToListAsync();
+
+            return res;
+
+        }
+
+        public async Task<List<DAResponse>> GetTrendingFromProduct(string ProductName)
+        {
+
+            var res = await context.Vehicles
+                .FromSqlInterpolated($@"
+                             SELECT TOP 5 *
+                             FROM Vehicles
+                             WHERE VehicleType = {ProductName}
+                             ORDER BY Views DESC")
+                .AsNoTracking()
+                .ProjectToType<DAResponse>()
+                .ToListAsync();
+
+            return res;
+
+        }
+
+        public async Task<List<DAResponse>> GetTrendingProducts()
+        {
+            var sql = @"
+                             SELECT TOP 10 *
+                             FROM Vehicles
+                             ORDER BY Views DESC";
+
+            var res = await context.Vehicles
+                .FromSqlRaw(sql)
+                .AsNoTracking()
+                .ProjectToType<DAResponse>()
+                .ToListAsync();
+
+            return res;
+
+        }
+
+        
+
+        public async Task<Result<List<FavouriteProduct>>> GetWashlet(string UserId, CancellationToken canToken = default)
+        {
+            var res = new List<FavouriteProduct>();
 
             var user = await usermager.Users.Include(x => x.FavouriteProducts).FirstOrDefaultAsync(x => x.Id == UserId, canToken);
 
-            var validuser = user!.ValidUser(res); 
-            if(validuser.IsFalure) { return validuser; }
+            var validuser = user!.ValidUser(res);
+            if (validuser.IsFalure) { return validuser!; }
 
-            res = user!.FavouriteProducts.Count();
+            res = user!.FavouriteProducts.ToList();
             return Result.Success(res);
         }
 
-        public async Task<Result<int>> GetWashletcount(string UserId , CancellationToken canToken)
+        
+
+        public async Task<Result<int>> GetWashletcount(string UserId, CancellationToken canToken)
         {
+
+            var user = await usermager.Users.FirstOrDefaultAsync(x => x.Id == UserId, canToken);
             int res = 0;
 
-            var user = await usermager.Users.FirstOrDefaultAsync(x =>x.Id == UserId , canToken);
-
             var validuser = user!.ValidUser(res);
-            if (validuser.IsFalure) { return validuser; }
+            if (validuser.IsFalure) return validuser;
 
-            res = user!.FavouriteProducts.Count();
+            res = await context.FavouriteProducts
+                .Where(x => x.UserId == UserId)
+                .CountAsync(canToken);
 
             return Result.Success(res);
         }

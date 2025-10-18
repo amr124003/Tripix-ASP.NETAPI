@@ -1,13 +1,17 @@
 
 
+using System.Text.Json.Serialization;
+
 namespace Tripix.Entities
 {
     public class EventTickets
     {
         public int Id { get; set; }
+        [JsonIgnore]
         public Event Event { get; set; }
         public int EventId { get; set; }
         public DateTime EventDate { get; set; }
+        [JsonIgnore]
         public ApplicationUser User { get; set; }
         public int UserId { get; set; }
         public string UserPhone { get; set; }

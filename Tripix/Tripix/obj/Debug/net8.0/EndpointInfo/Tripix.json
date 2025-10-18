@@ -67,6 +67,18 @@
         }
       }
     },
+    "/api/Account/CommentToTip": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Auth/Register": {
       "post": {
         "tags": [
@@ -91,6 +103,18 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/GetTest": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -327,6 +351,37 @@
         }
       }
     },
+    "/api/Auth/facebookLogin": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacebookLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacebookLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacebookLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Blogs/Blogs": {
       "get": {
         "tags": [
@@ -366,40 +421,28 @@
         "tags": [
           "Blogs"
         ],
-        "parameters": [
-          {
-            "name": "Title",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 15,
-              "minLength": 5,
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "Content",
+                  "Title"
+                ],
                 "type": "object",
                 "properties": {
+                  "Title": {
+                    "maxLength": 15,
+                    "minLength": 5,
+                    "type": "string"
+                  },
+                  "Content": {
+                    "type": "string"
+                  },
+                  "Date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
                   "Image": {
                     "type": "string",
                     "format": "binary"
@@ -407,6 +450,15 @@
                 }
               },
               "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "Content": {
+                  "style": "form"
+                },
+                "Date": {
+                  "style": "form"
+                },
                 "Image": {
                   "style": "form"
                 }
@@ -427,14 +479,6 @@
           "Blogs"
         ],
         "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
           {
             "name": "Id",
             "in": "query",
@@ -519,21 +563,10 @@
         }
       }
     },
-    "/api/CarRent/ReturnedCars/{Id}": {
+    "/api/CarRent/GetRentedCars": {
       "get": {
         "tags": [
           "CarRent"
-        ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -578,16 +611,25 @@
         "tags": [
           "CarRent"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancellCarForRent"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancellCarForRent"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancellCarForRent"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -600,58 +642,34 @@
         "tags": [
           "CarRent"
         ],
-        "parameters": [
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Model",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Color",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Rate",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "HourlyPrice",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "CarName": {
+                    "maxLength": 20,
+                    "minLength": 5,
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "CarColor": {
+                    "type": "string"
+                  },
+                  "CarRate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
+                  "HourlyPrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
                   "Image": {
                     "type": "string",
                     "format": "binary"
@@ -659,6 +677,24 @@
                 }
               },
               "encoding": {
+                "CarName": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "CarColor": {
+                  "style": "form"
+                },
+                "CarRate": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
+                "HourlyPrice": {
+                  "style": "form"
+                },
                 "Image": {
                   "style": "form"
                 }
@@ -678,74 +714,65 @@
         "tags": [
           "CarRent"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Model",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Color",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Rate",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "HourlyPrice",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarName": {
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "CarColor": {
+                    "type": "string"
+                  },
+                  "CarRate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
                   "Image": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "HourlyPrice": {
+                    "type": "number",
+                    "format": "double"
                   }
                 }
               },
               "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "CarName": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "CarColor": {
+                  "style": "form"
+                },
+                "CarRate": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
                 "Image": {
+                  "style": "form"
+                },
+                "HourlyPrice": {
                   "style": "form"
                 }
               }
@@ -768,6 +795,29 @@
           {
             "name": "Id",
             "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CarRent/DeleteRent/{Id}": {
+      "delete": {
+        "tags": [
+          "CarRent"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -866,9 +916,63 @@
       }
     },
     "/api/CarRepair/Get-Repairs": {
+      "post": {
+        "tags": [
+          "CarRepair"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CarRepair/GetTurns": {
       "get": {
         "tags": [
           "CarRepair"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CarRepair/CancelTurn/{Id}": {
+      "delete": {
+        "tags": [
+          "CarRepair"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -913,114 +1017,61 @@
         "tags": [
           "Cars"
         ],
-        "parameters": [
-          {
-            "name": "Name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 20,
-              "minLength": 5,
-              "type": "string"
-            }
-          },
-          {
-            "name": "Gearbox_Type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "CarType",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/CarTypes"
-            }
-          },
-          {
-            "name": "Discount",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "Merchant_Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Merchant_Phone",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Motor_Capacity",
-            "in": "query",
-            "schema": {
-              "maximum": 10000,
-              "minimum": 1000,
-              "type": "string"
-            }
-          },
-          {
-            "name": "Year",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Model",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Color",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Prand",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Price",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "CarName",
+                  "CarType",
+                  "Gearbox_Type"
+                ],
                 "type": "object",
                 "properties": {
+                  "CarName": {
+                    "maxLength": 20,
+                    "minLength": 5,
+                    "type": "string"
+                  },
+                  "Gearbox_Type": {
+                    "$ref": "#/components/schemas/GearboxTypes"
+                  },
+                  "CarType": {
+                    "$ref": "#/components/schemas/CarTypes"
+                  },
+                  "Discount": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Rate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Merchant_Name": {
+                    "type": "string"
+                  },
+                  "Merchant_Phone": {
+                    "type": "string"
+                  },
+                  "Motor_Capacity": {
+                    "type": "string"
+                  },
+                  "CarYear": {
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
+                  "CarPrand": {
+                    "type": "string"
+                  },
+                  "CarPrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
                   "CarImages": {
                     "type": "array",
                     "items": {
@@ -1031,6 +1082,45 @@
                 }
               },
               "encoding": {
+                "CarName": {
+                  "style": "form"
+                },
+                "Gearbox_Type": {
+                  "style": "form"
+                },
+                "CarType": {
+                  "style": "form"
+                },
+                "Discount": {
+                  "style": "form"
+                },
+                "Rate": {
+                  "style": "form"
+                },
+                "Merchant_Name": {
+                  "style": "form"
+                },
+                "Merchant_Phone": {
+                  "style": "form"
+                },
+                "Motor_Capacity": {
+                  "style": "form"
+                },
+                "CarYear": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
+                "CarPrand": {
+                  "style": "form"
+                },
+                "CarPrice": {
+                  "style": "form"
+                },
                 "CarImages": {
                   "style": "form"
                 }
@@ -1050,122 +1140,64 @@
         "tags": [
           "Cars"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 20,
-              "minLength": 5,
-              "type": "string"
-            }
-          },
-          {
-            "name": "Gearbox_Type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "CarType",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/CarTypes"
-            }
-          },
-          {
-            "name": "Discount",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "Merchant_Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Merchant_Phone",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Motor_Capacity",
-            "in": "query",
-            "schema": {
-              "maximum": 10000,
-              "minimum": 1000,
-              "type": "string"
-            }
-          },
-          {
-            "name": "Year",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Model",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Color",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Prand",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Price",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "CarName",
+                  "CarType",
+                  "Gearbox_Type"
+                ],
                 "type": "object",
                 "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarName": {
+                    "maxLength": 20,
+                    "minLength": 5,
+                    "type": "string"
+                  },
+                  "Gearbox_Type": {
+                    "$ref": "#/components/schemas/GearboxTypes"
+                  },
+                  "CarType": {
+                    "$ref": "#/components/schemas/CarTypes"
+                  },
+                  "Discount": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Merchant_Name": {
+                    "type": "string"
+                  },
+                  "Merchant_Phone": {
+                    "type": "string"
+                  },
+                  "Motor_Capacity": {
+                    "type": "string"
+                  },
+                  "CarYear": {
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "CarColor": {
+                    "type": "string"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
+                  "CarPrand": {
+                    "type": "string"
+                  },
+                  "CarPrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
                   "CarImages": {
                     "type": "array",
                     "items": {
@@ -1176,6 +1208,48 @@
                 }
               },
               "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "CarName": {
+                  "style": "form"
+                },
+                "Gearbox_Type": {
+                  "style": "form"
+                },
+                "CarType": {
+                  "style": "form"
+                },
+                "Discount": {
+                  "style": "form"
+                },
+                "Merchant_Name": {
+                  "style": "form"
+                },
+                "Merchant_Phone": {
+                  "style": "form"
+                },
+                "Motor_Capacity": {
+                  "style": "form"
+                },
+                "CarYear": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "CarColor": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
+                "CarPrand": {
+                  "style": "form"
+                },
+                "CarPrice": {
+                  "style": "form"
+                },
                 "CarImages": {
                   "style": "form"
                 }
@@ -1213,7 +1287,7 @@
         }
       }
     },
-    "/api/Cars/DeleteNewCar": {
+    "/api/Cars/DeleteNewCar/{Id}": {
       "delete": {
         "tags": [
           "Cars"
@@ -1221,24 +1295,13 @@
         "parameters": [
           {
             "name": "Id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Cars/SellCar": {
-      "post": {
-        "tags": [
-          "Cars"
         ],
         "responses": {
           "200": {
@@ -1389,6 +1452,37 @@
       }
     },
     "/api/CarWash/GetWashBookings": {
+      "post": {
+        "tags": [
+          "CarWash"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CarWash/GetUserTurns": {
       "get": {
         "tags": [
           "CarWash"
@@ -1481,6 +1575,142 @@
         }
       }
     },
+    "/api/DA/GetProductNames": {
+      "post": {
+        "tags": [
+          "DA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductSearch"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductSearch"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductSearch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DA/GetNewArrivalsForProduct": {
+      "post": {
+        "tags": [
+          "DA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DA/GetTrendingForProduct": {
+      "post": {
+        "tags": [
+          "DA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DA/GetAllProductNames": {
+      "get": {
+        "tags": [
+          "DA"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DA/GetTopRatedForProduct": {
+      "post": {
+        "tags": [
+          "DA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterProductDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/DA/NewArrivalsProducts": {
       "get": {
         "tags": [
@@ -1517,7 +1747,31 @@
         }
       }
     },
-    "/api/DA/Gettestimonial": {
+    "/api/DA/GetWashletCount": {
+      "get": {
+        "tags": [
+          "DA"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DA/getProductsCount": {
+      "get": {
+        "tags": [
+          "DA"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DA/GetProductCount": {
       "get": {
         "tags": [
           "DA"
@@ -1638,29 +1892,6 @@
         "tags": [
           "Driver"
         ],
-        "parameters": [
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "PhoneNumber",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -1670,39 +1901,35 @@
                   "DriverImage": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "PhoneNumber": {
+                    "type": "string"
+                  },
+                  "Email": {
+                    "type": "string"
                   }
                 }
               },
               "encoding": {
                 "DriverImage": {
                   "style": "form"
+                },
+                "Name": {
+                  "style": "form"
+                },
+                "PhoneNumber": {
+                  "style": "form"
+                },
+                "Email": {
+                  "style": "form"
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Driver/DeleteDriver": {
-      "delete": {
-        "tags": [
-          "Driver"
-        ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1836,37 +2063,6 @@
         }
       }
     },
-    "/api/Driver/DriverStatistics": {
-      "post": {
-        "tags": [
-          "Driver"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetDriverDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetDriverDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetDriverDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Driver/Update-Driver-Location": {
       "post": {
         "tags": [
@@ -1898,6 +2094,29 @@
         }
       }
     },
+    "/api/Driver/RejectTrip/{TripId}": {
+      "delete": {
+        "tags": [
+          "Driver"
+        ],
+        "parameters": [
+          {
+            "name": "TripId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Driver/Confirm-Trip": {
       "post": {
         "tags": [
@@ -1922,6 +2141,18 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Driver/GetdriverJopApplication": {
+      "get": {
+        "tags": [
+          "Driver"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1977,159 +2208,133 @@
         "tags": [
           "ElectricCars"
         ],
-        "parameters": [
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Year",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Model",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Color",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Price",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "Prand",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "MotorbikeType",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/MotorbikeTypes"
-            }
-          },
-          {
-            "name": "Rate",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Discount",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "CreatedAt",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "Merchant_Logo",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "BatteryCapacity",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "TravelRange",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Interior",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "ChargingTime",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Power",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "CarType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Images": {
+                  "CarName": {
+                    "type": "string"
+                  },
+                  "CarYear": {
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "CarColor": {
+                    "type": "string"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
+                  "CarPrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "CarPrand": {
+                    "type": "string"
+                  },
+                  "Rate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Discount": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Merchant_Logo": {
+                    "type": "string"
+                  },
+                  "CarImages": {
                     "type": "array",
                     "items": {
                       "type": "string",
                       "format": "binary"
                     }
+                  },
+                  "BatteryCapacity": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "TravelRange": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Interior": {
+                    "type": "string"
+                  },
+                  "ChargingTime": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarPower": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarType": {
+                    "$ref": "#/components/schemas/CarTypes"
                   }
                 }
               },
               "encoding": {
-                "Images": {
+                "CarName": {
+                  "style": "form"
+                },
+                "CarYear": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "CarColor": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
+                "CarPrice": {
+                  "style": "form"
+                },
+                "CarPrand": {
+                  "style": "form"
+                },
+                "Rate": {
+                  "style": "form"
+                },
+                "Discount": {
+                  "style": "form"
+                },
+                "CreatedAt": {
+                  "style": "form"
+                },
+                "Merchant_Logo": {
+                  "style": "form"
+                },
+                "CarImages": {
+                  "style": "form"
+                },
+                "BatteryCapacity": {
+                  "style": "form"
+                },
+                "TravelRange": {
+                  "style": "form"
+                },
+                "Interior": {
+                  "style": "form"
+                },
+                "ChargingTime": {
+                  "style": "form"
+                },
+                "CarPower": {
+                  "style": "form"
+                },
+                "CarType": {
                   "style": "form"
                 }
               }
@@ -2148,167 +2353,134 @@
         "tags": [
           "ElectricCars"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Year",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Model",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Color",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Price",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "Prand",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "MotorbikeType",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/MotorbikeTypes"
-            }
-          },
-          {
-            "name": "Rate",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Discount",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "CreatedAt",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "Merchant_Logo",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "BatteryCapacity",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "TravelRange",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Interior",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "ChargingTime",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Power",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "CarType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Images": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarName": {
+                    "type": "string"
+                  },
+                  "CarYear": {
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
+                  "CarPrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "CarPrand": {
+                    "type": "string"
+                  },
+                  "Rate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Discount": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Merchant_Logo": {
+                    "type": "string"
+                  },
+                  "CarImages": {
                     "type": "array",
                     "items": {
                       "type": "string",
                       "format": "binary"
                     }
+                  },
+                  "BatteryCapacity": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "TravelRange": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Interior": {
+                    "type": "string"
+                  },
+                  "ChargingTime": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarPower": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CarType": {
+                    "$ref": "#/components/schemas/CarTypes"
                   }
                 }
               },
               "encoding": {
-                "Images": {
+                "Id": {
+                  "style": "form"
+                },
+                "CarName": {
+                  "style": "form"
+                },
+                "CarYear": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
+                "CarPrice": {
+                  "style": "form"
+                },
+                "CarPrand": {
+                  "style": "form"
+                },
+                "Rate": {
+                  "style": "form"
+                },
+                "Discount": {
+                  "style": "form"
+                },
+                "CreatedAt": {
+                  "style": "form"
+                },
+                "Merchant_Logo": {
+                  "style": "form"
+                },
+                "CarImages": {
+                  "style": "form"
+                },
+                "BatteryCapacity": {
+                  "style": "form"
+                },
+                "TravelRange": {
+                  "style": "form"
+                },
+                "Interior": {
+                  "style": "form"
+                },
+                "ChargingTime": {
+                  "style": "form"
+                },
+                "CarPower": {
+                  "style": "form"
+                },
+                "CarType": {
                   "style": "form"
                 }
               }
@@ -2322,7 +2494,7 @@
         }
       }
     },
-    "/api/ElectricCars/DeleteElectricCar": {
+    "/api/ElectricCars/DeleteElectricCar/{Id}": {
       "delete": {
         "tags": [
           "ElectricCars"
@@ -2330,7 +2502,8 @@
         "parameters": [
           {
             "name": "Id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2396,51 +2569,65 @@
         "tags": [
           "Events"
         ],
-        "parameters": [
-          {
-            "name": "Title",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "Location",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "Content": {
+                    "type": "string"
+                  },
                   "Image": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "Date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EventLatitude": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "EventLongitude": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Location": {
+                    "type": "string"
+                  },
+                  "Governate": {
+                    "$ref": "#/components/schemas/Governates"
                   }
                 }
               },
               "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "Content": {
+                  "style": "form"
+                },
                 "Image": {
+                  "style": "form"
+                },
+                "Date": {
+                  "style": "form"
+                },
+                "EventLatitude": {
+                  "style": "form"
+                },
+                "EventLongitude": {
+                  "style": "form"
+                },
+                "Location": {
+                  "style": "form"
+                },
+                "Governate": {
                   "style": "form"
                 }
               }
@@ -2482,69 +2669,72 @@
         "tags": [
           "Events"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Title",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "Location",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Hotles",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Title": {
+                    "type": "string"
+                  },
+                  "Content": {
+                    "type": "string"
+                  },
                   "Image": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "Date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Location": {
+                    "type": "string"
+                  },
+                  "EventLatitude": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "EventLongitude": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Governate": {
+                    "$ref": "#/components/schemas/Governates"
                   }
                 }
               },
               "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "Title": {
+                  "style": "form"
+                },
+                "Content": {
+                  "style": "form"
+                },
                 "Image": {
+                  "style": "form"
+                },
+                "Date": {
+                  "style": "form"
+                },
+                "Location": {
+                  "style": "form"
+                },
+                "EventLatitude": {
+                  "style": "form"
+                },
+                "EventLongitude": {
+                  "style": "form"
+                },
+                "Governate": {
                   "style": "form"
                 }
               }
@@ -2961,43 +3151,24 @@
         "tags": [
           "Jops"
         ],
-        "parameters": [
-          {
-            "name": "JopId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "UserName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "UserEmail",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "UserPhone",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "JopId": {
+                    "type": "string"
+                  },
+                  "UserName": {
+                    "type": "string"
+                  },
+                  "UserEmail": {
+                    "type": "string"
+                  },
+                  "UserPhone": {
+                    "type": "string"
+                  },
                   "CV": {
                     "type": "string",
                     "format": "binary"
@@ -3005,6 +3176,18 @@
                 }
               },
               "encoding": {
+                "JopId": {
+                  "style": "form"
+                },
+                "UserName": {
+                  "style": "form"
+                },
+                "UserEmail": {
+                  "style": "form"
+                },
+                "UserPhone": {
+                  "style": "form"
+                },
                 "CV": {
                   "style": "form"
                 }
@@ -3031,7 +3214,7 @@
         }
       }
     },
-    "/api/Jops": {
+    "/api/Jops/RejectJopApplication/{Id}": {
       "delete": {
         "tags": [
           "Jops"
@@ -3039,7 +3222,8 @@
         "parameters": [
           {
             "name": "Id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3051,21 +3235,32 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Jops/AcceptJopApplication": {
       "post": {
         "tags": [
           "Jops"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptJopApplicationDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptJopApplicationDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptJopApplicationDTO"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3085,7 +3280,7 @@
         }
       }
     },
-    "/api/Jops/DeleteJop/{Id}": {
+    "/api/Jops/DeleteJopApplication/{Id}": {
       "delete": {
         "tags": [
           "Jops"
@@ -3146,19 +3341,92 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/AddMotorbikeDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddMotorbikeDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddMotorbikeDTO"
+                "type": "object",
+                "properties": {
+                  "MotorbikeName": {
+                    "type": "string"
+                  },
+                  "MotorbikeYear": {
+                    "type": "string"
+                  },
+                  "MotorbikeModel": {
+                    "type": "string"
+                  },
+                  "MotorbikePrand": {
+                    "type": "string"
+                  },
+                  "Gearbox_Type": {
+                    "$ref": "#/components/schemas/GearboxTypes"
+                  },
+                  "MotorbikeDescription": {
+                    "type": "string"
+                  },
+                  "Images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "MotorbikePrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "MotorbikeTypes": {
+                    "$ref": "#/components/schemas/MotorbikeTypes"
+                  },
+                  "Rate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Motor_Capacity": {
+                    "type": "string"
+                  },
+                  "Discount": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              },
+              "encoding": {
+                "MotorbikeName": {
+                  "style": "form"
+                },
+                "MotorbikeYear": {
+                  "style": "form"
+                },
+                "MotorbikeModel": {
+                  "style": "form"
+                },
+                "MotorbikePrand": {
+                  "style": "form"
+                },
+                "Gearbox_Type": {
+                  "style": "form"
+                },
+                "MotorbikeDescription": {
+                  "style": "form"
+                },
+                "Images": {
+                  "style": "form"
+                },
+                "MotorbikePrice": {
+                  "style": "form"
+                },
+                "MotorbikeTypes": {
+                  "style": "form"
+                },
+                "Rate": {
+                  "style": "form"
+                },
+                "Motor_Capacity": {
+                  "style": "form"
+                },
+                "Discount": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -3177,19 +3445,93 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateMotorbikeDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMotorbikeDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMotorbikeDTO"
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "MotorbikeName": {
+                    "type": "string"
+                  },
+                  "MotorbikeYear": {
+                    "type": "string"
+                  },
+                  "MotorbikeModel": {
+                    "type": "string"
+                  },
+                  "MotorbikeDescription": {
+                    "type": "string"
+                  },
+                  "Images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "MotorbikePrice": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "MotorbikePrand": {
+                    "type": "string"
+                  },
+                  "MotorbikeType": {
+                    "$ref": "#/components/schemas/MotorbikeTypes"
+                  },
+                  "Rate": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Motor_Capacity": {
+                    "type": "string"
+                  },
+                  "Discount": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "MotorbikeName": {
+                  "style": "form"
+                },
+                "MotorbikeYear": {
+                  "style": "form"
+                },
+                "MotorbikeModel": {
+                  "style": "form"
+                },
+                "MotorbikeDescription": {
+                  "style": "form"
+                },
+                "Images": {
+                  "style": "form"
+                },
+                "MotorbikePrice": {
+                  "style": "form"
+                },
+                "MotorbikePrand": {
+                  "style": "form"
+                },
+                "MotorbikeType": {
+                  "style": "form"
+                },
+                "Rate": {
+                  "style": "form"
+                },
+                "Motor_Capacity": {
+                  "style": "form"
+                },
+                "Discount": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -3405,6 +3747,25 @@
         "tags": [
           "SpareParts"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3412,10 +3773,21 @@
         }
       }
     },
-    "/api/SpareParts/SparePart": {
+    "/api/SpareParts/SparePart/{Id}": {
       "get": {
         "tags": [
           "SpareParts"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -3473,7 +3845,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Image": {
+                  "Images": {
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -3483,7 +3855,7 @@
                 }
               },
               "encoding": {
-                "Image": {
+                "Images": {
                   "style": "form"
                 }
               }
@@ -3502,6 +3874,75 @@
         "tags": [
           "SpareParts"
         ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Price",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Brand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "Images": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3563,10 +4004,29 @@
       }
     },
     "/api/SpareParts/GetOrders": {
-      "get": {
+      "post": {
         "tags": [
           "SpareParts"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3636,6 +4096,49 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SpareParts/GetUserOrders": {
+      "get": {
+        "tags": [
+          "SpareParts"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SpareParts/UpdateUserOrder": {
+      "put": {
+        "tags": [
+          "SpareParts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSparePartOrder"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSparePartOrder"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSparePartOrder"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3717,10 +4220,10 @@
         }
       }
     },
-    "/api/Tips/Tips": {
+    "/api/SuperAdmin/GetServiceBookings": {
       "get": {
         "tags": [
-          "Tips"
+          "SuperAdmin"
         ],
         "responses": {
           "200": {
@@ -3729,10 +4232,83 @@
         }
       }
     },
-    "/api/Tips/Tip": {
+    "/api/SuperAdmin/DeleteService": {
+      "post": {
+        "tags": [
+          "SuperAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteServiceDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteServiceDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteServiceDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/GetTips": {
+      "post": {
+        "tags": [
+          "Tips"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/GetTip/{Id}": {
       "get": {
         "tags": [
           "Tips"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -3796,14 +4372,48 @@
         ],
         "parameters": [
           {
-            "name": "Id",
+            "name": "TipId",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "Image": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3811,7 +4421,7 @@
         }
       }
     },
-    "/api/Tips/DeleteTip": {
+    "/api/Tips/DeleteTip/{Id}": {
       "delete": {
         "tags": [
           "Tips"
@@ -3819,7 +4429,8 @@
         "parameters": [
           {
             "name": "Id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3838,16 +4449,195 @@
         "tags": [
           "Tips"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionTip"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionTip"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionTip"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/DislikeTip": {
+      "post": {
+        "tags": [
+          "Tips"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionTip"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionTip"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionTip"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/CommentToTip": {
+      "post": {
+        "tags": [
+          "Tips"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/UpdateComment": {
+      "put": {
+        "tags": [
+          "Tips"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/DeleteComment/{Id}": {
+      "delete": {
+        "tags": [
+          "Tips"
+        ],
         "parameters": [
           {
-            "name": "id",
-            "in": "query",
+            "name": "Id",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/DeleteUserComment/{Id}": {
+      "delete": {
+        "tags": [
+          "Tips"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tips/ReplyForComment": {
+      "post": {
+        "tags": [
+          "Tips"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyForComment"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyForComment"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyForComment"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3970,19 +4760,277 @@
         }
       }
     },
-    "/api/Vehicle/BookVehicle/{CarId}": {
+    "/api/UsedVehicle/SellCar": {
       "post": {
+        "tags": [
+          "UsedVehicle"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "CarImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "CarName": {
+                    "type": "string"
+                  },
+                  "CarModel": {
+                    "type": "string"
+                  },
+                  "Year": {
+                    "type": "string"
+                  },
+                  "KilometersDriven": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Price": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Condition": {
+                    "type": "string"
+                  },
+                  "GearboxTypes": {
+                    "$ref": "#/components/schemas/GearboxTypes"
+                  },
+                  "CarTypes": {
+                    "$ref": "#/components/schemas/CarTypes"
+                  },
+                  "CarDescription": {
+                    "type": "string"
+                  },
+                  "Motor_Capacity": {
+                    "type": "string"
+                  },
+                  "CarFuelTypes": {
+                    "$ref": "#/components/schemas/CarFuelTypes"
+                  },
+                  "SellerName": {
+                    "type": "string"
+                  },
+                  "SellerPhone": {
+                    "type": "string"
+                  },
+                  "SellerEmail": {
+                    "type": "string"
+                  },
+                  "Location_Latitude": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Location_Longitude": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              },
+              "encoding": {
+                "CarImages": {
+                  "style": "form"
+                },
+                "CarName": {
+                  "style": "form"
+                },
+                "CarModel": {
+                  "style": "form"
+                },
+                "Year": {
+                  "style": "form"
+                },
+                "KilometersDriven": {
+                  "style": "form"
+                },
+                "Price": {
+                  "style": "form"
+                },
+                "Condition": {
+                  "style": "form"
+                },
+                "GearboxTypes": {
+                  "style": "form"
+                },
+                "CarTypes": {
+                  "style": "form"
+                },
+                "CarDescription": {
+                  "style": "form"
+                },
+                "Motor_Capacity": {
+                  "style": "form"
+                },
+                "CarFuelTypes": {
+                  "style": "form"
+                },
+                "SellerName": {
+                  "style": "form"
+                },
+                "SellerPhone": {
+                  "style": "form"
+                },
+                "SellerEmail": {
+                  "style": "form"
+                },
+                "Location_Latitude": {
+                  "style": "form"
+                },
+                "Location_Longitude": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UsedVehicle/GetUsedCars": {
+      "post": {
+        "tags": [
+          "UsedVehicle"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehicle/BookVehicle": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehicle/LikeVehicle": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehicle/Dislike": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehicle/GetVehicleBookings/{Category}": {
+      "get": {
         "tags": [
           "Vehicle"
         ],
         "parameters": [
           {
-            "name": "CarId",
+            "name": "Category",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
@@ -3993,14 +5041,14 @@
         }
       }
     },
-    "/api/Vehicle/LikeCar/{CarId}": {
-      "post": {
+    "/api/Vehicle/DeleteBookings/{Id}": {
+      "delete": {
         "tags": [
           "Vehicle"
         ],
         "parameters": [
           {
-            "name": "CarId",
+            "name": "Id",
             "in": "path",
             "required": true,
             "schema": {
@@ -4019,6 +5067,26 @@
   },
   "components": {
     "schemas": {
+      "AcceptJopApplicationDTO": {
+        "type": "object",
+        "properties": {
+          "jopApplicationId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ActionTip": {
+        "type": "object",
+        "properties": {
+          "tipId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "AddAdminModel": {
         "required": [
           "email",
@@ -4076,70 +5144,6 @@
         },
         "additionalProperties": false
       },
-      "AddMotorbikeDTO": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "year": {
-            "type": "string",
-            "nullable": true
-          },
-          "model": {
-            "type": "string",
-            "nullable": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicleImages": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "binary"
-            },
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "prand": {
-            "type": "string",
-            "nullable": true
-          },
-          "condition": {
-            "type": "string",
-            "nullable": true
-          },
-          "motorbikeType": {
-            "type": "string",
-            "nullable": true
-          },
-          "rate": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "motor_Capacity": {
-            "type": "string",
-            "nullable": true
-          },
-          "discount": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "AddWashDTO": {
         "type": "object",
         "properties": {
@@ -4156,12 +5160,10 @@
             "format": "date-time"
           },
           "carType": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/CarFuelTypes"
           },
           "pricingPlan": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/PricingPlan"
           }
         },
         "additionalProperties": false
@@ -4233,20 +5235,50 @@
         },
         "additionalProperties": false
       },
+      "CancellCarForRent": {
+        "type": "object",
+        "properties": {
+          "rentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CarFuelTypes": {
+        "enum": [
+          "Electric",
+          "Fuel"
+        ],
+        "type": "string"
+      },
       "CarTypes": {
         "enum": [
-          0,
-          1,
-          2,
-          3
+          "Hatchback",
+          "Coupe",
+          "SUV",
+          "Sedan"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "ChatRequest": {
         "type": "object",
         "properties": {
           "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommentDto": {
+        "type": "object",
+        "properties": {
+          "tipId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "text": {
             "type": "string",
             "nullable": true
           }
@@ -4263,6 +5295,20 @@
           "otp": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeleteServiceDTO": {
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "nullable": true
+          },
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -4313,6 +5359,33 @@
         },
         "additionalProperties": false
       },
+      "FacebookLoginRequest": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FilterProductDTO": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GearboxTypes": {
+        "enum": [
+          "Automatic",
+          "Manual"
+        ],
+        "type": "string"
+      },
       "GetDriverDTO": {
         "type": "object",
         "properties": {
@@ -4347,6 +5420,15 @@
         },
         "additionalProperties": false
       },
+      "Governates": {
+        "enum": [
+          "Cairo",
+          "Alex",
+          "Hurghada",
+          "Luxor"
+        ],
+        "type": "string"
+      },
       "LoginModel": {
         "required": [
           "email",
@@ -4374,22 +5456,17 @@
       },
       "MotorbikeTypes": {
         "enum": [
-          0,
-          1,
-          2,
-          3
+          "Standard",
+          "Cruiser",
+          "Sport",
+          "Off_road"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "OrderHelpooDTO": {
         "type": "object",
         "properties": {
           "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userEmail": {
             "type": "string",
             "nullable": true
           },
@@ -4408,6 +5485,10 @@
           "userLatitude": {
             "type": "number",
             "format": "double"
+          },
+          "carType": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4469,6 +5550,24 @@
         },
         "additionalProperties": false
       },
+      "PricingPlan": {
+        "enum": [
+          "Basic",
+          "Premium",
+          "Ultimate"
+        ],
+        "type": "string"
+      },
+      "ProductSearch": {
+        "type": "object",
+        "properties": {
+          "productCategory": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterModel": {
         "required": [
           "confirmPassword",
@@ -4520,10 +5619,6 @@
             "type": "string",
             "nullable": true
           },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
           "phone": {
             "type": "string",
             "nullable": true
@@ -4535,6 +5630,20 @@
           "endDate": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyForComment": {
+        "type": "object",
+        "properties": {
+          "commentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "replyText": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4658,6 +5767,20 @@
         },
         "additionalProperties": false
       },
+      "UpdateCommentDTO": {
+        "type": "object",
+        "properties": {
+          "commentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commentText": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateHelpooDTO": {
         "type": "object",
         "properties": {
@@ -4714,69 +5837,27 @@
         },
         "additionalProperties": false
       },
-      "UpdateMotorbikeDTO": {
+      "UpdateSparePartOrder": {
         "type": "object",
         "properties": {
-          "id": {
+          "orderId": {
             "type": "integer",
             "format": "int32"
           },
-          "name": {
+          "userName": {
             "type": "string",
             "nullable": true
           },
-          "year": {
+          "userEmail": {
             "type": "string",
             "nullable": true
           },
-          "model": {
+          "userPhone": {
             "type": "string",
             "nullable": true
           },
-          "color": {
+          "userAddress": {
             "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "vehicleImages": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "binary"
-            },
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "prand": {
-            "type": "string",
-            "nullable": true
-          },
-          "condition": {
-            "type": "string",
-            "nullable": true
-          },
-          "motorbikeType": {
-            "type": "string",
-            "nullable": true
-          },
-          "rate": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "motor_Capacity": {
-            "type": "string",
-            "nullable": true
-          },
-          "discount": {
-            "type": "number",
-            "format": "double",
             "nullable": true
           }
         },
@@ -4873,6 +5954,28 @@
           }
         },
         "additionalProperties": false
+      },
+      "VehicleDTO": {
+        "type": "object",
+        "properties": {
+          "vehicleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicleCategory": {
+            "$ref": "#/components/schemas/bookingCategory"
+          }
+        },
+        "additionalProperties": false
+      },
+      "bookingCategory": {
+        "enum": [
+          "Car",
+          "Motorbike",
+          "ElectricCar",
+          "UsedCar"
+        ],
+        "type": "string"
       },
       "confirmDriverDTO": {
         "type": "object",

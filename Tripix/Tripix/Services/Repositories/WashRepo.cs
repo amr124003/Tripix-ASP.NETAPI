@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tripix.Abstractions;
 using Tripix.Context;
+using Tripix.Contracts.Common;
 using Tripix.Contracts.Wash;
 using Tripix.Entities;
 using Tripix.Errors;
+using Tripix.Extentions;
 using Tripix.Services.Interfaces;
 using Tripix.View_Models;
 
@@ -21,106 +23,108 @@ namespace Tripix.Services.Repositories
             this.usermanger = usermanger;
             this.context = context;
         }
-        public async Task<Result> BookingTurn ( string UserId, AddWashDTO model )
+        public async Task<Result> BookingTurn ( string UserId, AddWashDTO model, CancellationToken canToken )
         {
-            var user = await usermanger.FindByIdAsync(UserId);
+            var user = await usermanger.Users.FirstOrDefaultAsync(x => x.Id == UserId , canToken);
 
-            if (user is null) return Result.Failure(UserErrors.UserNotFound);
-
-            if (!user.EmailConfirmed) { return Result.Failure(UserErrors.UnconfirmedEmail); }
-
-            if (user.IsDisabled) { return Result.Failure(UserErrors.DisabledUser); }
+            var validuser = user!.ValidUser();
+            if(validuser.IsFalure) { return validuser; }
 
             WashBooking newTurn = model.UserPhone != null ? model.Adapt<WashBooking>()
                  : new()
                  {
-                     UserName = user.Name,
+                     UserName = user!.Name,
                      UserPhone = user.PhoneNumber,
                      TurnDate = model.TurnDate,
                      CarType = model.CarType,
                      PricingPlan = model.PricingPlan
                  };
 
-            newTurn.UserEmail = user.Email;
+            newTurn.UserEmail = user!.Email!;
 
             user.WashBookings.Add(newTurn);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(canToken);
             return Result.Success();
         }
 
-        public async Task<Result> CancelTurn ( string UserId, int TurnId )
+        public async Task<Result> CancelTurn ( string UserId, int TurnId, CancellationToken canToken)
         {
-            var user = await usermanger.FindByIdAsync(UserId);
+            var user = await usermanger.Users.Include(x => x.WashBookings).FirstOrDefaultAsync(x => x.Id == UserId , canToken);
 
-            if (user is null) return Result.Failure(UserErrors.UserNotFound);
+            var validuser = user!.ValidUser();
+            if(validuser.IsFalure) { return validuser; }
 
-            if (!user.EmailConfirmed) { return Result.Failure(UserErrors.UnconfirmedEmail); }
-
-            if (user.IsDisabled) { return Result.Failure(UserErrors.DisabledUser); }
-
-            var Turn = user.WashBookings.FirstOrDefault(x => x.Id == TurnId);
+            var Turn = user!.WashBookings.FirstOrDefault(x => x.Id == TurnId);
 
             if (Turn == null) { return Result.Failure(WashErrors.TurnNotfound); }
 
             user.WashBookings.Remove(Turn);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(canToken);
             return Result.Success();
         }
 
-        public async Task<Result> DeleteTurn ( int TurnId )
+        public async Task<Result> DeleteTurn ( int TurnId, CancellationToken canToken)
         {
-            var Turn = await context.WashBookings.FirstOrDefaultAsync(x => x.Id == TurnId);
+            var Turn = await context.WashBookings.FirstOrDefaultAsync(x => x.Id == TurnId , canToken);
 
             if(Turn == null) {return Result.Failure(WashErrors.TurnNotfound); }
 
             context.WashBookings.Remove(Turn);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(canToken);
             return Result.Success();
         }
 
-        public async Task<Result<WashBooking>> GetTurnDetails ( int TurnId, string UserId )
+        public async Task<Result<WashBooking>> GetTurnDetails ( int TurnId, string UserId , CancellationToken canToken)
         {
-            var user = await usermanger.FindByIdAsync(UserId);
+            var res = new  WashBooking();
+            var user = await usermanger.Users.Include(x => x.WashBookings).FirstOrDefaultAsync(x => x.Id == UserId, canToken);
 
-            if (user is null) return Result.Failure<WashBooking>(UserErrors.UserNotFound);
+            var validuser = user!.ValidUser(res);
+            if (validuser.IsFalure) { return validuser!; }
 
-            if (!user.EmailConfirmed) { return Result.Failure<WashBooking>(UserErrors.UnconfirmedEmail); }
+            res = user!.WashBookings.FirstOrDefault(x => x.Id == TurnId);
 
-            if (user.IsDisabled) { return Result.Failure<WashBooking>(UserErrors.DisabledUser); }
+            if (res == null) { return Result.Failure<WashBooking>(WashErrors.TurnNotfound); }
 
-            var Turn = user.WashBookings.FirstOrDefault(x => x.Id == TurnId);
-
-            if (Turn == null) { return Result.Failure<WashBooking>(WashErrors.TurnNotfound); }
-
-            return Result.Success(Turn);
+            return Result.Success(res);
         }
 
 
-
-        public async Task<List<WashBooking>> GetTurns ()
+        public async Task<PaginatedList<WashBooking>> GetTurns (RequestFilter model , CancellationToken canToken)
         {
-            var Turns = await context.WashBookings.ToListAsync();
+            var Turns = await context.WashBookings
+                .CreatePaginatedList<WashBooking>(model.PageNumber , model.PageSize , canToken);
 
             return Turns;
         }
 
-        public async Task<Result<WashBooking>> UpdateTurn ( string UserId, UpdateWashTurnDTO model )
+        public async Task<Result<List<WashBooking>>> GetUserTurn(string UserId , CancellationToken canToken )
         {
-            var user = await usermanger.FindByIdAsync(UserId);
+            var res = new List<WashBooking>();
+            var user = await usermanger.Users.Include(x => x.WashBookings).FirstOrDefaultAsync(x => x.Id == UserId , canToken);
 
-            if (user is null) return Result.Failure<WashBooking>(UserErrors.UserNotFound);
+            var validuser = user!.ValidUser(res);
+            if (validuser.IsFalure) { return validuser!; }
 
-            if (!user.EmailConfirmed) { return Result.Failure<WashBooking>(UserErrors.UnconfirmedEmail); }
+            res =  user!.WashBookings.ToList();
+            return Result.Success(res);
+        }
 
-            if (user.IsDisabled) { return Result.Failure<WashBooking>(UserErrors.DisabledUser); }
+        public async Task<Result<WashBooking>> UpdateTurn ( string UserId, UpdateWashTurnDTO model , CancellationToken canToken)
+        {
+            var res = new WashBooking();
+            var user = await usermanger.Users.Include(x => x.WashBookings).FirstOrDefaultAsync( x => x.Id == UserId, canToken);
 
-            var Turn = user.WashBookings.FirstOrDefault(x => x.Id == model.Id);
+            var validuser = user!.ValidUser(res);
+            if (validuser.IsFalure) { return validuser!; }
 
-            if (Turn == null) { return Result.Failure<WashBooking>(WashErrors.TurnNotfound); }
+            res = user!.WashBookings.FirstOrDefault(x => x.Id == model.Id);
 
-            model.Adapt(Turn);
-            await context.SaveChangesAsync();
-            return Result.Success(Turn);
+            if (res == null) { return Result.Failure<WashBooking>(WashErrors.TurnNotfound); }
+
+            model.Adapt(res);
+            await context.SaveChangesAsync(canToken);
+            return Result.Success(res);
         }
 
 

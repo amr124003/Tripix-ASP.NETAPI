@@ -12,6 +12,7 @@ namespace Tripix.Contracts.Driver
         public string DriverFaceId { get; set; }
         public string DriverLicense {  get; set; }
         public List<string> CarLicense { get; set; }
+        public string CreminalRecord { get; set; }
         public List<string> CarImages { get; set; }
         public string DriverStatus { get; set; }
         public int Tripcounter { get; set; }

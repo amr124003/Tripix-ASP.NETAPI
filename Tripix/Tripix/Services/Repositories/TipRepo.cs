@@ -1,7 +1,9 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium.DevTools.V132.Storage;
+using OpenQA.Selenium.Interactions;
 using RTools_NTS.Util;
 using System.Runtime.CompilerServices;
 using System.Transactions;
@@ -45,7 +47,7 @@ namespace Tripix.Services.Repositories
                     await model.Image.CopyToAsync(Stream , canToken);
                 }
 
-                newTip.Image = $"{Urls.TipImages}{model.Image.FileName}";
+                newTip.Image = $"{Urls.SaveTipImages}{model.Image.FileName}";
 
                 await context.Tips.AddAsync(newTip , canToken);
                 await context.SaveChangesAsync(canToken);
@@ -61,24 +63,26 @@ namespace Tripix.Services.Repositories
 
         public async Task<Result> CommentToTip(string UserId , CommentDto model, CancellationToken canToken = default)
         {
+            var res = new TipComments();
             var user = await userManger.Users.FirstOrDefaultAsync(x => x.Id == UserId , canToken);
 
-            var validuser = user!.ValidUser();
-            if (validuser.IsFalure) { return validuser; }
+            var validuser = user!.ValidUser(res);
+            if (validuser.IsFalure) { return validuser!; }
 
             var Tip = await  context.Tips.FirstOrDefaultAsync(x => x.Id == model.TipId , canToken);
 
-            if (Tip == null) { return Result.Failure(TipError.TipNotFound); }
+            if (Tip == null) { return Result.Failure<TipComments>(TipError.TipNotFound); }
 
-            var newComment = new TipComments()
+            res = new TipComments()
             {
                 Text = model.Text,
-                TipId = model.TipId
+                TipId = model.TipId,
+                UserName = user!.UserName.GetNameFromUserName()!
             };
 
-            user!.TipComments.Add(newComment);
+            user!.TipComments.Add(res);
             await context.SaveChangesAsync(canToken);
-            return Result.Success();
+            return Result.Success(res);
         }
 
         public async Task<Result> DeleteComment(int Id, CancellationToken canToken = default)
@@ -133,7 +137,7 @@ namespace Tripix.Services.Repositories
                 TipId = Tip.Id
             };
 
-            user.LovedTips.Add(lovedtip);
+            user.LovedTips.Remove(lovedtip);
             Tip.DisLikes++;
             await context.SaveChangesAsync(canToken);
             return Result.Success();
@@ -141,7 +145,7 @@ namespace Tripix.Services.Repositories
 
         public async Task<Result<Tip>> GetTip(int id, CancellationToken canToken = default)
         {
-            var tip = await context.Tips.FirstOrDefaultAsync(x => x.Id ==  id, canToken);
+            var tip = await context.Tips.Include(x => x.TipComments).ThenInclude(x => x.Replies).FirstOrDefaultAsync(x => x.Id ==  id, canToken);
 
             if(tip == null) { return Result.Failure<Tip>(TipError.TipNotFound); }
 
@@ -158,15 +162,24 @@ namespace Tripix.Services.Repositories
 
         public async Task<Result> LikeTip(string UserId , int Id, CancellationToken canToken = default)
         {
-            var user = await  userManger.Users.FirstOrDefaultAsync(x => x.Id == UserId, canToken);
+            var user = await userManger.Users.Include(x => x.TipComments).FirstOrDefaultAsync(x => x.Id == UserId, canToken);
 
-            var validuser = user!.ValidUser();
+            var validuser = user.ValidUser();
             if (validuser.IsFalure) { return validuser; }
 
-            var tip = await context.Tips.FirstOrDefaultAsync(x => x.Id == Id, canToken);
-            if(tip == null) {  return Result.Failure(TipError.TipNotFound); }
+            var Tip = await context.Tips.FirstOrDefaultAsync(x => x.Id == Id, canToken);
 
-            tip.DisLikes++;
+            if (Tip == null) { return Result.Failure(TipError.TipNotFound); }
+
+            if(user.LovedTips != null && user.LovedTips.Any(x => x.TipId == Id)) { return Result.Success(); }
+
+            var lovedtip = new LovedTips()
+            {
+                TipId = Tip.Id,
+            };
+
+            user.LovedTips.Add(lovedtip);
+            Tip.Likes++;
             await context.SaveChangesAsync(canToken);
             return Result.Success();
         }
@@ -181,15 +194,16 @@ namespace Tripix.Services.Repositories
 
             if(comment == null) { return Result.Failure(TipError.CommentNotFound); }
 
-            var Reply = new TipComments
+            var Reply = new Replies
             {
-                ParentCommentId = model.CommentId,
+                UserId = UserId,
+                UserName = user!.UserName.GetNameFromUserName()!,
                 Text = model.ReplyText,
-                TipId = comment.TipId,
-                UserId = user!.Id
+                CreatedAt = comment.CreatedAt,
+                ParentCommentId = comment.Id,
             };
 
-            context.TipComments.Add(Reply);
+            context.Replies.Add(Reply);
             await context.SaveChangesAsync(canToken);
             return Result.Success();
         }
@@ -210,7 +224,7 @@ namespace Tripix.Services.Repositories
             return Result.Success();
 
         }
-
+        
         public async Task<Result<Tip>> UpdateTip(UpdateTipDTO model, CancellationToken canToken = default)
         {
             var tip = await  context.Tips.FirstOrDefaultAsync(x => x.Id == model.TipId , canToken);
@@ -221,5 +235,7 @@ namespace Tripix.Services.Repositories
             await context.SaveChangesAsync(canToken);
             return Result.Success(tip);
         }
+
+       
     }
 }

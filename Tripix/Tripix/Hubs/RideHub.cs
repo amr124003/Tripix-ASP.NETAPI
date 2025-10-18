@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.SignalR;
 using Tripix.Authentication;
 using Tripix.Entities;
-using Tripix.Services;
+using Tripix.Services.Interfaces;
 
 namespace Tripix.Hubs
 {
     public class RideHub : Hub
     {
-        private readonly IDriverRepo driverRepo;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IJwtProvider jwtprovider;
 
-        public RideHub ( IDriverRepo DriverRepo, IJwtProvider jwtprovider )
+        public RideHub ( IUnitOfWork unitOfWork, IJwtProvider jwtprovider )
         {
-            driverRepo = DriverRepo;
+            
+            this.unitOfWork = unitOfWork;
             this.jwtprovider = jwtprovider;
         }
         public override async Task OnConnectedAsync ()
@@ -23,7 +24,7 @@ namespace Tripix.Hubs
             {
                 var driverID = jwtprovider.ValidateToken(token);
 
-                await driverRepo.MakeMeOnlineAsync(driverID, Context.ConnectionId);
+                await unitOfWork.driverService.MakeMeOnlineAsync(driverID, Context.ConnectionId);
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, $"Driver {driverID}");
             }
@@ -39,7 +40,7 @@ namespace Tripix.Hubs
             {
                 var driverID = jwtprovider.ValidateToken(token);
 
-                await driverRepo.UpdateDriverLocationAsync(driverID, locationDto);
+                await unitOfWork.driverService.UpdateDriverLocationAsync(driverID, locationDto);
             }
         }
         public override async Task OnDisconnectedAsync ( Exception ex )
@@ -53,7 +54,7 @@ namespace Tripix.Hubs
 
                 if (driverId != null)
                 {
-                    var Res = await driverRepo.MakeMeOfflineAsync(driverId);
+                    var Res = await unitOfWork.driverService.MakeMeOfflineAsync(driverId);
 
                     if (Res)
                     {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Tripix.Abstractions;
 using Tripix.Abstractions.Consts;
 using Tripix.Context;
@@ -7,6 +8,7 @@ using Tripix.Contracts.Trip;
 using Tripix.Contracts.User;
 using Tripix.Entities;
 using Tripix.Errors;
+using Tripix.Extentions;
 using Tripix.Hubs;
 using Tripix.Services.Interfaces;
 
@@ -25,13 +27,36 @@ namespace Tripix.Services.Repositories
             this.hubcontext = hubcontext;
         }
 
+        public async Task<Result> CommentToTip(string UserId , CommentDTO comment)
+        {
+            var tip = await context.Tips.FirstOrDefaultAsync(x => x.Id == comment.TipId);
+
+            var user = await usermanger.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+
+            var validuser = user!.ValidUser();
+
+            if(validuser.IsFalure) { return validuser; }
+
+            if(tip == null ) { return Result.Failure(TipError.TipNotFound); }
+
+            tip.TipComments.Add(new TipComments
+            {
+                UserId = UserId,
+                TipId = comment.TipId,
+                CreatedAt = DateTime.UtcNow,
+                Text = comment.Comment,
+            });
+            await context.SaveChangesAsync();
+            return Result.Success();
+        }
+
         public async Task<Result<UserFinalTrip>> GetTripDetails ( GetTripDetails model )
         {
             var userfinalTripResponse = new UserFinalTrip();
 
-            var Trip = context.Trips.FirstOrDefault(x => x.Id == model.TripId);
+            var Trip = context.Trips.FirstOrDefault(x => x.Id == Convert.ToInt32(model.TripId));
 
-            var Driver = context.Drivers.FirstOrDefault(x => x.Id == model.DriverId);
+            var Driver = usermanger.Users.OfType<Driver>().FirstOrDefault(x => x.Id == model.DriverId);
 
             if (Trip == null) { return Result.Failure<UserFinalTrip>(TripErrors.TripNotFound); }
 
@@ -110,7 +135,7 @@ namespace Tripix.Services.Repositories
 
             if (driver == null) { return Result.Failure(UserErrors.UserNotFound); }
 
-            var driverinfo = context.Drivers.FirstOrDefault(x => x.Id == model.DriverId);
+            var driverinfo = usermanger.Users.OfType<Driver>().FirstOrDefault(x => x.Id == model.DriverId);
 
             if(driverinfo.Status == DriverStatus.Panned) { return Result.Failure(DriverErrors.PanneddDriver); }
 

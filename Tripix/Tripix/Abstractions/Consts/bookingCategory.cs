@@ -5,7 +5,6 @@ namespace Tripix.Abstractions.Consts
         Car = 0,
         Motorbike = 1,
         ElectricCar = 2,
-        SparePart = 3,
         UsedCar = 4,
 
     }

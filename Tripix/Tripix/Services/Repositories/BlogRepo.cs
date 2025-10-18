@@ -18,16 +18,16 @@ namespace Tripix.Services.Repositories
         {
             this.context = context;
         }
-        public async Task<Result<Blog>> GetBlogAsync ( int id )
+        public async Task<Result<Blog>> GetBlogAsync ( int id , CancellationToken canToken)
         {
-            var blog = context.Blogs.FirstOrDefault(b => b.Id == id);
+            var blog = await context.Blogs.FirstOrDefaultAsync(b => b.Id == id , canToken);
 
             if (blog == null) { return Result.Failure<Blog>(BlogErrors.BlogNotFound); }
 
             return Result.Success(blog);
         }
 
-        public async Task<Result<Blog>> AddBlogAsync ( BlogDTO model )
+        public async Task<Result<Blog>> AddBlogAsync ( BlogDTO model  , CancellationToken canToken)
         {
             if (model.Image == null || model.Image.Length == 0)
             {
@@ -49,51 +49,71 @@ namespace Tripix.Services.Repositories
 
             return Result.Success(blog);
         }
-        public async Task<List<Blog>> GetBlogListAsync ()
+        public async Task<List<Blog>> GetBlogListAsync(CancellationToken cantoken )
         {
-            return context.Blogs.AsNoTracking().ToListAsync().Result;
+            var res = await context.Blogs.AsNoTracking().ToListAsync();
+
+            return res;
         }
-        public async Task<Result<Blog>> UpdateBlogAsync ( UpdateBlogDto model )
+        public async Task<Result<Blog>> UpdateBlogAsync ( UpdateBlogDto model  , CancellationToken canToken)
         {
-            var blog = context.Blogs.FirstOrDefault(b => b.Id == model.Id);
+            var blog = await context.Blogs.FirstOrDefaultAsync(b => b.Id == model.Id , canToken);
 
             if (blog == null) { return Result.Failure<Blog>(BlogErrors.BlogNotFound); }
 
-            blog = model.Adapt<Blog>();
+            using var Transaction = context.Database.BeginTransaction(); 
 
-            if (model.NewImage == null || model.NewImage.Length == 0)
+            try
             {
-                return Result.Failure<Blog>(BlogErrors.ImageNotFound);
+                model.Adapt(blog);
+
+                if (model.NewImage == null || model.NewImage.Length == 0)
+                {
+                    return Result.Failure<Blog>(BlogErrors.ImageNotFound);
+                }
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.BlogImageUrl}{model.NewImage.FileName}");
+
+                if (blog.Image != null)
+                {
+                    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), blog.Image);
+
+                    if (File.Exists(oldPath)) { File.Delete(oldPath); }
+                }
+
+                using (var Stream = new FileStream(path, FileMode.Create))
+                {
+                   await  model.NewImage.CopyToAsync(Stream , canToken);
+                }
+
+                blog.Image = $"Images/blogs/{model.NewImage.FileName}";
+                await context.SaveChangesAsync(canToken);
+                await Transaction.CommitAsync(canToken);
+                return Result.Success(blog);
+            }
+            catch
+            {
+                await Transaction.RollbackAsync(canToken);
+                return Result.Failure<Blog>(BlogErrors.ErrorOnUpdate);
             }
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/blogs/{model.NewImage.FileName}");
-
-            if (blog.Image != null)
-            {
-                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/{blog.Image}");
-
-                if (System.IO.File.Exists(oldPath)) { System.IO.File.Delete(oldPath); }
-            }
-
-            using (var Stream = new FileStream(path, FileMode.Create))
-            {
-                model.NewImage.CopyTo(Stream);
-            }
-
-            blog.Image = $"Images/blogs/{model.NewImage.FileName}";
-
-            await context.SaveChangesAsync();
-
-            return Result.Success(blog);
+            
         }
 
         public async Task<Result> DeleteBlog ( int id )
         {
             var blog = context.Blogs.FirstOrDefault(x => x.Id == id);
 
-            if (blog is null) { Result.Failure(BlogErrors.BlogNotFound); }
+            if (blog == null) { Result.Failure(BlogErrors.BlogNotFound); }
 
-            context.Blogs.Remove(blog);
+            if(blog.Image != null )
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), blog.Image);
+
+                if(File.Exists(path)) { File.Delete(path); }
+            }
+
+            context.Blogs.Remove(blog!);
             await context.SaveChangesAsync();
 
             return Result.Success();

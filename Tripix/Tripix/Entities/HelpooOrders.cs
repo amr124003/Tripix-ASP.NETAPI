@@ -9,5 +9,6 @@ namespace Tripix.Entities
         public DateTime OrderTime { get; set; } = DateTime.UtcNow;
         public double UserLongitude { get; set; }
         public double UserLatitude { get; set; }
+        public string CarType { get; set; }
     }
 }

@@ -2,12 +2,15 @@ using DotNetEnv;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using Tripix.Authentication;
 using Tripix.Context;
 using Tripix.Contracts.Authentication;
@@ -16,6 +19,7 @@ using Tripix.Hubs;
 using Tripix.SEEDING;
 using Tripix.Services.Interfaces;
 using Tripix.Services.Repositories;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +38,11 @@ var mapConfig = TypeAdapterConfig.GlobalSettings;
 mapConfig.Scan(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<IMapper>(new Mapper(mapConfig));
 
+builder.Services.Configure<FormOptions>(option =>
+{
+
+    option.MultipartBodyLengthLimit = 104857600;
+});
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
@@ -69,8 +78,7 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOpti
 builder.Services.AddHttpClient<bininfoRepo>();
 builder.Services.AddDbContext<ApplicationDbcontext>(options =>
 {
-    options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"),
-        sqloption => sqloption.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+    options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"))
            .EnableSensitiveDataLogging()
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
@@ -148,7 +156,10 @@ builder.Services.AddSwaggerGen(c =>
 
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(option =>
+{
+    option.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddEndpointsApiExplorer();
 
 
@@ -183,6 +194,7 @@ app.Use(async ( context, next ) =>
         Console.WriteLine($"Exception: {ex.Message}");
         throw;
     }
+    
 });
 
 app.UseRouting();

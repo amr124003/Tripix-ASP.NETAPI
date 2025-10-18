@@ -8,6 +8,7 @@ using Tripix.Contracts.Car;
 using Tripix.Contracts.Vehicle;
 using Tripix.Entities;
 using Tripix.Errors;
+using Tripix.Extentions;
 using Tripix.Services.Interfaces;
 
 namespace Tripix.Services.Repositories
@@ -36,14 +37,14 @@ namespace Tripix.Services.Repositories
 
             if (user.IsDisabled) { return Result.Failure<VehicleResponse>(UserErrors.DisabledUser); }
 
-            vehicle!.VehicleBooking = new VehicleBookings()
+            vehicle!.VehicleBooking.Add (new VehicleBookings()
             {
                 UserId = UserId,
                 UserName = user.Name,
                 UserEmail = user.Email,
                 UserPhone = user.PhoneNumber,
                 Category = bookingCategory.Car
-            };
+            });
 
             var Response = vehicle.Adapt<VehicleResponse>();
 
@@ -51,17 +52,20 @@ namespace Tripix.Services.Repositories
             return Result.Success(Response);
         }
 
-        public Task<Result> CancelBooking(string UserId, int BookingId)
+        
+
+        public async Task<Result> DeleteBooking(int BookingId)
         {
-            throw new NotImplementedException();
+            var Booking =await context.VehicleBookings.FirstOrDefaultAsync(x => x.Id ==  BookingId);
+
+            if (Booking == null) { return Result.Failure(VehicleErrors.BookingNotFound); }
+
+            context.VehicleBookings.Remove(Booking);
+            await context.SaveChangesAsync();
+            return Result.Success();
         }
 
-        public Task<Result> DeleteBooking(int BookingId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Result> LikeVehicle (string UserId ,  int CarId )
+        public async Task<Result> DisLikeVehicle(string UserId, int CarId)
         {
             var Car = context.Vehicles.FirstOrDefault(x => x.Id == CarId);
 
@@ -69,12 +73,48 @@ namespace Tripix.Services.Repositories
 
             var user = await usermanager.Users.Include(x => x.FavouriteProducts).FirstOrDefaultAsync(x => x.Id == UserId);
 
-            if (user == null) { return Result.Failure(UserErrors.UserNotFound); }
+            var validuser = user!.ValidUser();
+            if (validuser.IsFalure)
+            {
+                return validuser;
+            }
 
             var favCar = Car.Adapt<FavouriteProduct>();
 
+            Car.LikeCounter--;
+            user!.FavouriteProducts.Remove(favCar);
+
+            await context.SaveChangesAsync();
+
+            return Result.Success();
+        }
+
+        public async Task<List<VehicleBookings>> GetVehcileBookings(string Category)
+        {
+            var res = await context.VehicleBookings.Where(x => x.Category.ToString() == Category).ToListAsync();
+
+            return res;
+        }
+
+        public async Task<Result> LikeVehicle (string UserId ,  int CarId )
+        {
+            var Car = context.Vehicles.Include(x => x.VehicleImages).FirstOrDefault(x => x.Id == CarId);
+
+            if (Car == null) { return Result.Failure<Car>(VehicleErrors.VehicleNotFound); }
+
+            var user = await usermanager.Users.Include(x => x.FavouriteProducts).FirstOrDefaultAsync(x => x.Id == UserId);
+
+            var validuser = user!.ValidUser();
+            if (validuser.IsFalure) 
+            {
+                return validuser;
+            }
+
+            var favCar = Car.Adapt<FavouriteProduct>();
+            favCar.VehicleId = Car.Id;
+
             Car.LikeCounter++;
-            user.FavouriteProducts.Add(favCar);
+            user!.FavouriteProducts.Add(favCar);
 
             await context.SaveChangesAsync();
 

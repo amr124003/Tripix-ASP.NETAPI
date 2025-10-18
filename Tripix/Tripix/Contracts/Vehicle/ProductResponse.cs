@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public string Category { get; set; }
         public int Rate { get; set; }
+        public string Type { get; set; }
         public List<string> ProductImages { get; set; }
         public decimal Price { get; set; }
     }

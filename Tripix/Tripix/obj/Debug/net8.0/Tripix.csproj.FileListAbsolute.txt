@@ -431,7 +431,11 @@ E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\staticwebass
 E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\staticwebassets.build.json.cache
 E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\staticwebassets.development.json
 E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\Tripix.csproj.Up2Date
 E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\Tripix.genruntimeconfig.cache
 E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\ref\Tripix.dll
+E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\rpswa.dswa.cache.json
+E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\rjimswa.dswa.cache.json
+E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+E:\Gaduation Project\Website\Backend\Tripix\Tripix\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

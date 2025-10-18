@@ -1,3 +1,5 @@
+using Tripix.Abstractions.Consts;
+
 namespace Tripix.Entities
 {
     public class WashBooking
@@ -7,7 +9,7 @@ namespace Tripix.Entities
         public string UserEmail { get; set; }
         public DateTime TurnDate { get; set; } = DateTime.Now;
         public string UserPhone { get; set; }
-        public string CarType { get; set; }
-        public string PricingPlan { get; set; }
+        public CarFuelTypes CarType { get; set; }
+        public PricingPlan PricingPlan { get; set; }
     }
 }

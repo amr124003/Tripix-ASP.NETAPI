@@ -5,26 +5,23 @@ namespace Tripix.Contracts.ElectricCar
 {
     public class AddElectricCatDTO
     {
-        public string Name { get; set; }
-        public string Year { get; set; }
-        public string Model { get; set; }
-        public string? Color { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public string Prand { get; set; }
-        public MotorbikeTypes? MotorbikeType { get; set; }
+        public string CarName { get; set; }
+        public string CarYear { get; set; }
+        public string CarModel { get; set; }
+        public string? CarColor { get; set; }
+        public string CarDescription { get; set; }
+        public decimal CarPrice { get; set; }
+        public string CarPrand { get; set; }
         public int? Rate { get; set; }
         public decimal? Discount { get; set; }
-        public DateOnly? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public string Merchant_Logo { get; set; } = "/Images/TripixLogo.png";
-        public List<IFormFile> Images { get; set; }
+        public List<IFormFile> CarImages { get; set; }
         public int? BatteryCapacity { get; set; }
         public int? TravelRange { get; set; }
-
         public string? Interior { get; set; }
         public int? ChargingTime { get; set; }
-        public int? Power { get; set; }
-        [AllowedValues("SUV", "Hatchback", "Coupe", "Sedan")]
-        public string? CarType { get; set; }
+        public int? CarPower { get; set; }
+        public CarTypes CarType { get; set; }
     }
 }

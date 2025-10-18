@@ -23,7 +23,6 @@ public class PaymentController : ControllerBase
             return Ok(new
             {
                 PaymentUrl = $"https://accept.paymob.com/api/acceptance/iframes/905497?payment_token={paymentKey}"
-                // «” »œ· 123456 »‹ iframe_id «·Œ«’ »ﬂ
             });
         }
         catch (Exception ex)

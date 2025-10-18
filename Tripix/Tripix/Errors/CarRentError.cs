@@ -10,7 +10,7 @@ namespace Tripix.Errors
 
         public static readonly Error CarIsRented = new("Car Is Rented", "This Car Is Already Rented", StatusCodes.Status400BadRequest);
 
-        public static readonly Error RentNotFound = new("Turn Not Found", "This Turn Not Found", StatusCodes.Status400BadRequest);
+        public static readonly Error RentNotFound = new("Rent Not Found", "This Rent Not Found", StatusCodes.Status400BadRequest);
 
     }
 }

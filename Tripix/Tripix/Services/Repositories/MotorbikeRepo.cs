@@ -1,5 +1,7 @@
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
+using RTools_NTS.Util;
 using Tripix.Abstractions;
 using Tripix.Abstractions.Consts;
 using Tripix.Context;
@@ -23,7 +25,7 @@ namespace Tripix.Services.Repositories
         }
         public async Task<Result<Motorbikeresponse>> AddMotorbike ( AddMotorbikeDTO model )
         {
-            if (model.VehicleImages == null || model.VehicleImages.Count == 0)
+            if (model.Images == null || model.Images.Count == 0)
             {
                 return Result.Failure<Motorbikeresponse>(VehicleErrors.ImagesNotFound);
             }
@@ -34,23 +36,26 @@ namespace Tripix.Services.Repositories
             {
 
                 var newmotorbike = model.Adapt<Motorbikes>();
-                context.Vehicles.Add(newmotorbike);
-                await context.SaveChangesAsync();
+                
 
-                foreach (var image in model.VehicleImages)
+                foreach (var image in model.Images)
                 {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.MotorbikeImageURL}/{image.FileName}");
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.MotorbikeImageURL}{image.FileName}");
 
                     using (FileStream Stream = new(path, FileMode.Create))
                     {
                         await image.CopyToAsync(Stream);
                     }
 
-                    newmotorbike.VehicleImages.Add(new VehicleImage()
+                    var imurl = $"{Urls.SaveMotorbikeImageUrl}{image.FileName}";
+
+                    newmotorbike.VehicleImages.Add(new VehicleImage
                     {
-                        ImageUrl = $"{Urls.MotorbikeImageURL}/{image.FileName}",
+                        ImageUrl = imurl ,
                     });
                 }
+
+                context.Vehicles.Add(newmotorbike);
                 await context.SaveChangesAsync();
                 await Transaction.CommitAsync();
                 var response = newmotorbike.Adapt<Motorbikeresponse>();
@@ -63,24 +68,60 @@ namespace Tripix.Services.Repositories
             }
         }
 
-        public async Task<Result> DeleteMotorbike ( int Id )
+        public async Task<Result> DeleteMotorbike ( int Id  , CancellationToken canToken)
         {
             var motorbikes = await context.Vehicles.OfType<Motorbikes>().FirstOrDefaultAsync(x => x.Id == Id);
 
             if (motorbikes is null) { return Result.Failure(VehicleErrors.VehicleNotFound); }
 
-            context.Vehicles.Remove(motorbikes);
-            await context.SaveChangesAsync();
-            return Result.Success();
+            using var Transaction = context.Database.BeginTransaction();
+
+            try
+            {
+                if (motorbikes.VehicleImages.Count == 0 || motorbikes.VehicleImages != null)
+                {
+                    foreach (var image in motorbikes.VehicleImages.Select(x => x.ImageUrl))
+                    {
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{image}");
+
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+                    }
+                }
+
+                context.Vehicles.Remove(motorbikes);
+                await context.SaveChangesAsync(canToken);
+                await Transaction.CommitAsync(canToken);
+                return Result.Success();
+            }
+            catch
+            {
+                await Transaction.RollbackAsync(canToken);
+                return Result.Failure(VehicleErrors.VehicleNotFound);
+            }
         }
 
-        public async Task<PaginatedList<Motorbikeresponse>> GetAll ( RequestFilter filters, CancellationToken cenToken )
+        public async Task<PaginatedList<Motorbikeresponse>> GetAll (string UserId ,  RequestFilter filters, CancellationToken cenToken )
         {
+            var likedvehciles = await context.FavouriteProducts
+               .Where(f => f.UserId == UserId)
+               .Select(f => f.VehicleId)
+               .ToListAsync(cenToken);
+
             var response = await context.Vehicles.OfType<Motorbikes>()
                 .AsNoTracking()
                 .ApplyFilter<Motorbikes>(filters.SearchValues)
                 .ProjectToType<Motorbikeresponse>()
                 .CreatePaginatedList<Motorbikeresponse>(filters.PageNumber, filters.PageSize, cenToken);
+
+            var likedIdsSet = likedvehciles.ToHashSet(); 
+
+            foreach (var item in response.Items)
+            {
+                item.IsLiked = likedIdsSet.Contains(item.Id);
+            }
 
             return response;
         }
@@ -110,15 +151,61 @@ namespace Tripix.Services.Repositories
         public async Task<Result<Motorbikeresponse>> UpdateMotorbike ( UpdateMotorbikeDTO model )
         {
             var Motorbike = await context.Vehicles.OfType<Motorbikes>()
+                .Include(x => x.VehicleImages)
                 .FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (Motorbike is null) { return Result.Failure<Motorbikeresponse>(VehicleErrors.VehicleNotFound); }
 
-            model.Adapt(Motorbike);
-            await context.SaveChangesAsync();
+            if (model.Images == null || model.Images.Count == 0)
+            {
+                return Result.Failure<Motorbikeresponse>(VehicleErrors.ImagesNotFound);
+            }
 
-            var response = Motorbike.Adapt<Motorbikeresponse>();
-            return Result.Success(response);
+            using var Transaction = await context.Database.BeginTransactionAsync();
+
+            try
+            {
+                if(Motorbike.VehicleImages.Count != 0 || Motorbike.VehicleImages == null)
+                {
+                    foreach(var image in Motorbike.VehicleImages!.Select(x => x.ImageUrl))
+                    {
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.BaseUrl}{image}");
+
+                        if(File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+                    }
+                }
+
+                var newmotorbike = model.Adapt<Motorbikes>();
+
+                foreach (var image in model.Images)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.MotorbikeImageURL}{image.FileName}");
+
+                    using (FileStream Stream = new(path, FileMode.Create))
+                    {
+                        await image.CopyToAsync(Stream);
+                    }
+
+                    newmotorbike.VehicleImages.Add(new VehicleImage()
+                    {
+                        ImageUrl = $"{Urls.SaveMotorbikeImageUrl}/{image.FileName}",
+                    });
+                }
+
+                model.Adapt(Motorbike);
+                await context.SaveChangesAsync();
+                await Transaction.CommitAsync();
+                var response = newmotorbike.Adapt<Motorbikeresponse>();
+                return Result.Success(response);
+            }
+            catch (Exception)
+            {
+                await Transaction.RollbackAsync();
+                return Result.Failure<Motorbikeresponse>(VehicleErrors.VehicleCannotUpdate);
+            }
         }
     }
 }

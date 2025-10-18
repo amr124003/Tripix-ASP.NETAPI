@@ -79,7 +79,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Images\Blogs\" />
+    <Folder Include="wwwroot\Images\CarForRent\" />
+    <Folder Include="wwwroot\Images\CriminalRecord\" />
+    <Folder Include="wwwroot\Images\DriverCar\" />
     <Folder Include="wwwroot\Images\DriverImage\" />
+    <Folder Include="wwwroot\Images\DriverLicense\" />
+    <Folder Include="wwwroot\Images\ElectricCars\" />
+    <Folder Include="wwwroot\Images\Events\" />
+    <Folder Include="wwwroot\Images\FaceId\" />
+    <Folder Include="wwwroot\Images\JopApplicationCvs\" />
+    <Folder Include="wwwroot\Images\Motorbikes\" />
+    <Folder Include="wwwroot\Images\TipImages\" />
+    <Folder Include="wwwroot\Images\UsedCarImages\" />
   </ItemGroup>
 
 </Project>

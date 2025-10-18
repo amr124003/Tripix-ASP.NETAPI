@@ -49,7 +49,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("ApplyForJop")]
-        public async Task<IActionResult> Apply_for_job(ApplyForJopDTO model, CancellationToken canToken)
+        public async Task<IActionResult> Apply_for_job([FromForm] ApplyForJopDTO model, CancellationToken canToken)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var res = await unitOfWork.JopRepo.ApplyForJopAsync(UserId, model, canToken);
@@ -63,17 +63,17 @@ namespace Tripix.Controllers
 
             return Ok(res);
         }
-        [HttpDelete]
+        [HttpDelete("RejectJopApplication/{Id}")]
         public async Task<IActionResult> RejectJopApplication(int Id)
         {
             var res = await unitOfWork.JopRepo.RejectJopApplicationAsync(Id);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
-        [HttpPost]
-        public async Task<IActionResult> AcceptJopApplication(int Id)
+        [HttpPost("AcceptJopApplication")]
+        public async Task<IActionResult> AcceptJopApplication(AcceptJopApplicationDTO model)
         {
-            var res = await unitOfWork.JopRepo.AcceptJopApplicationAsync(Id);
+            var res = await unitOfWork.JopRepo.AcceptJopApplicationAsync(model.JopApplicationId);
 
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
@@ -85,7 +85,7 @@ namespace Tripix.Controllers
 
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
-        [HttpDelete("DeleteJop/{Id}")]
+        [HttpDelete("DeleteJopApplication/{Id}")]
         public async Task<IActionResult> DeleteJopApplication(int Id , CancellationToken canToken)
         {
             var res = await unitOfWork.JopRepo.DeleteJopApplicaiton(Id , canToken);

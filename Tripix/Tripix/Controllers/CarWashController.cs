@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tripix.Abstractions;
+using Tripix.Contracts.Common;
 using Tripix.Contracts.Wash;
 using Tripix.Services.Interfaces;
 using Tripix.View_Models;
@@ -20,7 +21,7 @@ namespace Tripix.Controllers
         }
 
         [HttpPost("BookWashTurn")]
-        [Authorize(Roles = "User")]
+        
         public async Task<IActionResult> BookTurn ( AddWashDTO model )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -30,7 +31,7 @@ namespace Tripix.Controllers
             return response.IsSuccess ? Ok(response) : response.ToProblem();
         }
         [HttpGet("GetWashTurn/{TurnId}")]
-        [Authorize]
+        
         public async Task<IActionResult> GetTurnDetails ( int TurnId )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -40,7 +41,7 @@ namespace Tripix.Controllers
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpPut("UpdateBooking")]
-        [Authorize]
+        
         public async Task<IActionResult> UpdateTurn ( UpdateWashTurnDTO model )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -50,7 +51,7 @@ namespace Tripix.Controllers
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpDelete("CencelBooking")]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> DeleteTurn ( int Id )
         {
             var response = await unitOfWork.WashServiceRepo.DeleteTurn(Id);
@@ -67,13 +68,23 @@ namespace Tripix.Controllers
 
             return response.IsSuccess ? Ok(response) : response.ToProblem();
         }
-        [HttpGet("GetWashBookings")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetTurns ()
+        [HttpPost("GetWashBookings")]
+        
+        public async Task<IActionResult> GetTurns (RequestFilter model , CancellationToken canToken)
         {
-            var response = await unitOfWork.WashServiceRepo.GetTurns();
+            var response = await unitOfWork.WashServiceRepo.GetTurns(model , canToken);
 
             return Ok(response);
         }
+        [HttpGet("GetUserTurns")]
+        public async Task<IActionResult> GetUserTurns(CancellationToken canToken)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var res = await unitOfWork.WashServiceRepo.GetUserTurn(UserId!, canToken);
+
+            return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
+        }
+
     }
 }

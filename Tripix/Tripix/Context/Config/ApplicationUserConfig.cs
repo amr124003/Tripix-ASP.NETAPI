@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Security;
 using Tripix.Entities;
 
 namespace Tripix.Context.Config
@@ -12,6 +13,18 @@ namespace Tripix.Context.Config
 
             builder.HasIndex(x => x.PhoneNumber).IsUnique();
 
+            builder
+          .HasDiscriminator<string>("UserType")
+          .HasValue<ApplicationUser>("User")  // ÇáäæÚ ÇáÃÓÇÓí
+          .HasValue<Driver>("Driver");
+
+            
+
+
+            builder
+       .HasIndex(u => u.UserName)
+       .HasDatabaseName("AspNetUsers.IX_Users_Username")
+       .IsUnique(false); // áæ ÚÇíÒ ÊÎáíå ãÔ UniqueF
 
 
 

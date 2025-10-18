@@ -76,7 +76,7 @@ namespace Tripix.Controllers
             return Res.IsSuccess ? Ok(Res.Value) : Res.ToProblem();
         }
         [HttpPost("CancelTrip")]
-        [Authorize]
+        
         public async Task<IActionResult> CancelTrip ( int TripId )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

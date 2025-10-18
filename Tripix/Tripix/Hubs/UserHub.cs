@@ -8,12 +8,12 @@ namespace Tripix.Hubs
     public class UserHub : Hub
     {
         private readonly IJwtProvider jwtprovider;
-        private readonly IUserRepo userRepo;
+        private readonly IUnitOfWork unitOfWork;
 
-        public UserHub (IJwtProvider jwtprovider,IUserRepo userRepo)
+        public UserHub (IJwtProvider jwtprovider,IUnitOfWork unitOfWork)
         {
             this.jwtprovider = jwtprovider;
-            this.userRepo = userRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         public override async Task OnConnectedAsync ()
@@ -24,9 +24,9 @@ namespace Tripix.Hubs
             {
                 var UserId = jwtprovider.ValidateToken(token);
 
-                var PhoneNumber = await userRepo.GetUserPhoneNumber(UserId);
+                var PhoneNumber = await unitOfWork.userService.GetUserPhoneNumber(UserId);
 
-                var Res = await userRepo.MakeUserOnline(UserId!,Context.ConnectionId);
+                var Res = await unitOfWork.userService.MakeUserOnline(UserId!,Context.ConnectionId);
 
                 if(Res)
                 {
@@ -48,14 +48,14 @@ namespace Tripix.Hubs
 
                 if (UserId != null)
                 {
-                    var Res = await userRepo.MakeUserOffline(UserId!);
+                    var Res = await unitOfWork.userService.MakeUserOffline(UserId!);
 
                     if (Res)
                     {
-                        var PhoneNumber = await userRepo.GetUserPhoneNumber(UserId);
+                        var PhoneNumber = await unitOfWork.userService.GetUserPhoneNumber(UserId);
                         if (PhoneNumber != null)
                         {
-                            await userRepo.RemoveTrip(PhoneNumber);
+                            await unitOfWork.userService.RemoveTrip(PhoneNumber);
                             await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"User {PhoneNumber}");
                         }
                     }

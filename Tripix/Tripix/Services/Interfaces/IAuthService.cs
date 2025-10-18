@@ -15,5 +15,6 @@ namespace Tripix.Services.Interfaces
         public Task<Result> SendResetPasswordCodeAsync ( SendResetPasswordRequest request );
         public Task<Result> ResetPassowrdAsync ( ResetPasswordRequest request );
         public Task<Result<AuthResponse>> GoogleLogin ( GoogleAuthDTO model, CancellationToken cancellationToken = default );
+        public Task<Result<AuthResponse>> FacebookLogin (FacebookLoginRequest model , CancellationToken cancellationToken = default );
     }
 }

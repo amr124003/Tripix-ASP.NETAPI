@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tripix")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+419934aa7edebf12650e0c8591fcc6a1aedc22a7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4acf715ee8c91b7e1629cfef8d5ccbd4b7fb18e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tripix")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tripix")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

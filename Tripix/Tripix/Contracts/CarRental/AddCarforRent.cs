@@ -1,15 +1,18 @@
-using Tripix.Abstractions.Consts;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Tripix.Contracts.CarRental
 {
-    public class AddCarforRent
+    public class AddCarForRent
     {
-        public string Name { get; set; }
-        public string Model { get; set; }
-        public string Color { get; set; }
-        public int? Rate { get; set; }
-        public string Description { get; set; }
-        public IFormFile Image { get; set; }
+
+        [MinLength(5)]
+        [MaxLength(20)]
+        public string CarName { get; set; }
+        public string CarModel { get; set; }
+        public string CarColor { get; set; }
+        public int? CarRate { get; set; }
+        public string CarDescription { get; set; }
         public decimal HourlyPrice { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

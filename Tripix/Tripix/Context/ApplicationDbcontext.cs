@@ -47,11 +47,9 @@ namespace Tripix.Context
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<RefreshTokens> RefreshTokens { get; set; }
         public DbSet<BestSellervehicle> bestSellervehicles { get; set; }
-        public DbSet<Testimonial> testimonials { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleBookings> VehicleBookings { get; set; }
         public DbSet<VehicleImage> VehicleImages { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Jop> Jops { get; set; }
@@ -63,7 +61,6 @@ namespace Tripix.Context
         public DbSet<RepairBookings> RepairBookings { get; set; }
         public DbSet<WashBooking> WashBookings { get; set; }
         public DbSet<BookingEventTicket> BookingEventTickets { get; set; }
-        public DbSet<Comments> Comments { get; set; }
         public DbSet<HelpooOrders> HelpooOrders { get; set; }
         public DbSet<SparePartOrder> SparePartOrders { get; set; }
         public DbSet<SpareParts> SpareParts { get; set; }
@@ -72,6 +69,9 @@ namespace Tripix.Context
         public DbSet<EventTickets> EventTickets { get; set; }
         public DbSet<LovedTips> LovedTips { get; set; }
         public DbSet<TipComments> TipComments { get; set; }
+        public DbSet<PassengerOpinion> passengerOpinions { get; set; }
+        public DbSet<FavouriteProduct> FavouriteProducts { get; set; }
+        public DbSet<Replies> Replies { get; set; }
 
     }
 }

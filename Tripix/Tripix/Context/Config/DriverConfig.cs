@@ -8,7 +8,7 @@ namespace Tripix.Context.Config
     {
         public void Configure ( EntityTypeBuilder<Driver> builder )
         {
-            builder.ToTable("Drivers");
+            
 
 
             builder.OwnsOne(x => x.Location);
@@ -17,9 +17,7 @@ namespace Tripix.Context.Config
                 .HasConversion<string>();
 
 
-            builder.HasOne<ApplicationUser>()
-                .WithOne()
-                .HasForeignKey<Driver>(x => x.Id);
+            
 
 
 

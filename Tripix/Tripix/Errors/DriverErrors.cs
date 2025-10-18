@@ -29,5 +29,9 @@ namespace Tripix.Errors
         public static readonly Error AlreadyConfirmedDriver = new("AlreadyConfirmedDriver", "This Driver Already Confirmed", StatusCodes.Status409Conflict);
 
         public static readonly Error RejectedDriver = new("RejectedDriver", "This Driver Rejected", StatusCodes.Status409Conflict);
+
+        public static readonly Error CannotUpdate = new("Can't Update", "You Can't Update This Driver", StatusCodes.Status400BadRequest);
+
+        public static readonly Error ErrorOnRegister = new("Error On Register", "Error Occured On Register Process", StatusCodes.Status400BadRequest);
     }
 }

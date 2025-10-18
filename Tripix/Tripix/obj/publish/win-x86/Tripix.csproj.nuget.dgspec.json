@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {}
+    "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {}
   },
   "projects": {
-    "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {
+    "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
+        "projectUniqueName": "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
         "projectName": "Tripix",
-        "projectPath": "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
-        "packagesPath": "C:\\Users\\AmrSoliman\\.nuget\\packages\\",
-        "outputPath": "F:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\obj\\publish\\win-x86\\",
+        "projectPath": "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\Tripix.csproj",
+        "packagesPath": "C:\\Users\\T.B\\.nuget\\packages\\",
+        "outputPath": "E:\\Gaduation Project\\Website\\Backend\\Tripix\\Tripix\\obj\\publish\\win-x86\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\AmrSoliman\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\T.B\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -65,6 +65,10 @@
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.12.0, )"
+            },
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.0, )"
             },
             "Microsoft.AspNetCore.Authentication.Google": {
               "target": "Package",
@@ -92,15 +96,27 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite": {
+              "target": "Package",
+              "version": "[9.0.4, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.2, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[10.0.0-preview.3.25172.1, )"
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
@@ -130,6 +146,10 @@
               "target": "Package",
               "version": "[136.0.7103.1700-beta, )"
             },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.8.31, )"
+            },
             "Stripe.net": {
               "target": "Package",
               "version": "[48.1.0-beta.3, )"
@@ -158,7 +178,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

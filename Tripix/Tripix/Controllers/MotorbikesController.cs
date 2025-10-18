@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tripix.Abstractions;
 using Tripix.Contracts.Common;
 using Tripix.Contracts.Motorbikes;
@@ -19,19 +20,21 @@ namespace Tripix.Controllers
         [HttpPost("GetMotorbikes")]
         public async Task<IActionResult> GetMotorbikes ( [FromBody] RequestFilter filters )
         {
-            var response = await unitOfWork.MotorbikeRepo.GetAll(filters);
+            string UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+
+            var response = await unitOfWork.MotorbikeRepo.GetAll(UserId, filters);
 
             return Ok(response);
         }
         [HttpPost("AddMotorbike")]
-        public async Task<IActionResult> AddMotorbike ( [FromBody] AddMotorbikeDTO model )
+        public async Task<IActionResult> AddMotorbike ( [FromForm] AddMotorbikeDTO model )
         {
             var response = await unitOfWork.MotorbikeRepo.AddMotorbike(model);
 
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
         [HttpPut("UpdateMotorbike")]
-        public async Task<IActionResult> UpdateMotorbike ( [FromBody] UpdateMotorbikeDTO model )
+        public async Task<IActionResult> UpdateMotorbike ( [FromForm] UpdateMotorbikeDTO model )
         {
             var response = await unitOfWork.MotorbikeRepo.UpdateMotorbike(model);
 

@@ -146,6 +146,7 @@ namespace Tripix.Controllers
 
             return authResult.IsSuccess ? Ok(authResult) : authResult.ToProblem();
         }
+        
 
 
 
@@ -160,12 +161,23 @@ namespace Tripix.Controllers
 
             return authResult.IsSuccess ? Ok(authResult.Value) : authResult.ToProblem();
         }
+        [HttpPost("facebookLogin")]
+        public async Task<IActionResult> FacebookLogin([FromBody] FacebookLoginRequest model)
+        {
+            var authResult = await unitOfWork.authService.FacebookLogin(model);
+
+            var refreshtoken = authResult.Value.RefreshToken;
+
+            SetRefreshTokenCookieForUser(refreshtoken);
+
+            return authResult.IsSuccess ? Ok(authResult.Value) : authResult.ToProblem();
+        }
 
         private void SetRefreshTokenCookieForUser ( string refreshToken )
         {
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,     // „‰⁄ «·Ê’Ê· „‰ JavaScript
+                HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(15),
             };
 

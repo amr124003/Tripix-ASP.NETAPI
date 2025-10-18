@@ -66,7 +66,7 @@ namespace Tripix.Services.Repositories
 
             if (validUserRes.IsFalure) { return validUserRes; }
 
-            var jop = await context.Jops.FirstOrDefaultAsync(x => x.Id == model.JopId, canToken);
+            var jop = await context.Jops.FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(model.JopId), canToken);
 
             if (jop == null) { return Result.Failure(JopErrors.JopNotFound); }
 
@@ -79,16 +79,21 @@ namespace Tripix.Services.Repositories
 
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.JopApplicationCvs}{model.CV.FileName + "-" + model.UserName}");
+                var path = Path.Combine(Directory.GetCurrentDirectory(), $"{Urls.JopApplicationCvs}{model.CV.FileName}");
+
+                using (var Stream = new FileStream(path , FileMode.Create))
+                {
+                    await model.CV.CopyToAsync(Stream);
+                }
                 var jopApplication = new JopApplications()
                 {
                     UserName = model.UserName ?? user!.Name,
                     UserEmail = model.UserEmail ?? user!.Email!,
                     UserPhone = model.UserPhone ?? user!.PhoneNumber,
-                    JopId = model.JopId,
+                    JopId = Convert.ToInt32(model.JopId),
                     Position = jop.Position,
                     Status = JopApplicationStatus.Pending,
-                    CV = $"{Urls.JopApplicationCvs}{model.CV.FileName + "-" + model.UserName}"
+                    CV = $"{Urls.SaveJopApplicationCvs}{model.CV.FileName}"
                 };
 
                 user!.JopApplications.Add(jopApplication);
@@ -146,16 +151,16 @@ namespace Tripix.Services.Repositories
         {
             var Response = new List<JopApplicationResponse>();
 
-            var user = await usermanger.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+            var user = await usermanger.Users.Include(x => x.JopApplications).FirstOrDefaultAsync(x => x.Id == UserId);
 
             var uservalidres = user!.ValidUser(Response);
 
             if (uservalidres.IsFalure) { return uservalidres!; }
 
-            var JopApplications = await user!.JopApplications
+            var JopApplications = user!.JopApplications
                 .AsQueryable()
                 .ProjectToType<JopApplicationResponse>()
-                .ToListAsync(canToken);
+                .ToList();
 
             return Result.Success(JopApplications);
         }

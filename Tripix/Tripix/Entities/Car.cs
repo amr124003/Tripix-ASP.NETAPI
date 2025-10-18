@@ -5,9 +5,6 @@ namespace Tripix.Entities
 {
     public class Car : Vehicle
     {
-
-
-        [AllowedValues("SUV", "Hatchback", "Coupe", "Sedan")]
         public CarTypes? CarType { get; set; }
         public string Motor_Capacity { get; set; }
     }

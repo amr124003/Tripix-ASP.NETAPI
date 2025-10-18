@@ -31,7 +31,7 @@ namespace Tripix.Controllers
 
             if (string.IsNullOrWhiteSpace(request.Message))
             {
-                return BadRequest("السؤال لا يمكن أن يكون فارغًا.");
+                return BadRequest("Can't generate Response For Empty Question.");
             }
 
             var bestMatch = await FindBestMatchingQuestion(request.Message);
@@ -66,7 +66,6 @@ namespace Tripix.Controllers
 
         private async Task<QuestionAnswer> FindBestMatchingQuestion ( string userQuestion )
         {
-            // أولاً: تحقق من التطابق التام (حساسية المسافات والأحرف)
             var exactMatch = questions.FirstOrDefault(q =>
                 q.question.Trim().Equals(userQuestion.Trim(), StringComparison.OrdinalIgnoreCase));
 
@@ -84,12 +83,12 @@ namespace Tripix.Controllers
             restRequest.AddHeader("Authorization", $"Bearer {cohereApiKey}");
             restRequest.AddHeader("Content-Type", "application/json");
 
-            // استخدم فقط الأسئلة من القاعدة المعرفية (بدون إضافة userQuestion)
+            
             var rquestions = questions.Select(q => q.question).ToArray();
 
             var requestBody = new
             {
-                texts = rquestions.Append(userQuestion).ToArray(), // أضف userQuestion في النهاية
+                texts = rquestions.Append(userQuestion).ToArray(),
                 model = "embed-multilingual-v2.0"
             };
 
@@ -109,10 +108,10 @@ namespace Tripix.Controllers
                 return null;
             }
 
-            // آخر عنصر في embeddings هو userQuestion
+            
             var userEmbedding = embeddings.Last().EnumerateArray().Select(e => e.GetDouble()).ToArray();
 
-            // باقي العناصر هي الأسئلة من القاعدة المعرفية
+            
             var questionEmbeddings = embeddings.Take(embeddings.Count - 1).ToList();
 
             double maxSimilarity = 0.0;
@@ -180,8 +179,8 @@ namespace Tripix.Controllers
 
                 if (!response.IsSuccessful)
                 {
-                    Console.WriteLine("❌ فشل استدعاء API لـ Mistral");
-                    return "عذرًا، حدث خطأ أثناء محاولة توليد الإجابة.";
+                    Console.WriteLine("Field to Call Tripix Support");
+                    return "Can't generate Response Now";
                 }
 
                 var jsonResponse = JsonDocument.Parse(response.Content);
@@ -191,13 +190,13 @@ namespace Tripix.Controllers
                     .GetProperty("content")
                     .GetString();
 
-                Console.WriteLine($"✅ إجابة Mistral: {generatedText}");
+                Console.WriteLine($"Tripix Response: {generatedText}");
                 return generatedText;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ خطأ أثناء استدعاء Mistral: {ex.Message}");
-                return "عذرًا، حدث خطأ أثناء محاولة توليد الإجابة.";
+                Console.WriteLine($"Field to Call Tripix Support: {ex.Message}");
+                return "Can't generate Response Now.";
             }
         }
     }

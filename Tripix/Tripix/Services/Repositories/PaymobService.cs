@@ -79,7 +79,7 @@ public class PaymobService
                 apartment = "10"
             },
             currency = "EGP",
-            integration_id = 5004462 // «” »œ· » Integration ID «·Œ«’ »ﬂ
+            integration_id = 5004462
         });
 
         var response = await client.ExecuteAsync(request);

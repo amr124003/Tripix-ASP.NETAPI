@@ -11,6 +11,7 @@ namespace Tripix.Services.Interfaces
         public Task<string> GetUserPhoneNumber ( string UserId );
         public Task<bool> RemoveTrip ( string UserId );
         public Task<Result> SendMessage ( UserSendMSGDTO model );
+        public Task<Result> CommentToTip (string UserId , CommentDTO comment );
         public Task<Result<UserFinalTrip>> GetTripDetails ( GetTripDetails model );
     }
 }

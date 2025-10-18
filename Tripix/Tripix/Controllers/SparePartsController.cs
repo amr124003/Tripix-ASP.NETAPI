@@ -56,7 +56,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res) : res.ToProblem();
         }
         [HttpPost("OrderSpareParts")]
-        [Authorize]
+        
         public async Task<IActionResult> OrderSparePart ( SparePartOrderDTO model )
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -65,7 +65,7 @@ namespace Tripix.Controllers
             return res.IsSuccess ? Ok(res.Value) : res.ToProblem();
         }
         [HttpPost("GetOrders")]
-        [Authorize]
+        
         public async Task<IActionResult> GetOrders (RequestFilter model , CancellationToken canToken)
         {
             var res = await unitofWork.SparePartRepo.GetOrders(model, canToken);
@@ -73,7 +73,7 @@ namespace Tripix.Controllers
             return Ok(res);
         }
         [HttpGet("GetOrder/{Id}")]
-        [Authorize]
+        
         public async Task<IActionResult> GetOrder ( int Id , CancellationToken canToken)
         {
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -221,6 +221,11 @@ namespace Tripix.Migrations
                     b.Property<int>("UserStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -234,9 +239,14 @@ namespace Tripix.Migrations
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
 
+                    b.HasIndex("UserName")
+                        .HasDatabaseName("AspNetUsers.IX_Users_Username");
+
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("UserType").HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Tripix.Entities.BestSellervehicle", b =>
@@ -262,7 +272,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("bestSellervehicles");
+                    b.ToTable("bestSellervehicles", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Blog", b =>
@@ -272,10 +282,6 @@ namespace Tripix.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -294,7 +300,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.BookingEventTicket", b =>
@@ -324,7 +330,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("BookingEventTickets");
+                    b.ToTable("BookingEventTickets", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.CarBrand", b =>
@@ -351,7 +357,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
 
                     b.HasData(
                         new
@@ -1035,7 +1041,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.ToTable("CarModel");
+                    b.ToTable("CarModel", (string)null);
 
                     b.HasData(
                         new
@@ -3704,7 +3710,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CarRents");
+                    b.ToTable("CarRents", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.CarlicenseImage", b =>
@@ -3719,6 +3725,7 @@ namespace Tripix.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DriverId1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
@@ -3729,7 +3736,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("DriverId1");
 
-                    b.ToTable("CarlicenseImage");
+                    b.ToTable("CarlicenseImage", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.CarsForrRent", b =>
@@ -3740,31 +3747,31 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Color")
+                    b.Property<string>("CarColor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("CarDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CarImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CarModel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CarName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CarRate")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("HourlyPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Rate")
-                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -3772,10 +3779,72 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarsForrRents");
+                    b.ToTable("CarsForrRents", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            CarColor = "White",
+                            CarDescription = "Comfortable sedan, fuel efficient, suitable for city rides.",
+                            CarImage = "/Images/CarForRent/car1.png",
+                            CarModel = "2022",
+                            CarName = "Toyota Corolla",
+                            CarRate = 4,
+                            HourlyPrice = 120.00m,
+                            Status = "Avilable"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CarColor = "Black",
+                            CarDescription = "Sporty design with full options and automatic transmission.",
+                            CarImage = "/Images/CarForRent/car2.png",
+                            CarModel = "2021",
+                            CarName = "Hyundai Elantra",
+                            CarRate = 5,
+                            HourlyPrice = 130.00m,
+                            Status = "Avilable"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CarColor = "Gray",
+                            CarDescription = "Compact SUV, great for families and long trips.",
+                            CarImage = "/Images/CarForRent/car3.png",
+                            CarModel = "2023",
+                            CarName = "Kia Sportage",
+                            CarRate = 5,
+                            HourlyPrice = 180.00m,
+                            Status = "Avilable"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CarColor = "Blue",
+                            CarDescription = "Spacious car with good trunk space, ideal for business trips.",
+                            CarImage = "/Images/CarForRent/car4.png",
+                            CarModel = "2020",
+                            CarName = "Chevrolet Malibu",
+                            CarRate = 3,
+                            HourlyPrice = 100.00m,
+                            Status = "Avilable"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            CarColor = "Black",
+                            CarDescription = "That Car Is Rented For One Day Only",
+                            CarImage = "/Images/Cars/Kia EV5 2024 6.WEBP",
+                            CarModel = "EV5",
+                            CarName = "Kia EV5 2024",
+                            CarRate = 3,
+                            HourlyPrice = 100m,
+                            Status = "Avilable"
+                        });
                 });
 
-            modelBuilder.Entity("Tripix.Entities.Comments", b =>
+            modelBuilder.Entity("Tripix.Entities.Complains", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3783,27 +3852,19 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Comment")
+                    b.Property<string>("ComplainContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Dislikes")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Complains", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.CreditCard", b =>
@@ -3888,7 +3949,18 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "This Event Is For All Users You Can Now Book Ticket And Take It To Meet Most And Important Car Character",
+                            Date = new DateTime(2025, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Image = "/Images/Events/DALL·E 2025-02-08 05.45.57 - A vibrant car event during the daytime, with people gathered around modern and classic cars, enjoying the atmosphere under a sunny blue sky. The scene.webp",
+                            Location = "Egypt International Exhibition Center",
+                            Title = "Cairo Motor Show 2025"
+                        });
                 });
 
             modelBuilder.Entity("Tripix.Entities.EventTickets", b =>
@@ -3933,15 +4005,12 @@ namespace Tripix.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("EventTickets");
+                    b.ToTable("EventTickets", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.FavouriteProduct", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -3960,20 +4029,20 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VehicleId")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("VehicleId1")
+                    b.Property<int>("VehicleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("VehicleId1");
+                    b.HasIndex("VehicleId");
 
-                    b.ToTable("FavouriteProduct");
+                    b.ToTable("FavouriteProducts", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.HelpooOrders", b =>
@@ -3986,6 +4055,10 @@ namespace Tripix.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime2");
@@ -4012,7 +4085,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("HelpooOrders");
+                    b.ToTable("HelpooOrders", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Hotel", b =>
@@ -4034,7 +4107,7 @@ namespace Tripix.Migrations
                     b.Property<int?>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("GovernateName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -4045,11 +4118,320 @@ namespace Tripix.Migrations
                     b.Property<int>("Rate")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("StartPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "1089 Corniche El Nil, Garden City, Cairo 11519, Egypt",
+                            Description = "A luxurious hotel overlooking the Nile River, featuring spacious and elegantly furnished rooms, a world-class spa, multiple fine-dining restaurants, and proximity to the Egyptian Museum and downtown Cairo.",
+                            GovernateName = "Cairo",
+                            Name = "Four Seasons Hotel Cairo at Nile Plaza",
+                            Rate = 4,
+                            StartPrice = 9870m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "1115 Corniche El Nile, Bulaq, Downtown Cairo, Egypt",
+                            Description = "A high-rise hotel with views of the Nile, casino, pool, gym, and easy access to Tahrir Square and the Egyptian Museum",
+                            GovernateName = "Cairo",
+                            Name = "Ramses Hilton Hotel & Casino",
+                            Rate = 3,
+                            StartPrice = 5640m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = " 1189 Nile Corniche, Downtown Cairo, Egypt 11221",
+                            Description = "Ultra-modern, luxury hotel with butler service, gourmet restaurants, pools, and a world-class spa",
+                            GovernateName = "Cairo",
+                            Name = " The St. Regis Cairo",
+                            Rate = 4,
+                            StartPrice = 14100m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "399 El Geish Road, San Stefano Grand Plaza, Alexandria 21599, Egypt",
+                            Description = "A luxury resort-style hotel set between the Mediterranean Sea and the city. Features include a private beach, three pools (indoor heated and outdoor infinity), full spa (14 treatment rooms), squash court, multiple fine-dining restaurants, and beachfront access with spectacular sea views",
+                            GovernateName = "Alex",
+                            Name = " Four Seasons Hotel Alexandria at San Stefano",
+                            Rate = 4,
+                            StartPrice = 14300m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = " Al Montazah Palace, Montazah Gardens, Alexandria, Egypt",
+                            Description = "Historic beachfront hotel nestled in lush Montazah Gardens. Offers a private beach, outdoor pool, spa, fitness center, and several restaurants. Spacious, sea-facing balconies (some overlooking Montazah Palace). Surrounded by a serene garden reserve .",
+                            GovernateName = "Alex",
+                            Name = "Helnan Royal Palestine Hotel – Montazah Gardens",
+                            Rate = 3,
+                            StartPrice = 5640m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = " 16 Saad Zagloul Square, Raml Station, Alexandria 11015, Egypt",
+                            Description = "A classic 4-star historic hotel (opened in 1929), recently renovated. Located in downtown, steps from the Corniche and cultural landmarks. Offers free Wi‑Fi, restaurant, balconies, minibar, and multilingual staff",
+                            GovernateName = "Alex",
+                            Name = "Steigenberger Cecil Alexandria Hotel",
+                            Rate = 3,
+                            StartPrice = 4230m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Address = " Yussif Afifi Road – El Mamsha El Seyahi, Hurghada",
+                            Description = "A luxury 5-star, all-inclusive beachfront resort with outstanding service and family facilities",
+                            GovernateName = "Hurghada",
+                            Name = "Steigenberger ALDAU Beach Hotel",
+                            Rate = 4,
+                            StartPrice = 11421m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Address = " Madinat Makadi area, Hurghada",
+                            Description = "Features Egypt's largest water park (~50 rides), private beach, multiple pools, spa, kids' club, and buffet/a‑la‑carte dining",
+                            GovernateName = "Hurghada",
+                            Name = "Jaz Aquaviva (formerly Jaz Aquaviva & Jaz Casa Del Mar Beach)",
+                            Rate = 4,
+                            StartPrice = 20586m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Address = " East Bank, Luxor",
+                            Description = "A luxury 5-star resort with Nile views, outdoor pool, fitness center, spa, and on-site restaurants",
+                            GovernateName = "Luxor",
+                            Name = "Steigenberger Nile Palace Luxor",
+                            Rate = 3,
+                            StartPrice = 3243m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Address = " East Bank, on the Nile, near Luxor Temple",
+                            Description = "Iconic historic palace hotel (since 1907) with Victorian style, lush gardens, premium restaurants, and pool",
+                            GovernateName = "Luxor",
+                            Name = "Sofitel Winter Palace Luxor",
+                            Rate = 4,
+                            StartPrice = 9870m
+                        });
+                });
+
+            modelBuilder.Entity("Tripix.Entities.HotleImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("HotleImages", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            HotelId = 1,
+                            ImageUrl = "Images/h11.jpg"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            HotelId = 1,
+                            ImageUrl = "Images/h12.jpg"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            HotelId = 1,
+                            ImageUrl = "Images/h13.jpg"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            HotelId = 2,
+                            ImageUrl = "Images/h21.jpg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            HotelId = 2,
+                            ImageUrl = "Images/h22.jpg"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            HotelId = 2,
+                            ImageUrl = "Images/h23.jpg"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            HotelId = 3,
+                            ImageUrl = "Images/h31.jpg"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            HotelId = 3,
+                            ImageUrl = "Images/h32.jpg"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            HotelId = 3,
+                            ImageUrl = "Images/h33.jpg"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            HotelId = 4,
+                            ImageUrl = "Images/h41.jpg"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            HotelId = 4,
+                            ImageUrl = "Images/h42.jpg"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            HotelId = 4,
+                            ImageUrl = "Images/h43.jpg"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            HotelId = 5,
+                            ImageUrl = "Images/h51.jpg"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            HotelId = 5,
+                            ImageUrl = "Images/h52.jpg"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            HotelId = 5,
+                            ImageUrl = "Images/h53.jpg"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            HotelId = 6,
+                            ImageUrl = "Images/h61.jpg"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            HotelId = 6,
+                            ImageUrl = "Images/h62.jpg"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            HotelId = 6,
+                            ImageUrl = "Images/h63.jpg"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            HotelId = 7,
+                            ImageUrl = "Images/h71.jpg"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            HotelId = 7,
+                            ImageUrl = "Images/h72.jpg"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            HotelId = 7,
+                            ImageUrl = "Images/h73.jpg"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            HotelId = 8,
+                            ImageUrl = "Images/h81.jpg"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            HotelId = 8,
+                            ImageUrl = "Images/h82.jpg"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            HotelId = 8,
+                            ImageUrl = "Images/h83.jpg"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            HotelId = 9,
+                            ImageUrl = "Images/h91.jpg"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            HotelId = 9,
+                            ImageUrl = "Images/h92.jpg"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            HotelId = 9,
+                            ImageUrl = "Images/h93.jpg"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            HotelId = 10,
+                            ImageUrl = "Images/h101.jpg"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            HotelId = 10,
+                            ImageUrl = "Images/h102.jpg"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            HotelId = 10,
+                            ImageUrl = "Images/h103.jpg"
+                        });
                 });
 
             modelBuilder.Entity("Tripix.Entities.Jop", b =>
@@ -4074,7 +4456,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jops");
+                    b.ToTable("Jops", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.JopApplications", b =>
@@ -4123,7 +4505,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("JopApplications");
+                    b.ToTable("JopApplications", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.LovedTips", b =>
@@ -4137,22 +4519,11 @@ namespace Tripix.Migrations
                     b.Property<DateTime>("LovedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TipId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("TipId", "UserId");
-
-                    b.HasIndex("TipId1");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("LovedTips");
+                    b.ToTable("LovedTips", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Notification", b =>
@@ -4185,7 +4556,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Order", b =>
@@ -4224,7 +4595,35 @@ namespace Tripix.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
+                });
+
+            modelBuilder.Entity("Tripix.Entities.PassengerOpinion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DriverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Opinion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("passengerOpinions", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Question", b =>
@@ -6860,6 +7259,33 @@ namespace Tripix.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Tripix.Entities.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DriverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RateValue")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Rating", (string)null);
+                });
+
             modelBuilder.Entity("Tripix.Entities.RefreshTokens", b =>
                 {
                     b.Property<int>("Id")
@@ -6888,7 +7314,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.RepairBookings", b =>
@@ -6929,7 +7355,42 @@ namespace Tripix.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("RepairBookings");
+                    b.ToTable("RepairBookings", (string)null);
+                });
+
+            modelBuilder.Entity("Tripix.Entities.Replies", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Replies", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.SparePartImage", b =>
@@ -6954,7 +7415,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("SparePartsId");
 
-                    b.ToTable("SparePartImage");
+                    b.ToTable("SparePartImage", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.SparePartOrder", b =>
@@ -7005,7 +7466,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("SparePartsId");
 
-                    b.ToTable("SparePartOrders");
+                    b.ToTable("SparePartOrders", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.SpareParts", b =>
@@ -7037,32 +7498,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SpareParts");
-                });
-
-            modelBuilder.Entity("Tripix.Entities.Testimonial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("testimonials");
+                    b.ToTable("SpareParts", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Tip", b =>
@@ -7077,9 +7513,15 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DisLikes")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -7087,7 +7529,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tips");
+                    b.ToTable("Tips", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.TipComments", b =>
@@ -7101,9 +7543,6 @@ namespace Tripix.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -7115,15 +7554,17 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ParentCommentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TipId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TipComments");
+                    b.ToTable("TipComments", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Trip", b =>
@@ -7162,7 +7603,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Trips");
+                    b.ToTable("Trips", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Vehicle", b =>
@@ -7176,7 +7617,7 @@ namespace Tripix.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -7211,7 +7652,6 @@ namespace Tripix.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Prand")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
@@ -7238,7 +7678,7 @@ namespace Tripix.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vehicles");
+                    b.ToTable("Vehicles", (string)null);
 
                     b.HasDiscriminator<string>("VehicleType").HasValue("Vehicle");
 
@@ -7253,8 +7693,9 @@ namespace Tripix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
@@ -7288,10 +7729,9 @@ namespace Tripix.Migrations
                     b.HasIndex("UserId");
 
                     b.HasIndex("VehicleId")
-                        .IsUnique()
                         .HasDatabaseName("IX_VehicleBookings_VehicleId");
 
-                    b.ToTable("VehicleBookings");
+                    b.ToTable("VehicleBookings", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.VehicleImage", b =>
@@ -7321,7 +7761,7 @@ namespace Tripix.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("VehicleImages");
+                    b.ToTable("VehicleImages", (string)null);
 
                     b.HasData(
                         new
@@ -8636,12 +9076,18 @@ namespace Tripix.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("WashBookings");
+                    b.ToTable("WashBookings", (string)null);
                 });
 
             modelBuilder.Entity("Tripix.Entities.Driver", b =>
                 {
                     b.HasBaseType("Tripix.Entities.ApplicationUser");
+
+                    b.Property<int>("AcceptCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CancellationCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("CarBrand")
                         .HasColumnType("nvarchar(max)");
@@ -8658,7 +9104,7 @@ namespace Tripix.Migrations
                     b.Property<string>("CarType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CompleltedSteps")
+                    b.Property<int>("CompleltedSteps")
                         .HasColumnType("int");
 
                     b.Property<string>("CriminalRecord")
@@ -8673,10 +9119,19 @@ namespace Tripix.Migrations
                     b.Property<string>("DriverLicense")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("EnrollDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RejectAfterAccept")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Drivers", (string)null);
+                    b.HasDiscriminator().HasValue("Driver");
                 });
 
             modelBuilder.Entity("Tripix.Entities.Car", b =>
@@ -8690,7 +9145,7 @@ namespace Tripix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Vehicles", t =>
+                    b.ToTable("Vehicles", null, t =>
                         {
                             t.Property("CarType")
                                 .HasColumnName("CarType1");
@@ -8706,7 +9161,9 @@ namespace Tripix.Migrations
                         {
                             Id = 1,
                             Color = "black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "E200 2025 \r\nAmg Premium Plus\r\nsoft close\r\nkeyless entry\r\nkeyless start\r\nelectric seats\r\nmemory seats\r\nheated seats\r\nheadup display\r\nfourzone ac\r\ncamera 360\r\nblind spot\r\nnight package\r\nblack rims\r\nfor more info call us at (View phone number)\r\nor visit us at 53 Abbas el Akkad",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8727,7 +9184,9 @@ namespace Tripix.Migrations
                         {
                             Id = 2,
                             Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "MERCEDES MAYBACH S-560 4MATIC 2024\r\n\r\nبأقل سعر فى مصر\r\nاسعارخاصه للعملاء الكاش\r\nمتاح انظمه تقسيط بدون حظر بيع و بدون م اداريه و بدون تأمين\r\nعروض خاصه و حصريه لرجال الاعمال بسجل تجارى و بطاقه ضريبيه تحصل على مقدم يبدأ من 5% و تقسيط لمده 10 سنوات\r\n\r\nمتاح استبدال سيارتك القديمه\r\nمتاح ايضا لدينا اكثر من 30 برنامج للتقسيط ل ربات البيوت والموظفين و الاطباء والظباط\r\n\r\n Available all colors, Models and Categories \r\nالاسعار تختلف حسب الفئه و الموديل\r\n   ",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/Teacher Motors.WEBP",
@@ -8748,7 +9207,9 @@ namespace Tripix.Migrations
                         {
                             Id = 3,
                             Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Toyota corolla \r\nModel 2025\r\nالفئة الثالثة\r\nor visit us at 53 Abbas El Akkad, Nasr city",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8769,7 +9230,9 @@ namespace Tripix.Migrations
                         {
                             Id = 4,
                             Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Glc 300 \r\nModel 2025\r\nhydraulic suspension\r\nrear axle\r\nHeadup display\r\nfourzone\r\ncamera360\r\nburmester speakers \r\nblind spot\r\nelectric seats\r\nmemory seats\r\nheater seats\r\nkeyless entry\r\nside doorstep\r\nfeather rims",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8790,7 +9253,9 @@ namespace Tripix.Migrations
                         {
                             Id = 5,
                             Color = "black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "E200 \r\nmodel 2024 \r\nzero\r\nfully loaded \r\nnight package",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8811,7 +9276,9 @@ namespace Tripix.Migrations
                         {
                             Id = 8,
                             Color = "black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Range Rover Velar R-daynamic\r\n- Model 2025\r\n- ⁠Zero\r\n- فيها رخصه ٣ سنين\r\n- ⁠10 years warranty Protection\r\n- Engine : 2.0 liter\r\n- 250 HP\r\n- ⁠Exterior Color : Black \r\n- Interior Color : Beig leather\r\n- Apple Carplay & Android Auto\r\n- Slide Panoramic Sunroof\r\n- Meredian Sound system\r\n- Blind spot\r\n- Lane assist\r\n- Adaptive Control\r\n- 2 electric seats with memory \r\n- Head up Display\r\n- Air suspention\r\n- Ambient light system\r\n- electric trunk\r\n- Keyless Go\r\n- Front and rear sensor park\r\n- 360 camera\r\n- Heated seats\r\n- Automatic AC control\r\n- 20 inch Black allow wheel",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8832,7 +9299,9 @@ namespace Tripix.Migrations
                         {
                             Id = 10,
                             Color = "black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Porsche Macan\r\nبورش ماكان\r\n\r\nModel 2024 (wakeel)\r\nموديل 2024 (وكيل)\r\n\r\nPre owned 17,000KM\r\nمستعملة بممشى 17,000 كم\r\n\r\nExterior: Metallic Black\r\nاللون الخارجي: أسود ميتاليك\r\n\r\nInterior: Red leather\r\nاللون الداخلي: جلد أحمر\r\n\r\nEngine type: turbocharged\r\nنوع المحرك: تيربو\r\n\r\n2L straight 4 cylinders\r\n2 لتر، 4 سلندر خطي\r\n\r\nHorsepower: 261 hp\r\nقوة المحرك: 261 حصان\r\n\r\nMax. torque 295 lb-ft\r\nأقصى عزم: 295 رطل/قدم\r\n\r\n0 - 60 mph in 5.8 seconds with Sport Chrono Package\r\nمن 0 إلى 60 ميل في الساعة في 5.8 ثانية مع باكيدج سبورت كرونو\r\n\r\nTransmission: 7-speed twin-clutch auto (PDK)\r\nناقل حركة أوتوماتيك 7 سرعات (PDK) ثنائي القابض\r\n\r\nAll wheel drive\r\nدفع كلي\r\n\r\nPanoramic sunroof\r\nفتحة سقف بانورامية\r\n\r\nRims: R20 multi spoke\r\nجنوط R20 متعددة الأذرع\r\n\r\n360 parking cameras\r\nكاميرات ركن 360 درجة\r\n\r\nBoss sound system\r\nنظام صوتي من Bose\r\n\r\nThe LED headlights including Porsche Dynamic Light System (PDLS)\r\nكشافات LED تشمل نظام الإضاءة الديناميكي من بورش (PDLS)\r\n\r\nKeyless entry and start/stop\r\nدخول وتشغيل بدون مفتاح\r\n\r\n8-way Front Sport Seats\r\nمقاعد أمامية رياضية بـ 8 وضعيات\r\n\r\nSeat heating\r\nتدفئة للمقاعد\r\n\r\nPorsche logo on seats\r\nشعار بورش على المقاعد\r\n\r\nPorsche word illuminate as welcome\r\nإضاءة كلمة Porsche عند الترحيب\r\n\r\nElectric tailgate\r\nباب شنطة خلفية كهربائي\r\n\r\nApple CarPlay\r\nابل كار بلاي\r\n\r\nAndroid Auto\r\nأندرويد أوتو\r\n\r\nWireless phone charger\r\nشاحن لاسلكي للهاتف\r\n\r\nNavigation system\r\nنظام ملاحة\r\n\r\nSport space tires\r\nكفرات سبور سبيس\r\n\r\nPrivacy glass\r\nزجاج فاميـه (خصوصي)\r\n\r\nLarge brake system with black paint callipers\r\nنظام فرامل كبير مع كاليبرات باللون الأسود\r\n\r\nElectronic brake distribution\r\nتوزيع إلكتروني لقوة الفرامل",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8853,7 +9322,9 @@ namespace Tripix.Migrations
                         {
                             Id = 11,
                             Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "هونداي الينترا cn7 اعلى فئة  ٢٠٢٥ متوفرة الان في اكسدرايف اوتوموتيف\r\n\r\n\r\n\r\nالمواصفات : بصمة داخليه خارجيه ، فتحة سقف ، عدادات ديجتال ، فرش جلد ، تحديد مسار ، تسخين كراسي ، تسخين مقود ، جنوط ١٧ لونين ، مرايات ضم ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش ، سينسور بارك امامي خلفي \r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة\r\n\r\n لمزيد من التفاصيل يرجى التواصل على الارقام التالية",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8874,7 +9345,9 @@ namespace Tripix.Migrations
                         {
                             Id = 14,
                             Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "هونداي الينتراMG RX5 2024 Luxury  متوفرة الان في اكسدرايف اوتوموتيف \r\n\r\n\r\n\r\nالمواصفات : ١. ٥٠٠ سي سي توربو ، بصمة داخليه خارجيه ، فتحة سقف بانوراما ، تكييف ديجتال ، فرش جلد، جنوط١٨ ، مرايات ضم ، شاحن وايرلس ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش تدعم apple carplay و android auto ، سينسور بارك امامي خلفي ، كاميرات محيطية ٣٦٠ درجة\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8894,7 +9367,9 @@ namespace Tripix.Migrations
                         new
                         {
                             Id = 15,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "هونداي الينتراالسيارة الكهربائية بالكامل اودي Q4 e-tron موديل 2024 متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : 40e-tron ، محرك كهربائي يولد ٢٣٠ حصان ، ٧ راكب ، فتحة سقف بانورامية متحركة ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، شاشة عرض على الزجاج الامامي HUD ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8915,7 +9390,9 @@ namespace Tripix.Migrations
                         {
                             Id = 20,
                             Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Audi Q3 sportback 2024\r\nExterior Color: Grey\r\nInterior: Black x red \r\nCondition: Brand New\r\nEngine: 1.5L\r\nHorse power:150 hp\r\n8-Speed Automatic Transmission\r\nAcceleration:0-100 km/h 9.2 sec\r\nLED Headlights\r\nElectrically Folding Exterior Mirrors\r\nFully Parking Sensors\r\nRim 19 inch\r\nSunroof\r\nElectric seats with memory package\r\nElectric tailgate\r\nWelcome lights\r\n360° Camera\r\n6 Airbags\r\n30-color Ambient Lighting\r\nVery special specs and color\r\nImmediate purchase\r\nFor reservations and inquiries contact us ",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8956,7 +9433,7 @@ namespace Tripix.Migrations
                     b.Property<int?>("TravelRange")
                         .HasColumnType("int");
 
-                    b.ToTable("Vehicles", t =>
+                    b.ToTable("Vehicles", null, t =>
                         {
                             t.Property("CarType")
                                 .HasColumnName("ElectricCars_CarType");
@@ -8969,7 +9446,9 @@ namespace Tripix.Migrations
                         {
                             Id = 6,
                             Color = "black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Id6 crozz pro 2024 \r\nEnergy type: Pure electric \r\nRange: 601\r\nMax speed: 160\r\nCamera 360\r\nBlind spot\r\nHeadup display",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -8990,7 +9469,9 @@ namespace Tripix.Migrations
                         {
                             Id = 16,
                             Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "السيارة الكهربائية بالكامل شانجان S7 موديل ٢٠٢٤  متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : محرك كهربائي يولد ٢٥٨ حصان ، فتحة سقف بانورامية ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، شاشة عرض على الزجاج الامامي HUD ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة\r\n",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9021,7 +9502,7 @@ namespace Tripix.Migrations
                     b.Property<string>("MotorbikeType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Vehicles", t =>
+                    b.ToTable("Vehicles", null, t =>
                         {
                             t.Property("Motor_Capacity")
                                 .HasColumnName("Motorbikes_Motor_Capacity");
@@ -9030,7 +9511,7 @@ namespace Tripix.Migrations
                     b.HasDiscriminator().HasValue("Motorbike");
                 });
 
-            modelBuilder.Entity("Tripix.Entities.UsedCar", b =>
+            modelBuilder.Entity("Tripix.Entities.UsedVehicle", b =>
                 {
                     b.HasBaseType("Tripix.Entities.Vehicle");
 
@@ -9050,6 +9531,18 @@ namespace Tripix.Migrations
                     b.Property<string>("Motor_Capacity")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SellerEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SellerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SellerPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("UsedCar");
 
                     b.HasData(
@@ -9057,7 +9550,9 @@ namespace Tripix.Migrations
                         {
                             Id = 7,
                             Color = "black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Available now at 4Matic\r\nPorsche Taycan \r\nModel 2024\r\n4000 Km\r\nLicensed\r\nhas Protection \r\nRange 400-500",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9073,13 +9568,18 @@ namespace Tripix.Migrations
                             CarType = "Coupe",
                             Condition = "Used",
                             FuelType = "Electric",
-                            KilometersDriven = 4000
+                            KilometersDriven = 4000,
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 9,
                             Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "6500 km\r\nprotection\r\nlicensed\r\nlaurent & klement\r\ncamera 360\r\nالعنوان ٥٣ شارع عباس العقاد",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9094,13 +9594,18 @@ namespace Tripix.Migrations
                             Year = "2024",
                             CarType = "SUV",
                             Condition = "Used",
-                            FuelType = "Benzine",
-                            KilometersDriven = 6500
+                            FuelType = "Fuel",
+                            KilometersDriven = 6500,
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 12,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "السيارة الكهربائية بالكامل كيا Ev5 موديل ٢٠٢٤  متوفرة الآن في اكسدرايف اوتوموتيف   \r\n\r\nالمواصفات : محرك كهربائي يولد 215 حصان ، فتحة سقف بانورامية ، مساج كراسي , كراسي كهرباء ، بصمة داخلية و خارجية ، شنطة كهرباء ، ليد داخلي متعدد الألوان ، كاميرا ٣٦٠ درجة ، جنوط ٢٠ ، مرايات ضم ، بالاضافة للمزيد من المواصفات الاساسية\r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9115,13 +9620,18 @@ namespace Tripix.Migrations
                             Year = "2024",
                             CarType = "SUV",
                             Condition = "Used",
-                            FuelType = "Benzine",
-                            KilometersDriven = 15449
+                            FuelType = "Fuel",
+                            KilometersDriven = 15449,
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 13,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "\r\nرانج روفر ايفوك ٢٠٢١ SE عداد ٨ الف كيلو متوفرة الان في اكسدرايف اوتوموتيف\r\n\r\nالمواصفات : ١٥٠٠ سي سي توربو ١٦٠ حصان ، ليد داخلي متعدد الألوانة ، كاميرا ٣٦٠ درجة ، بصمة داخليه خارجيه ، كرسي كهرباء ، عدادات ديجتال ، مرايات ضم ، ليدات امامي خلفي ، مثبت سرعة ، شاشة تاتش ، سينسور بارك امامي خلفي \r\n\r\nمتاح جميع انظمة التقسيط بصورة البطاقة ( بنوك وشركات ) بمقدم يبتدء من ١٠٪؜  \r\n\r\nالعنوان :٧٩ حافظ رمضان جانب النادي الاهلي ، مدينة نصر ، القاهرة",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9136,14 +9646,19 @@ namespace Tripix.Migrations
                             Year = "2021",
                             CarType = "SUV",
                             Condition = "Used",
-                            FuelType = "Benzine",
-                            KilometersDriven = 7000
+                            FuelType = "Fuel",
+                            KilometersDriven = 7000,
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 17,
                             Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "BMW X6 M50i 2017\r\n4400cc\r\n523hp\r\nHarman/kardon sound system \r\nPanoramic sunroof \r\nHead-up display \r\nWireless Charger \r\nCamera 360 \r\nShifting paddles \r\nElectric seats with memory package \r\nFully loaded\r\nCheck our showroom to find your dream car. ",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9158,15 +9673,20 @@ namespace Tripix.Migrations
                             Year = "2017",
                             CarType = "SUV",
                             Condition = "Used",
-                            FuelType = "Benzine",
+                            FuelType = "Fuel",
                             KilometersDriven = 170000,
-                            Motor_Capacity = "4400 CC"
+                            Motor_Capacity = "4400 CC",
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 18,
                             Color = "Black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Jaguar f-type 2021 mti \r\n30.000km\r\n2000cc\r\n300Hp\r\nTop speed 250km/h\r\nAcceleration 5.7 km/h (s)\r\nR-dynamic\r\nMeridian sound system \r\nElectric seats \r\nPanoramic sunroof \r\nShifting paddles \r\nApple carplay\r\nAndroid auto\r\nAmbient lighting \r\nWelcome lights \r\nFull active sensors\r\nNavigation\r\nAll Maintenance in mti \r\nFor reservations and inquiries contact us\r\n(View phone number)\r\n(View phone number)\r\n(View phone number)\r\nYou can buy it in cash or in installments with all banks and companies starting from 20% without ani admin fees \r\nVisit our showroom",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9181,15 +9701,20 @@ namespace Tripix.Migrations
                             Year = "2021",
                             CarType = "Coupe",
                             Condition = "Used",
-                            FuelType = "Benzine",
+                            FuelType = "Fuel",
                             KilometersDriven = 30000,
-                            Motor_Capacity = "2000 CC"
+                            Motor_Capacity = "2000 CC",
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 19,
                             Color = "Black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "BMW 750 Li 2009\r\n\r\n•Engine: 4.4- liter twin turbo v8\r\n•Horse power: 400 hp\r\nspeech “ Hello BMW”\r\n•keyless entry \r\n•Panoramic sliding sunroof \r\n•fully sensors \r\n•Electric seats with memory package \r\n•Electric tailgate\r\n•Lane keep assist \r\n•Break assist \r\n•Soft close \r\n•Blind spot \r\n•Dual zone air conditions\r\n•Cruise control \r\n•fully loaded \r\n•Very special specs and color\r\nFor reservations and inquiries contact us ",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9204,15 +9729,20 @@ namespace Tripix.Migrations
                             Year = "2009",
                             CarType = "Sedan",
                             Condition = "Used",
-                            FuelType = "Benzine",
+                            FuelType = "Fuel",
                             KilometersDriven = 129000,
-                            Motor_Capacity = "4400 CC"
+                            Motor_Capacity = "4400 CC",
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 21,
                             Color = "Black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Mercedes c180 2009\r\nEngine 1.6 L turbo . 156 hp\r\nMulti function \r\nCruise control\r\nDynamic select\r\npark assist\r\nFully sensors \r\nActive brake assist\r\nAttention assist\r\nFor reservations and inquiries contact us\r\n(View phone number)\r\n(View phone number)\r\n(View phone number)\r\n(View phone number)\r\nYou can buy it in cash or in installments with all banks and companies starting from 20%\r\nVisit our showroom to find your dream car",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9227,15 +9757,20 @@ namespace Tripix.Migrations
                             Year = "2009",
                             CarType = "Sedan",
                             Condition = "Used",
-                            FuelType = "Benzine",
+                            FuelType = "Fuel",
                             KilometersDriven = 220000,
-                            Motor_Capacity = "1600 CC"
+                            Motor_Capacity = "1600 CC",
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         },
                         new
                         {
                             Id = 22,
                             Color = "Black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Mercedes G63 2022  AMG\r\nV8 \r\n577 HP\r\nAMG Speedshift TCT 9-speed transmission \r\nSmartKey with keylees-start\r\nElectric tailgate \r\nElectric seats\r\nShifting paddle \r\nBlind spot \r\nCamera 360\r\nSound system Burmester\r\nSunroof\r\nWireless apple carplay\r\nActive brake assist \r\nActive emergency stop Assist \r\nFully loaded \r\nالسياره بها جميع الكماليات\r\n‎متاح التقسيط مع جميع البنوك و الشركات بمقدم يبدا من ٢٠٪؜ حتي ٨٤ شهر",
+                            Discount = 0m,
                             Gearbox_Type = "Automatic",
                             LikeCounter = 0,
                             Merchant_Logo = "/Images/TripixLogo.png",
@@ -9250,9 +9785,12 @@ namespace Tripix.Migrations
                             Year = "2022",
                             CarType = "SUV",
                             Condition = "Used",
-                            FuelType = "Benzine",
+                            FuelType = "Fuel",
                             KilometersDriven = 15000,
-                            Motor_Capacity = "4000 CC"
+                            Motor_Capacity = "4000 CC",
+                            SellerEmail = "tripixv911@gmail.com",
+                            SellerName = "Tripix",
+                            SellerPhone = "01557373720"
                         });
                 });
 
@@ -9352,18 +9890,47 @@ namespace Tripix.Migrations
                 {
                     b.HasOne("Tripix.Entities.Driver", "Driver")
                         .WithMany("CarLicense")
-                        .HasForeignKey("DriverId1");
+                        .HasForeignKey("DriverId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Driver");
                 });
 
-            modelBuilder.Entity("Tripix.Entities.Comments", b =>
+            modelBuilder.Entity("Tripix.Entities.Complains", b =>
                 {
                     b.HasOne("Tripix.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
+                        .WithMany("Complains")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.Event", b =>
+                {
+                    b.OwnsOne("Tripix.Entities.Location", "EventLocation", b1 =>
+                        {
+                            b1.Property<int>("EventId")
+                                .HasColumnType("int");
+
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("float");
+
+                            b1.HasKey("EventId");
+
+                            b1.ToTable("Events", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("EventId");
+                        });
+
+                    b.Navigation("EventLocation")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tripix.Entities.EventTickets", b =>
@@ -9385,15 +9952,19 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.FavouriteProduct", b =>
                 {
-                    b.HasOne("Tripix.Entities.ApplicationUser", null)
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
                         .WithMany("FavouriteProducts")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Tripix.Entities.Vehicle", "Vehicle")
                         .WithMany()
-                        .HasForeignKey("VehicleId1")
+                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
 
                     b.Navigation("Vehicle");
                 });
@@ -9410,6 +9981,17 @@ namespace Tripix.Migrations
                     b.HasOne("Tripix.Entities.Event", null)
                         .WithMany("Hotels")
                         .HasForeignKey("EventId");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.HotleImages", b =>
+                {
+                    b.HasOne("Tripix.Entities.Hotel", "Hotel")
+                        .WithMany("HotelImage")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("Tripix.Entities.JopApplications", b =>
@@ -9431,28 +10013,16 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.LovedTips", b =>
                 {
-                    b.HasOne("Tripix.Entities.Tip", null)
+                    b.HasOne("Tripix.Entities.Tip", "Tip")
                         .WithMany("LovedTips")
                         .HasForeignKey("TipId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Tripix.Entities.Tip", "Tip")
-                        .WithMany()
-                        .HasForeignKey("TipId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Tripix.Entities.ApplicationUser", null)
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
                         .WithMany("LovedTips")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tip");
@@ -9467,6 +10037,36 @@ namespace Tripix.Migrations
                         .HasForeignKey("ApplicationUserId");
                 });
 
+            modelBuilder.Entity("Tripix.Entities.PassengerOpinion", b =>
+                {
+                    b.HasOne("Tripix.Entities.Driver", null)
+                        .WithMany("passengerOpinions")
+                        .HasForeignKey("DriverId");
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany("PassengerOpinion")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.Rating", b =>
+                {
+                    b.HasOne("Tripix.Entities.Driver", null)
+                        .WithMany("RatesRecieved")
+                        .HasForeignKey("DriverId");
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany("RatesAdded")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tripix.Entities.RefreshTokens", b =>
                 {
                     b.HasOne("Tripix.Entities.ApplicationUser", null)
@@ -9479,6 +10079,23 @@ namespace Tripix.Migrations
                     b.HasOne("Tripix.Entities.ApplicationUser", null)
                         .WithMany("RepairBookings")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.Replies", b =>
+                {
+                    b.HasOne("Tripix.Entities.TipComments", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("Tripix.Entities.ApplicationUser", "User")
+                        .WithMany("Replies")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Tripix.Entities.SparePartImage", b =>
@@ -9509,10 +10126,6 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.TipComments", b =>
                 {
-                    b.HasOne("Tripix.Entities.TipComments", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
-
                     b.HasOne("Tripix.Entities.Tip", "Tip")
                         .WithMany("TipComments")
                         .HasForeignKey("TipId")
@@ -9524,8 +10137,6 @@ namespace Tripix.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ParentComment");
 
                     b.Navigation("Tip");
 
@@ -9551,7 +10162,7 @@ namespace Tripix.Migrations
 
                             b1.HasKey("TripId");
 
-                            b1.ToTable("Trips");
+                            b1.ToTable("Trips", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TripId");
@@ -9570,7 +10181,7 @@ namespace Tripix.Migrations
 
                             b1.HasKey("TripId");
 
-                            b1.ToTable("Trips");
+                            b1.ToTable("Trips", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TripId");
@@ -9594,8 +10205,8 @@ namespace Tripix.Migrations
                         .IsRequired();
 
                     b.HasOne("Tripix.Entities.Vehicle", "Vehicle")
-                        .WithOne("VehicleBooking")
-                        .HasForeignKey("Tripix.Entities.VehicleBookings", "VehicleId")
+                        .WithMany("VehicleBooking")
+                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -9630,12 +10241,6 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.Driver", b =>
                 {
-                    b.HasOne("Tripix.Entities.ApplicationUser", null)
-                        .WithOne()
-                        .HasForeignKey("Tripix.Entities.Driver", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("Tripix.Entities.DriverLocation", "Location", b1 =>
                         {
                             b1.Property<string>("DriverId")
@@ -9649,7 +10254,7 @@ namespace Tripix.Migrations
 
                             b1.HasKey("DriverId");
 
-                            b1.ToTable("Drivers");
+                            b1.ToTable("AspNetUsers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("DriverId");
@@ -9659,11 +10264,11 @@ namespace Tripix.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tripix.Entities.UsedCar", b =>
+            modelBuilder.Entity("Tripix.Entities.UsedVehicle", b =>
                 {
                     b.OwnsOne("Tripix.Entities.CarLocation", "CarLocation", b1 =>
                         {
-                            b1.Property<int>("UsedCarId")
+                            b1.Property<int>("UsedVehicleId")
                                 .HasColumnType("int");
 
                             b1.Property<double>("Latitude")
@@ -9672,12 +10277,12 @@ namespace Tripix.Migrations
                             b1.Property<double>("Longitude")
                                 .HasColumnType("float");
 
-                            b1.HasKey("UsedCarId");
+                            b1.HasKey("UsedVehicleId");
 
-                            b1.ToTable("Vehicles");
+                            b1.ToTable("Vehicles", (string)null);
 
                             b1.WithOwner()
-                                .HasForeignKey("UsedCarId");
+                                .HasForeignKey("UsedVehicleId");
                         });
 
                     b.Navigation("CarLocation");
@@ -9685,6 +10290,8 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Complains");
+
                     b.Navigation("EventTickets");
 
                     b.Navigation("FavouriteProducts");
@@ -9697,9 +10304,15 @@ namespace Tripix.Migrations
 
                     b.Navigation("Orders");
 
+                    b.Navigation("PassengerOpinion");
+
                     b.Navigation("REFTokens");
 
+                    b.Navigation("RatesAdded");
+
                     b.Navigation("RepairBookings");
+
+                    b.Navigation("Replies");
 
                     b.Navigation("TipComments");
 
@@ -9722,6 +10335,11 @@ namespace Tripix.Migrations
             modelBuilder.Entity("Tripix.Entities.Event", b =>
                 {
                     b.Navigation("Hotels");
+                });
+
+            modelBuilder.Entity("Tripix.Entities.Hotel", b =>
+                {
+                    b.Navigation("HotelImage");
                 });
 
             modelBuilder.Entity("Tripix.Entities.Jop", b =>
@@ -9748,8 +10366,7 @@ namespace Tripix.Migrations
 
             modelBuilder.Entity("Tripix.Entities.Vehicle", b =>
                 {
-                    b.Navigation("VehicleBooking")
-                        .IsRequired();
+                    b.Navigation("VehicleBooking");
 
                     b.Navigation("VehicleImages");
                 });
@@ -9759,6 +10376,10 @@ namespace Tripix.Migrations
                     b.Navigation("CarImage");
 
                     b.Navigation("CarLicense");
+
+                    b.Navigation("RatesRecieved");
+
+                    b.Navigation("passengerOpinions");
                 });
 #pragma warning restore 612, 618
         }
