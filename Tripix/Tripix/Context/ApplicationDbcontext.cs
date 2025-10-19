@@ -21,8 +21,6 @@ namespace Tripix.Context
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbcontext).Assembly);
             base.OnModelCreating(modelBuilder);
-
-
         }
 
         public override int SaveChanges ()

@@ -91,16 +91,6 @@
   },
   {
     "ContainingType": "Tripix.Controllers.AuthController",
-    "Method": "GetTest",
-    "RelativePath": "api/Auth/GetTest",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Tripix.Controllers.AuthController",
     "Method": "GoogleLogin",
     "RelativePath": "api/Auth/GoogleLogin",
     "HttpMethod": "POST",

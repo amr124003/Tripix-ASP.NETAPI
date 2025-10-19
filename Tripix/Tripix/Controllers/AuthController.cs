@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tripix.Abstractions;
+using Tripix.Context;
 using Tripix.Contracts.Authentication;
 using Tripix.Services.Interfaces;
 using Tripix.View_Models;
@@ -13,11 +14,13 @@ namespace Tripix.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ApplicationDbcontext context;
 
-        public AuthController ( IUnitOfWork unitOfWork )
+        public AuthController ( IUnitOfWork unitOfWork , ApplicationDbcontext context )
         {
 
             this.unitOfWork = unitOfWork;
+            this.context = context;
         }
         [HttpPost("Register")]
         public async Task<IActionResult> Register ( [FromBody] RegisterModel model )
@@ -32,6 +35,8 @@ namespace Tripix.Controllers
             return authresult.IsSuccess ? Ok(authresult) : authresult.ToProblem();
 
         }
+
+        
 
 
         [HttpPost("Login")]

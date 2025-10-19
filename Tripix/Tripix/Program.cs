@@ -78,7 +78,7 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOpti
 builder.Services.AddHttpClient<bininfoRepo>();
 builder.Services.AddDbContext<ApplicationDbcontext>(options =>
 {
-    options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"))
+    options.UseSqlServer("Data Source=.;Initial Catalog=Tripix;Integrated Security=True;Trust Server Certificate=True;")
            .EnableSensitiveDataLogging()
            .LogTo(Console.WriteLine, LogLevel.Information);
 });

@@ -252,6 +252,7 @@ namespace Tripix.Services.Repositories
 
         }
 
+
         public async Task<Result<AuthResponse>> ConfirmEmailAsync ( ConfirmationEmailRequest request )
         {
             var Authrepsponse = new AuthResponse();

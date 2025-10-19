@@ -110,18 +110,6 @@
         }
       }
     },
-    "/api/Auth/GetTest": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Auth/Login": {
       "post": {
         "tags": [
